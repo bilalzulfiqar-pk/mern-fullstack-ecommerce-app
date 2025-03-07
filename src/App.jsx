@@ -1,11 +1,17 @@
 import { useState } from "react";
+import Navbar from "./components/Navbar";
+import Menubar from "./components/Menubar";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      <h1 class="text-3xl font-bold underline">Hello world!</h1>
+      <BrowserRouter>
+        <Navbar />
+        <Menubar />
+      </BrowserRouter>
     </>
   );
 }

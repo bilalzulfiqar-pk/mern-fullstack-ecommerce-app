@@ -58,21 +58,24 @@ const CustomDropDown = ({ heading, items }) => {
       {isOpen && (
         <div className="absolute top-full w-fit mt-1 left-0 h-fit border rounded-lg bg-white border-gray-400 shadow-lg z-10">
           <ul className="m-2">
-            {items.map((item, index) => (
-              <li
-                key={index}
-                className="hover:bg-[#E6F0FF] cursor-pointer py-2 px-4 rounded-lg w-full whitespace-nowrap"
-                onClick={() => handleSelect(item)}
-              >
-                {typeof item === "object" ? (
-                  <Link to={item.link} className="block w-full">
-                    {item.text}
-                  </Link>
-                ) : (
-                  item
-                )}
-              </li>
-            ))}
+            {items.map((item, index) => {
+              const content = typeof item === "object" ? item.text : item;
+              return typeof item === "object" ? (
+                <Link to={item.link} key={index} className="block">
+                  <li className="hover:bg-[#E6F0FF] cursor-pointer py-2 px-4 rounded-lg w-full whitespace-nowrap">
+                    {content}
+                  </li>
+                </Link>
+              ) : (
+                <li
+                  key={index}
+                  className="hover:bg-[#E6F0FF] cursor-pointer py-2 px-4 rounded-lg w-full whitespace-nowrap"
+                  onClick={() => handleSelect(item)}
+                >
+                  {content}
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}

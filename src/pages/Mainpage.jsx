@@ -1,6 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import ProductsStartPriceSection from "../components/ProductsStartPriceSection";
+import InquirySection from "../components/InquirySection";
+import RecommededItems from "../components/RecommededItems";
+import ExtraServicesSection from "../components/ExtraServicesSection";
 const Mainpage = () => {
   const categoryList = [
     { text: "Automobiles", link: "/category/automobiles" },
@@ -12,6 +15,145 @@ const Mainpage = () => {
     { text: "Animal and pets", link: "/category/animal-and-pets" },
     { text: "Machinery tools", link: "/category/machinery-tools" },
     { text: "More category", link: "/category/more" },
+  ];
+
+  const homeAndOutdoor = [
+    {
+      title: "Armchairs",
+      img: "/interior/1.jpg",
+      price: 25,
+    },
+    {
+      title: "Office chairs",
+      img: "/interior/2.jpg",
+      price: 19,
+    },
+    {
+      title: "Kitchen dishes",
+      img: "/interior/3.jpg",
+      price: 7,
+    },
+    {
+      title: "Home Plants",
+      img: "/interior/4.jpg",
+      price: 10,
+    },
+    {
+      title: "For Bedroom",
+      img: "/interior/5.jpg",
+      price: 12,
+    },
+    {
+      title: "Home Lighting",
+      img: "/interior/6.jpg",
+      price: 19,
+    },
+    {
+      title: "Best items",
+      img: "/interior/7.jpg",
+      price: 19,
+    },
+    {
+      title: "Category name",
+      img: "/interior/8.jpg",
+      price: 19,
+    },
+  ];
+
+  const electronics = [
+    {
+      title: "Smartphones",
+      img: "/tech/3.jpg",
+      price: 140,
+    },
+    {
+      title: "Apple iPhone",
+      img: "/tech/4.jpg",
+      price: 850,
+    },
+    {
+      title: "For Gaming",
+      img: "/tech/5.jpg",
+      price: 19,
+    },
+    {
+      title: "Cameras",
+      img: "/tech/6.jpg",
+      price: 120,
+    },
+    {
+      title: "Laptops & PC",
+      img: "/tech/7.jpg",
+      price: 19,
+    },
+    {
+      title: "Smartwatches",
+      img: "/tech/8.jpg",
+      price: 19,
+    },
+    {
+      title: "Headphones",
+      img: "/tech/9.jpg",
+      price: 19,
+    },
+    {
+      title: "Electric kettle",
+      img: "/tech/10.jpg",
+      price: 19,
+    },
+  ];
+
+  const recommendedProducts = [
+    {
+      img: "/cloth/1.jpg",
+      price: "$24.00",
+      description: "T-shirts with multiple colors, for men",
+    },
+    {
+      img: "/cloth/2.jpg",
+      price: "$29.90",
+      description: "T-shirts with blue color, unisex model",
+    },
+    {
+      img: "/cloth/3.jpg",
+      price: "$790.50",
+      description: "Casual Winter Jacket, Brown Color",
+    },
+    {
+      img: "/cloth/4.jpg",
+      price: "$12.00",
+      description: "Jeans shorts for men darkblue color",
+    },
+    {
+      img: "/cloth/5.jpg",
+      price: "$192.50",
+      description: "Lightweight Jeans bag for travel, Unisex model",
+    },
+    {
+      img: "/tech/6.jpg",
+      price: "$790.50",
+      description: "GoPro HERO6 4K Action Camera - Black",
+    },
+    {
+      img: "/interior/3.jpg",
+      price: "$790.50",
+      description: "Ceramic Jug for Kitchen, Medium size",
+    },
+    {
+      img: "/interior/2.jpg",
+      price: "$790.50",
+      description: "Armchair for Home and Office, Yellow color",
+    },
+    {
+      img: "/interior/5.jpg",
+      price: "$790.50",
+      description: "Airbed Blue Soft Material With Pump",
+    },
+    {
+      img: "/tech/5.jpg",
+      price: "$19.50",
+      description: "Modern Product Name Goes Here",
+    },
   ];
 
   return (
@@ -111,27 +253,27 @@ const Mainpage = () => {
             <div className="grid h-full grid-cols-5 max-[1325px]:grid-cols-3 max-[1080px]:grid-cols-[repeat(5,minmax(200px,1fr))] max-[1080px]:w-max">
               {[
                 {
-                  img: "/products/smart-watch.jpg",
+                  img: "/tech/smart-watch.jpg",
                   name: "Smart Watches",
                   discount: "-25%",
                 },
                 {
-                  img: "/products/laptop.jpg",
+                  img: "/tech/laptop.jpg",
                   name: "Laptops",
                   discount: "-15%",
                 },
                 {
-                  img: "/products/camera.jpg",
+                  img: "/tech/camera.jpg",
                   name: "GoPro Cameras",
                   discount: "-35%",
                 },
                 {
-                  img: "/products/headphone.jpg",
+                  img: "/tech/headphone.jpg",
                   name: "Headphones",
                   discount: "-25%",
                 },
                 {
-                  img: "/products/smart-phone.jpg",
+                  img: "/tech/smart-phone.jpg",
                   name: "Canon Cameras",
                   discount: "-25%",
                 },
@@ -159,80 +301,37 @@ const Mainpage = () => {
 
         {/* {Home Outdoor Section} */}
 
-        <div className="mt-6 mx-32 h-72 grid grid-cols-[0.6fr_2fr] max-[1080px]:grid-cols-1 overflow-hidden rounded-lg border border-[#E0E0E0] bg-white">
-          <div className="bg-[url('/banners/interior.jpg')] bg-cover">
-            <header className="pt-6 mx-5 ">
-              <h3 className="text-2xl font-bold">Home and outdoor</h3>
-            </header>
-            <button className="ml-5 mt-4 px-4 py-2 bg-white shadow rounded-lg cursor-pointer hover:bg-gray-100 transition duration-300">
-              Source Now
-            </button>
-          </div>
+        {
+          <ProductsStartPriceSection
+            products={homeAndOutdoor}
+            heading="Home and outdoor"
+            link="/home-and-outdoor"
+            banner="/banners/interior.jpg"
+          />
+        }
 
-          <div className="max-[1080px]:overflow-x-auto">
-            <div className="grid h-full grid-cols-4 max-[1080px]:grid-cols-[repeat(8,minmax(200px,1fr))] max-[1080px]:w-max">
-              {[
-                {
-                  title: "Armchairs",
-                  img: "/interior/1.jpg",
-                  price: 25,
-                },
-                {
-                  title: "Office chairs",
-                  img: "/interior/2.jpg",
-                  price: 19,
-                },
-                {
-                  title: "Kitchen dishes",
-                  img: "/interior/3.jpg",
-                  price: 7,
-                },
-                {
-                  title: "Home Plants",
-                  img: "/interior/4.jpg",
-                  price: 10,
-                },
-                {
-                  title: "For Bedroom",
-                  img: "/interior/5.jpg",
-                  price: 12,
-                },
-                {
-                  title: "Home Lighting",
-                  img: "/interior/6.jpg",
-                  price: 19,
-                },
-                {
-                  title: "Best items",
-                  img: "/interior/7.jpg",
-                  price: 19,
-                },
-                {
-                  title: "Category name",
-                  img: "/interior/8.jpg",
-                  price: 19,
-                },
-              ].map((product, index) => (
-                <div
-                  key={index}
-                  className="relative bg-white border border-[#E0E0E0] p-4 flex flex-col items-center"
-                >
-                  <img
-                    src={product.img}
-                    alt={product.title}
-                    className="absolute bottom-0 right-0 w-[72px] h-[72px] object-cover"
-                  />
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    {product.title}
-                  </h3>
-                  <p className="text-sm text-gray-500">
-                    From USD {product.price}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        {/* {Electronics and Gadgets Section} */}
+
+        {
+          <ProductsStartPriceSection
+            products={electronics}
+            heading="Consumer electronics and gadgets"
+            link="/electronics-and-gadgets"
+            banner="/banners/tech.jpg"
+          />
+        }
+
+        {/* {Inquiry Section} */}
+
+        <InquirySection />
+
+        {/* {Recommeded items Section} */}
+
+        <RecommededItems products={recommendedProducts} />
+
+        {/* {Extra Services Section} */}
+
+        <ExtraServicesSection />
       </div>
     </div>
   );

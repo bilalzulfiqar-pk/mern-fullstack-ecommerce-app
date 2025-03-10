@@ -4,6 +4,9 @@ import ProductsStartPriceSection from "../components/ProductsStartPriceSection";
 import InquirySection from "../components/InquirySection";
 import RecommededItems from "../components/RecommededItems";
 import ExtraServicesSection from "../components/ExtraServicesSection";
+import SupplierByRegionSection from "../components/SupplierByRegionSection";
+import NewsletterSection from "../components/NewsletterSection";
+import Footer from "../components/Footer";
 const Mainpage = () => {
   const categoryList = [
     { text: "Automobiles", link: "/category/automobiles" },
@@ -157,7 +160,7 @@ const Mainpage = () => {
   ];
 
   return (
-    <div className="w-full bg-[#F7FAFC] h-full pb-6">
+    <div className="w-full bg-[#F7FAFC] h-full">
       <div className="pt-6 max-w-[1580px] m-auto h-full">
         {/* Category Section */}
         <div className="mx-32 h-[425px] bg-white rounded-lg flex gap-4 overflow-hidden border border-[#E0E0E0] p-3">
@@ -332,6 +335,10 @@ const Mainpage = () => {
         {/* {Extra Services Section} */}
 
         <ExtraServicesSection />
+
+        {/* {Supplier by region Section} */}
+
+        <SupplierByRegionSection />
       </div>
     </div>
   );

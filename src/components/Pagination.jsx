@@ -38,7 +38,7 @@ const Pagination = ({
 
       {/* Pagination Controls */}
       <button
-        className="p-2 border rounded-md border-[#E0E0E0] disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400"
+        className="p-2 cursor-pointer border rounded-md border-[#E0E0E0] disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400"
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
         aria-label="Previous Page"
@@ -49,7 +49,7 @@ const Pagination = ({
       {Array.from({ length: totalPages }, (_, index) => (
         <button
           key={index + 1}
-          className={`px-3 py-1 rounded-md border border-[#E0E0E0] 
+          className={`px-3 corsor-pointer py-1 rounded-md border border-[#E0E0E0] 
             ${currentPage === index + 1 ? "bg-blue-500 text-white font-semibold" : "hover:bg-gray-100"}`}
           onClick={() => handlePageChange(index + 1)}
           aria-label={`Go to page ${index + 1}`}
@@ -59,7 +59,7 @@ const Pagination = ({
       ))}
 
       <button
-        className="p-2 border rounded-md border-[#E0E0E0] disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400"
+        className="p-2 border cursor-pointer rounded-md border-[#E0E0E0] disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400"
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         aria-label="Next Page"

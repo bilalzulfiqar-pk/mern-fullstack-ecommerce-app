@@ -19,8 +19,8 @@ function App() {
         {/* <Menubar /> */}
         {/* <Mainpage /> */}
         {/* <SearchPage/> */}
-        {/* <ProductPage/> */}
-        <CheckoutPage/>
+        <ProductPage/>
+        {/* <CheckoutPage/> */}
         <NewsletterSection />
         <Footer />
       </BrowserRouter>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ProductPageCard from "../components/ProductPageCard";
+import DiscountBanner from "../components/DiscountBanner";
 
 const ProductPage = () => {
   return (
@@ -38,6 +39,11 @@ const ProductPage = () => {
             {/* Product */}
 
             <ProductPageCard />
+
+            {/* Discounted Banner */}
+            <div className="mt-5">
+              <DiscountBanner />
+            </div>
           </div>
         </div>
       </div>

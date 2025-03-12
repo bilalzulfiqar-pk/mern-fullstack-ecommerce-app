@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import NewsletterSection from "./components/NewsletterSection";
 import SearchPage from "./pages/SearchPage";
 import ProductPage from "./pages/ProductPage";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -18,7 +19,8 @@ function App() {
         {/* <Menubar /> */}
         {/* <Mainpage /> */}
         {/* <SearchPage/> */}
-        <ProductPage/>
+        {/* <ProductPage/> */}
+        <CheckoutPage/>
         <NewsletterSection />
         <Footer />
       </BrowserRouter>

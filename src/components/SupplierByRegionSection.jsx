@@ -16,7 +16,7 @@ const SupplierByRegionSection = () => {
 
   return (
     <div>
-      <div className="mx-32 my-7">
+      <div className="mx-5 min-[1080px]:mx-32 my-7">
         <div className="mb-3">
           <p className="font-semibold text-3xl">Suppliers by region</p>
         </div>

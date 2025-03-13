@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useState } from "react";
 import { FaTh, FaBars } from "react-icons/fa";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -12,6 +12,13 @@ const SearchPage = () => {
   const [gridView, setGridView] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setitemsPerPage] = useState(9);
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const buttonRef = useRef(null);
+
+  // const toggleSidebar = () => {
+  //   setIsSidebarOpen(!isSidebarOpen);
+  // };
 
   // const itemsPerPage = 9; // Number of products per page
 
@@ -161,7 +168,7 @@ const SearchPage = () => {
   return (
     <div>
       <div className="w-full pb-6 bg-[#F7FAFC] h-full">
-        <div className="max-w-[1580px] px-32 m-auto h-full">
+        <div className="max-w-[1580px] px-5 min-[1080px]:px-32 m-auto h-full">
           {/* Breadcrumb */}
           <nav className="text-[#8B96A5] text-base py-6">
             <ul className="flex space-x-2">
@@ -193,14 +200,25 @@ const SearchPage = () => {
 
           <div className="flex h-full">
             {/* Search Filters */}
-            <div className="w-[20%]">
-              <SidebarFilter />
+            <div className="w-[20%] max-[840px]:w-[0%]">
+              <SidebarFilter
+                isOpen={isSidebarOpen}
+                setIsOpen={setIsSidebarOpen}
+                buttonRef={buttonRef}
+              />
             </div>
 
             {/* Search Results */}
 
-            <div className="w-[80%] px-2">
-              <div className="flex w-full items-center justify-between p-3 border rounded-lg border-[#E0E0E0] bg-white">
+            <div className="w-[80%] max-[840px]:w-[100%] px-2">
+              <button
+              ref={buttonRef}
+                className="w-full cursor-pointer mb-2 hidden active:bg-gray-100 transition duration-300 max-[840px]:flex justify-center items-center p-3 border rounded-lg border-[#E0E0E0]"
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              >
+                Show Filter
+              </button>
+              <div className="flex w-full items-center justify-between max-[700px]:flex-col max-[700px]:gap-2 p-3 border rounded-lg border-[#E0E0E0] bg-white">
                 {/* Left Side: Item Count */}
                 <p className="text-gray-700 font-medium">
                   12,911 items in{" "}
@@ -208,7 +226,7 @@ const SearchPage = () => {
                 </p>
 
                 {/* Right Side: Controls */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 max-[460px]:flex-col">
                   {/* Checkbox */}
                   <label className="flex items-center gap-2 text-gray-700">
                     <input
@@ -218,37 +236,39 @@ const SearchPage = () => {
                     Verified only
                   </label>
 
-                  {/* Dropdown */}
-                  <div className="relative">
-                    <select className="border appearance-none border-[#E0E0E0] px-3 py-1.5 rounded-md focus:outline-none focus:ring focus:border-blue-300">
-                      <option>Featured</option>
-                      <option>Newest</option>
-                      <option>Price: Low to High</option>
-                      <option>Price: High to Low</option>
-                    </select>
-                    <div className="absolute top-1/2 right-2 transform -translate-y-1/2 pointer-events-none text-2xl text-gray-400">
-                      <MdKeyboardArrowDown />
+                  <div className="flex justify-center items-center gap-2">
+                    {/* Dropdown */}
+                    <div className="relative">
+                      <select className="border appearance-none border-[#E0E0E0] px-3 py-1.5 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                        <option>Featured</option>
+                        <option>Newest</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                      </select>
+                      <div className="absolute top-1/2 right-2 transform -translate-y-1/2 pointer-events-none text-2xl text-gray-400">
+                        <MdKeyboardArrowDown />
+                      </div>
                     </div>
-                  </div>
 
-                  {/* View Toggle Buttons */}
-                  <div className="flex border border-[#E0E0E0] rounded-md overflow-hidden">
-                    <button
-                      onClick={() => setGridView(true)}
-                      className={`p-2 cursor-pointer ${
-                        gridView ? "bg-gray-200" : "bg-white"
-                      } hover:bg-gray-300`}
-                    >
-                      <FaTh className="w-5 h-5" />
-                    </button>
-                    <button
-                      onClick={() => setGridView(false)}
-                      className={`p-2 cursor-pointer ${
-                        !gridView ? "bg-gray-200" : "bg-white"
-                      } hover:bg-gray-300`}
-                    >
-                      <FaBars className="w-5 h-5" />
-                    </button>
+                    {/* View Toggle Buttons */}
+                    <div className="flex border border-[#E0E0E0] rounded-md overflow-hidden">
+                      <button
+                        onClick={() => setGridView(true)}
+                        className={`p-2 cursor-pointer ${
+                          gridView ? "bg-gray-200" : "bg-white"
+                        } hover:bg-gray-300`}
+                      >
+                        <FaTh className="w-5 h-5" />
+                      </button>
+                      <button
+                        onClick={() => setGridView(false)}
+                        className={`p-2 cursor-pointer ${
+                          !gridView ? "bg-gray-200" : "bg-white"
+                        } hover:bg-gray-300`}
+                      >
+                        <FaBars className="w-5 h-5" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -257,7 +277,7 @@ const SearchPage = () => {
 
               <div className="filtered">
                 {gridView ? (
-                  <div className="grid grid-cols-3 max-[1080px]:grid-cols-2 max-[820px]:grid-cols-1 gap-6 py-5">
+                  <div className="grid grid-cols-3 max-[840px]:grid-cols-2 max-[]:grid-cols-1 gap-6 py-5 max-[500px]:gap-3 max-[400px]:gap-2">
                     {currentProducts.map((product, index) => (
                       <ProductCardGrid key={index} product={product} />
                     ))}
@@ -275,7 +295,7 @@ const SearchPage = () => {
             </div>
           </div>
           {/* Pagination Component */}
-          <div className="flex justify-end pr-10">
+          <div className="flex justify-end pr-10 max-[400px]:pr-0">
             <Pagination
               currentPage={currentPage}
               totalPages={Math.ceil(products.length / itemsPerPage)}

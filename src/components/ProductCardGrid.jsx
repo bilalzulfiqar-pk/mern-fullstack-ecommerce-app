@@ -31,7 +31,7 @@ const ProductCardGrid = ({ product }) => {
 
           {/* Favorite Button */}
         <button
-          className="absolute cursor-pointer right-4 p-2 bg-white shadow-sm border border-[#E0E0E0] rounded-lg"
+          className="absolute cursor-pointer right-4 max-[840px]:-top-12 p-2 bg-white shadow-sm border border-[#E0E0E0] rounded-lg"
           onClick={() => setIsFavorite(!isFavorite)}
         >
           {isFavorite ? (

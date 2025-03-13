@@ -76,8 +76,8 @@ const ShoppingCart = () => {
   const total = subtotal - totalDiscount + totalTax;
 
   return (
-    <div className="flex flex-col lg:flex-row gap-4">
-      <div className="w-full lg:w-3/4 bg-white border border-[#E0E0E0] rounded-md p-4">
+    <div className="flex flex-col min-[900px]:flex-row gap-4">
+      <div className="w-full min-[900px]:w-3/4 bg-white border border-[#E0E0E0] rounded-md p-4 max-[500px]:p-2">
         {items.map((item) => (
           <div
             key={item.id}
@@ -107,10 +107,13 @@ const ShoppingCart = () => {
                 </button>
               </div>
             </div>
-            <div className="text-right flex flex-col max-[500px]:flex-row max-[500px]:justify-end max-[500px]:items-center max-[500px]:gap-3 ">
+            <div className="text-right flex flex-col max-[500px]:flex-row max-[500px]:justify-end max-[500px]:items-center max-[500px]:gap-3 max-[375px]:flex-col max-[500px]:mt-2">
+              <div className="flex flex-col max-[500px]:flex-row max-[500px]:gap-3 max-[500px]:justify-center max-[500px]:items-center">
+
               <p className="text-lg ">${item.price.toFixed(2)}</p>
               <p className="text-green-500">- ${item.discount.toFixed(2)}</p>
               <p className="text-red-500">+ ${item.tax.toFixed(2)}</p>
+              </div>
               <div className="relative">
                 <select
                   className="min-[500px]:mt-2 cursor-pointer hover:bg-gray-100 focus:bg-gray-100 border border-[#E0E0E0] appearance-none shadow-2xs rounded-md px-2 pr-10 py-1"
@@ -162,7 +165,7 @@ const ShoppingCart = () => {
 
       {/* Right */}
 
-      <div className="w-full lg:w-1/4">
+      <div className="w-full min-[900px]:w-1/4">
         {/* Coupon Section */}
         <div className="p-4 border border-[#E0E0E0] rounded-lg mb-3 bg-white">
           <p className="text-gray-700 mb-2">Have a coupon?</p>

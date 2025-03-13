@@ -7,7 +7,7 @@ const ProductPage = () => {
   return (
     <div>
       <div className="w-full pb-6 bg-[#F7FAFC] flex justify-center items-center h-full">
-        <div className="max-w-[1580px] min-[1300px]:px-32 px-5  h-full flex justify-center items-center">
+        <div className="max-w-[1580px] min-[1340px]:px-32 px-5 max-[380px]:px-0  h-full flex justify-center items-center">
           <div className="">
             {/* Breadcrumb */}
             <nav className="text-[#8B96A5] text-base py-6">

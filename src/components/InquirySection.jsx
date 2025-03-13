@@ -19,8 +19,8 @@ const InquirySection = () => {
   };
 
   return (
-    <section className="mx-32 py-8">
-      <div className="container">
+    <section className="mx-5 min-[1080px]:mx-32 py-8">
+      <div className="container1 w-full">
         <div
           className="relative p-8 rounded-lg overflow-hidden min-h-[400px] flex items-center"
           style={{
@@ -32,7 +32,7 @@ const InquirySection = () => {
           {/* Overlay */}
           <div className="absolute inset-0 bg-cyan-100 opacity-10"></div>
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
             {/* Left Text Section */}
             <div>
               <h2 className="text-white text-3xl font-bold">

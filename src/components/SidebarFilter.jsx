@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { FaStar, FaRegStar } from "react-icons/fa";
 
-const SidebarFilter = () => {
-  
+const SidebarFilter = ({ isOpen, setIsOpen, buttonRef }) => {
   // Define sections dynamically
   const sections = [
     {
@@ -67,8 +66,51 @@ const SidebarFilter = () => {
     setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
+  const toggleSidebar = () => setIsOpen(!isOpen);
+
+  const sidebarRef = useRef(null);
+
+  // Close sidebar when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // 🔹 If clicking inside sidebar or button, do nothing
+      if (
+        sidebarRef.current?.contains(event.target) ||
+        buttonRef.current?.contains(event.target)
+      ) {
+        return;
+      }
+      setIsOpen(false); // Otherwise, close sidebar
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
-    <div className="w-full pt-0 p-4">
+    <div
+      ref={sidebarRef}
+      className={`w-full relative pt-0 p-4 max-[840px]:fixed max-[840px]:top-0 max-[840px]:left-0 max-[840px]:h-full max-[840px]:overflow-y-scroll max-[840px]:w-72 max-[840px]:bg-white max-[840px]:shadow-lg max-[840px]:border-r max-[840px]:border-gray-300 transition-transform transform max-[840px]:z-50 ${
+        isOpen ? "max-[840px]:translate-x-0" : "max-[840px]:-translate-x-full"
+      }`}
+    >
+      {/* Close Button */}
+      <div className="max-[840px]:flex justify-end mb-3 hidden">
+        <button
+          onClick={toggleSidebar}
+          className="text-2xl pt-2 text-gray-500 hover:text-black"
+        >
+          ✕
+        </button>
+      </div>
+
       {sections.map(
         ({
           key,

@@ -2,7 +2,7 @@ import React from "react";
 
 const RecommededItems = ({ products }) => {
   return (
-    <div className="mx-32">
+    <div className="mx-5 min-[1080px]:mx-32">
       <div className="mb-3">
         <p className="font-semibold text-3xl">Recommeded items</p>
       </div>

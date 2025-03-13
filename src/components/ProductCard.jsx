@@ -8,7 +8,7 @@ const ProductCard = ({ product }) => {
   if (!product) return <p>Loading...</p>;
 
   return (
-    <div className="flex border relative border-[#E0E0E0] rounded-lg p-4 shadow-xs items-center space-x-4 w-full bg-white">
+    <div className="flex border relative border-[#E0E0E0] rounded-lg p-4 max-[680px]:flex-col shadow-xs items-center space-x-4 w-full bg-white">
       {/* Product Image */}
       <img
         src={product.image}
@@ -57,7 +57,7 @@ const ProductCard = ({ product }) => {
 
       {/* Wishlist Button */}
       <button
-        className="cursor-pointer p-2 bg-white shadow-sm border border-[#E0E0E0] rounded-lg"
+        className="cursor-pointer max-[680px]:absolute max-[680px]:top-4 max-[680px]:right-4 p-2 bg-white shadow-sm border border-[#E0E0E0] rounded-lg"
         onClick={() => setIsFavorite(!isFavorite)}
       >
         {isFavorite ? (

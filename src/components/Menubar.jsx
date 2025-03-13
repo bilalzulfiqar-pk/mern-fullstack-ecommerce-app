@@ -29,8 +29,8 @@ const countries = [
 
 const Menubar = () => {
   return (
-    <div className="w-full border-b border-[#E0E0E0]">
-      <div className="max-w-[1580px] m-auto h-14 flex justify-between px-32 items-center">
+    <div className="w-full border-b border-[#E0E0E0] max-[840px]:hidden">
+      <div className="max-w-[1580px] m-auto h-14 flex justify-between px-5 min-[1080px]:px-32 items-center">
         <div className="flex justify-center items-center gap-1">
           <CustomDropDown heading="All Category" items={categoryList} />
           <Link to="">

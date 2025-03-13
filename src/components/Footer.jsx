@@ -9,11 +9,11 @@ const Footer = () => {
   return (
     <footer>
       <div className="bg-white w-full">
-        <div className="py-10 pb-15 mx-auto px-32 max-w-[1580px]">
-          <div className="container">
-            <div className="flex gap-5 max-[1000px]:flex-col">
+        <div className="py-10 pb-15 mx-auto px-5 min-[1080px]:px-32 max-w-[1580px]">
+          <div className="container1">
+            <div className="flex gap-5 max-[880px]:flex-col">
               {/* Brand Section */}
-              <div className="w-[25%] max-[1000px]:w-full pr-5">
+              <div className="w-[25%] max-[880px]:w-full pr-5">
                 <div className="flex items-center">
                 <div className="logo text-4xl text-[#8cb7f5] font-semibold">eStore</div>
                 </div>
@@ -42,7 +42,7 @@ const Footer = () => {
                 </div>
               </div>
 
-              <div className="flex gap-3 whitespace-nowrap w-[60%] max-[1000px]:w-full max-[600px]:flex-wrap">
+              <div className="flex gap-3 whitespace-nowrap w-[75%] max-[880px]:w-full max-[600px]:flex-wrap">
                 {/* About */}
                 <div className="grow">
                   <h3 className="font-semibold text-black">About</h3>
@@ -118,10 +118,10 @@ const Footer = () => {
                     </li>
                   </ul>
                 </div>
-              </div>
+
 
               {/* Get App */}
-              <div className="w-[15%] max-[1000px]:w-full">
+              <div className="w-fit">
                 <h3 className="font-semibold text-black">Get App</h3>
                 <div className="mt-3">
                   <a href="#" className="block mb-2">
@@ -140,13 +140,15 @@ const Footer = () => {
                   </a>
                 </div>
               </div>
+              </div>
+
             </div>
           </div>
         </div>
       </div>
       <div className="bg-[#EFF2F4]">
         {/* Bottom Section */}
-        <div className="mx-32 py-6 flex flex-col md:flex-row text-lg justify-between text-gray-500">
+        <div className="mx-5 min-[1080px]:mx-32 py-6 flex flex-col md:flex-row text-lg justify-between text-gray-500">
           <p>© 2023 Ecommerce.</p>
           <div className="flex items-center space-x-2">
             <span></span>

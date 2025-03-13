@@ -162,9 +162,9 @@ const Mainpage = () => {
   return (
     <div className="w-full bg-[#F7FAFC] h-full">
       <div className="pt-6 max-w-[1580px] m-auto h-full">
+        <div className="mx-5 min-[1080px]:mx-32 h-[425px] bg-white rounded-lg flex gap-4 overflow-hidden border border-[#E0E0E0] p-3">
         {/* Category Section */}
-        <div className="mx-32 h-[425px] bg-white rounded-lg flex gap-4 overflow-hidden border border-[#E0E0E0] p-3">
-          <div className="min-w-[200px] w-[25%]">
+          <div className="min-w-[200px] w-[25%] max-[840px]:hidden">
             <ul className="">
               {categoryList.map((item, index) => (
                 <Link key={index} to={item.link} className="block w-full">
@@ -176,7 +176,7 @@ const Mainpage = () => {
             </ul>
           </div>
           {/* Banner section */}
-          <div className="w-[55%] bg-[url('/main-tech.png')] bg-cover bg-center min-w-[350px]">
+          <div className="w-[55%] bg-[url('/main-tech.png')] bg-cover bg-center min-w-[350px] max-[840px]:w-full">
             <div className="mt-16 ml-10">
               <h1 className="text-4xl">Latest Trends</h1>
               <h2 className="text-4xl font-semibold">Electronics items</h2>
@@ -188,7 +188,7 @@ const Mainpage = () => {
             </div>
           </div>
           {/* Right sidebar */}
-          <div className="w-[20%] min-w-[187px] space-y-2 box-border">
+          <div className="w-[20%] min-w-[187px] space-y-2 box-border max-[840px]:hidden">
             <div className="h-[44%] rounded-xl bg-[#E3F0FF] p-3">
               <div className="flex items-center mb-3 text-base">
                 <img
@@ -224,7 +224,7 @@ const Mainpage = () => {
           </div>
         </div>
         {/* Deals Section */}
-        <div className="deals mt-6 mx-32 h-70 max-[1325px]:h-full grid grid-cols-[0.6fr_2fr] max-[1325px]:grid-cols-1 overflow-hidden rounded-lg border border-[#E0E0E0] bg-white">
+        <div className="deals mt-6 mx-5 min-[1080px]:mx-32 h-70 max-[1325px]:h-full grid grid-cols-[0.6fr_2fr] max-[1325px]:grid-cols-1 overflow-hidden rounded-lg border border-[#E0E0E0] bg-white">
           {/* Deals Info Section */}
           <div className="mt-6 xl:ml-5 pb-6 flex flex-col max-[1325px]:justify-center max-[1325px]:w-full max-[1325px]:items-center">
             <header>
@@ -252,8 +252,8 @@ const Mainpage = () => {
           </div>
 
           {/* Product Grid with Borders */}
-          <div className="max-[1080px]:overflow-x-auto">
-            <div className="grid h-full grid-cols-5 max-[1325px]:grid-cols-3 max-[1080px]:grid-cols-[repeat(5,minmax(200px,1fr))] max-[1080px]:w-max">
+          <div className="max-[870px]:overflow-x-auto">
+            <div className="grid h-full grid-cols-5 max-[1325px]:grid-cols-3 max-[870px]:grid-cols-[repeat(5,minmax(200px,1fr))] max-[870]:w-max">
               {[
                 {
                   img: "/tech/smart-watch.jpg",

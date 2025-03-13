@@ -15,11 +15,11 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        {/* <Navbar /> */}
-        {/* <Menubar /> */}
+        <Navbar />
+        <Menubar />
         {/* <Mainpage /> */}
-        {/* <SearchPage/> */}
-        <ProductPage/>
+        <SearchPage/>
+        {/* <ProductPage/> */}
         {/* <CheckoutPage/> */}
         <NewsletterSection />
         <Footer />

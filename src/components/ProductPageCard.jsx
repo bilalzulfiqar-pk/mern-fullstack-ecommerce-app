@@ -18,7 +18,7 @@ const ProductPageCard = () => {
 
   return (
     <div>
-      <div className="bg-white border border-[#E0E0E0] rounded-lg p-6 grid lg:grid-cols-20 gap-6">
+      <div className="bg-white border border-[#E0E0E0] rounded-lg p-6 max-[350px]:p-3 grid lg:grid-cols-20 gap-6">
         {/* Image Section */}
         <aside className="lg:col-span-6">
           <figure>

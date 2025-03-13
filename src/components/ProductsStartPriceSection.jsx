@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const ProductsStartPriceSection = ({products, heading, link, banner}) => {
   return (
     <div>
-      <div className="mt-6 mx-32 h-72 grid grid-cols-[0.6fr_2fr] max-[1080px]:grid-cols-1 overflow-hidden rounded-lg border border-[#E0E0E0] bg-white">
+      <div className="mt-6 mx-5 min-[1080px]:mx-32 h-72 grid grid-cols-[0.6fr_2fr] max-[870px]:grid-cols-1 overflow-hidden rounded-lg border border-[#E0E0E0] bg-white">
           <div className="bg-cover" style={{ backgroundImage: `url(${banner})` }}>
             <header className="pt-6 mx-5 ">
               <h3 className="text-2xl font-bold">{heading}</h3>
@@ -16,8 +16,8 @@ const ProductsStartPriceSection = ({products, heading, link, banner}) => {
             </Link>
           </div>
 
-          <div className="max-[1080px]:overflow-x-auto">
-            <div className="grid h-full grid-cols-4 max-[1080px]:grid-cols-[repeat(8,minmax(200px,1fr))] max-[1080px]:w-max">
+          <div className="max-[870px]:overflow-x-auto">
+            <div className="grid h-full grid-cols-4 max-[870px]:grid-cols-[repeat(8,minmax(200px,1fr))] max-[800px]:w-max">
               {products.map((product, index) => (
                 <div
                   key={index}

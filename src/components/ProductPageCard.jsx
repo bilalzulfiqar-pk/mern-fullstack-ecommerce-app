@@ -6,6 +6,7 @@ import { MdOutlineVerifiedUser } from "react-icons/md";
 import { CiGlobe } from "react-icons/ci";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { FaRegHeart } from "react-icons/fa";
+import { HiXMark } from "react-icons/hi2";
 import StarRating from "./StarRating";
 
 const ProductPageCard = ({ product }) => {
@@ -50,9 +51,16 @@ const ProductPageCard = ({ product }) => {
 
         {/* Product Info */}
         <main className="lg:col-span-9">
-          <p className="text-green-600 font-medium flex gap-1 items-center">
+          {product.stock > 0 ? (
+            <p className="text-green-600 font-medium flex gap-1 items-center">
             <IoMdCheckmark className="text-2xl" /> In Stock
           </p>
+          ) : (
+            <p className="text-red-600 font-medium flex gap-1 items-center">
+              <HiXMark className="text-2xl" /> Out of Stock
+            </p>
+          )
+          }
           <h4 className="text-lg font-semibold">{product.name}</h4>
 
           <div className="flex items-center space-x-2 my-3 text-gray-500 text-sm">

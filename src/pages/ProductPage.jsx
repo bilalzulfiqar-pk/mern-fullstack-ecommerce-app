@@ -8,6 +8,7 @@ const ProductPage = () => {
     {
       image: "/cloth/1.jpg",
       name: "Stylish Cotton T-Shirt - Multiple Colors",
+      categories: ["Clothing", "Summer Clothes", "Casual Wear"],
       currentPrice: 24.0,
       bulkPricing: [
         { minQuantity: 50, maxQuantity: 100, price: 22.0 },
@@ -18,6 +19,7 @@ const ProductPage = () => {
       rating: 4.0,
       reviews: 20,
       orders: 120,
+      stock: 33,
       shipping: "Free Shipping",
       description:
         "Soft and comfortable cotton T-shirt available in multiple colors.",
@@ -37,6 +39,7 @@ const ProductPage = () => {
     {
       image: "/cloth/2.jpg",
       name: "Unisex Blue T-Shirt - Premium Fabric",
+      categories: ["Clothing", "Casual Wear", "Summer Clothes"],
       currentPrice: 29.9,
       bulkPricing: [
         { minQuantity: 30, maxQuantity: 80, price: 28.0 },
@@ -47,6 +50,7 @@ const ProductPage = () => {
       rating: 4.2,
       reviews: 85,
       orders: 85,
+      stock: 25,
       shipping: "Free Shipping",
       description:
         "High-quality unisex T-shirt in blue with premium breathable fabric.",
@@ -66,6 +70,7 @@ const ProductPage = () => {
     {
       image: "/cloth/3.jpg",
       name: "Casual Winter Jacket - Brown Color",
+      categories: ["Clothing", "Winter Wear", "Outerwear"],
       currentPrice: 790.5,
       bulkPricing: [
         { minQuantity: 10, maxQuantity: 50, price: 750.0 },
@@ -76,6 +81,7 @@ const ProductPage = () => {
       rating: 4.8,
       reviews: 60,
       orders: 60,
+      stock: 0,
       shipping: "Free Shipping",
       description:
         "Stylish brown winter jacket with cozy interior for warmth and comfort.",
@@ -95,6 +101,7 @@ const ProductPage = () => {
     {
       image: "/tech/5.jpg",
       name: "Gaming Headset with Microphone",
+      categories: ["Tech", "Electronics", "Gaming Accessories", "Headsets"],
       currentPrice: 98.95,
       bulkPricing: [
         { minQuantity: 20, maxQuantity: 100, price: 95.0 },
@@ -105,6 +112,7 @@ const ProductPage = () => {
       rating: 4.2,
       reviews: 61,
       orders: 61,
+      stock: 20,
       shipping: "Free Shipping",
       description:
         "High-quality gaming headset with noise cancellation and a built-in mic.",
@@ -123,6 +131,7 @@ const ProductPage = () => {
     {
       image: "/interior/4.jpg",
       name: "Interior Plant with Natural Vase",
+      categories: ["Interiors", "Home Decor", "Plants"],
       currentPrice: 68.99,
       bulkPricing: [
         { minQuantity: 10, maxQuantity: 50, price: 65.0 },
@@ -133,6 +142,7 @@ const ProductPage = () => {
       rating: 3.2,
       reviews: 61,
       orders: 61,
+      stock: 5,
       shipping: "Free Shipping",
       description:
         "Beautiful indoor plant with a stylish natural vase for home decor.",
@@ -151,6 +161,7 @@ const ProductPage = () => {
     {
       image: "/tech/6.jpg",
       name: "GoPro HERO6 4K Action Camera - Black",
+      categories: ["Tech", "Electronics", "Cameras", "Action Cameras"],
       currentPrice: 99.5,
       bulkPricing: [
         { minQuantity: 5, maxQuantity: 20, price: 95.0 },
@@ -161,6 +172,7 @@ const ProductPage = () => {
       rating: 4.2,
       reviews: 75,
       orders: 75,
+      stock: 2,
       shipping: "Free Shipping",
       description:
         "High-performance 4K action camera for adventure and sports recording.",
@@ -179,6 +191,7 @@ const ProductPage = () => {
     {
       image: "/interior/1.jpg",
       name: "Office Chair Soft Material - Yellow Color",
+      categories: ["Interiors", "Office Furniture", "Home Decor"],
       currentPrice: 390.0,
       bulkPricing: [
         { minQuantity: 5, maxQuantity: 20, price: 370.0 },
@@ -188,6 +201,7 @@ const ProductPage = () => {
       rating: 3.5,
       reviews: 61,
       orders: 61,
+      stock: 6,
       shipping: "Free Shipping",
       description:
         "Ergonomic office chair with soft cushioning for long hours of comfort.",
@@ -240,7 +254,7 @@ const ProductPage = () => {
 
             {/* Product */}
 
-            <ProductPageCard product={products[0]} />
+            <ProductPageCard product={products[2]} />
 
             {/* Discounted Banner */}
             <div className="mt-5">

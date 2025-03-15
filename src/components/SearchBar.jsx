@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState("");
@@ -34,17 +35,19 @@ const SearchBar = ({ onSearch }) => {
         </select>
         {/* Custom Dropdown Arrow */}
         <div className="absolute top-1/2 right-2 transform -translate-y-1/2 pointer-events-none text-2xl text-gray-400">
-          <MdKeyboardArrowDown/>
+          <MdKeyboardArrowDown />
         </div>
       </div>
 
       {/* Search Button */}
-      <button
-        className="bg-blue-500 text-white px-5 py-2 hover:bg-blue-600 min-w-20 max-[840px]:min-w-fit transition duration-200 cursor-pointer max-[680px]:min-w-[87px]"
-        onClick={handleSearch}
-      >
-        Search
-      </button>
+      <Link to={"/search"}>
+        <button
+          className="bg-blue-500 text-white px-5 py-2 hover:bg-blue-600 min-w-20 max-[840px]:min-w-fit transition duration-200 cursor-pointer max-[680px]:min-w-[87px]"
+          onClick={handleSearch}
+        >
+          Search
+        </button>
+      </Link>
     </div>
   );
 };

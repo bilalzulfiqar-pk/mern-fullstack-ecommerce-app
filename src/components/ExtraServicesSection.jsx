@@ -36,7 +36,10 @@ const ExtraServicesSection = () => {
         </div>
         <div className="mt-7 grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] max-[560px]:grid-cols-1 gap-5">
           {cards.map((card, index) => (
-            <div className="w-full max-w-[448px] border-1 h-54 justify-self-center border-[#E0E0E0] rounded-lg overflow-hidden bg-white">
+            <div
+              key={index}
+              className="w-full max-w-[448px] border-1 h-54 justify-self-center border-[#E0E0E0] rounded-lg overflow-hidden bg-white"
+            >
               {/* Image Section */}
               <div className="relative h-[60%]">
                 <img
@@ -52,7 +55,9 @@ const ExtraServicesSection = () => {
 
               {/* Text Section */}
               <div className="p-3">
-                <p className="text-lg font-semibold w-[70%] max-[450px]:text-base">{card.text}</p>
+                <p className="text-lg font-semibold w-[70%] max-[450px]:text-base">
+                  {card.text}
+                </p>
               </div>
             </div>
           ))}

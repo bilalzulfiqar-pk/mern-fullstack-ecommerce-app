@@ -163,7 +163,7 @@ const Mainpage = () => {
     <div className="w-full bg-[#F7FAFC] h-full">
       <div className="pt-6 max-w-[1580px] m-auto h-full">
         <div className="mx-5 min-[1080px]:mx-32 h-[425px] bg-white rounded-lg flex gap-4 overflow-hidden border border-[#E0E0E0] p-3">
-        {/* Category Section */}
+          {/* Category Section */}
           <div className="min-w-[200px] w-[25%] max-[840px]:hidden">
             <ul className="">
               {categoryList.map((item, index) => (
@@ -339,6 +339,9 @@ const Mainpage = () => {
         {/* {Supplier by region Section} */}
 
         <SupplierByRegionSection />
+
+        {/* {Newsletter Section} */}
+        <NewsletterSection />
       </div>
     </div>
   );

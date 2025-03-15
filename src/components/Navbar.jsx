@@ -22,9 +22,11 @@ const Navbar = () => {
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             className="text-4xl translate-y-1 hidden max-[840px]:block cursor-pointer"
           />
-          <div className="logo text-4xl text-[#8cb7f5] font-semibold">
-            eStore
-          </div>
+          <Link to={"/"}>
+            <div className="logo text-4xl text-[#8cb7f5] font-semibold">
+              eStore
+            </div>
+          </Link>
         </div>
         {/* SearchBar */}
 
@@ -60,7 +62,7 @@ const Navbar = () => {
           </div>
           <div>
             <Link
-              to="#"
+              to="/checkout"
               className="flex justify-center max-[680px]:hidden items-center flex-col text-gray-400 hover:text-black"
             >
               <MdShoppingCart className="text-xl" />

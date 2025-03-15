@@ -1,20 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoMdCheckmark } from "react-icons/io";
-import {
-  FaStar,
-  FaStarHalfAlt,
-  FaRegComment,
-  FaShoppingBasket,
-} from "react-icons/fa";
+import { FaRegComment, FaShoppingBasket } from "react-icons/fa";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 import { CiGlobe } from "react-icons/ci";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { FaRegHeart } from "react-icons/fa";
+import StarRating from "./StarRating";
 
-const ProductPageCard = () => {
-
-    const [isFavorite, setIsFavorite] = useState(false);
+const ProductPageCard = ({ product }) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(product.image);
 
   return (
     <div>
@@ -22,20 +18,32 @@ const ProductPageCard = () => {
         {/* Image Section */}
         <aside className="lg:col-span-6">
           <figure>
+            {/* Main Product Image */}
             <img
-              src="/Sample/big.jpg"
+              src={selectedImage}
               alt="Product"
-              className="w-full h-auto border border-[#E0E0E0] object-contain rounded-md"
+              className="w-[345px] h-[440px] border border-[#E0E0E0] object-contain rounded-md"
             />
+
+            {/* Thumbnails */}
             <div className="flex gap-2 mt-3 overflow-auto">
-              {[1, 2, 3, 4].map((num) => (
-                <img
-                  key={num}
-                  src={`/Sample/thumb${num}.jpg`}
-                  alt="Thumbnail"
-                  className="w-16 h-16 p-1 object-cover border border-[#E0E0E0] rounded cursor-pointer"
-                />
-              ))}
+              {[1, 2, 3, 4].map((num) => {
+                const thumbnailSrc = `/Sample/thumb${num}.jpg`;
+
+                return (
+                  <img
+                    key={num}
+                    src={thumbnailSrc}
+                    alt={`Thumbnail ${num}`}
+                    className={`w-16 h-16 p-1 object-cover border rounded cursor-pointer ${
+                      selectedImage === thumbnailSrc
+                        ? "border-blue-500"
+                        : "border-[#E0E0E0]"
+                    }`}
+                    onClick={() => setSelectedImage(thumbnailSrc)}
+                  />
+                );
+              })}
             </div>
           </figure>
         </aside>
@@ -45,28 +53,18 @@ const ProductPageCard = () => {
           <p className="text-green-600 font-medium flex gap-1 items-center">
             <IoMdCheckmark className="text-2xl" /> In Stock
           </p>
-          <h4 className="text-lg font-semibold">
-            Mens Long Sleeve T-shirt Cotton Base Layer Slim Muscle
-          </h4>
-          {/* <div className="flex items-center gap-2 my-2 text-yellow-500">
-                ⭐⭐⭐⭐☆{" "}
-                <span className="text-gray-500">
-                  (4.5 | 34 reviews | 154 sold)
-                </span>
-              </div> */}
+          <h4 className="text-lg font-semibold">{product.name}</h4>
 
           <div className="flex items-center space-x-2 my-3 text-gray-500 text-sm">
             {/* Star Rating */}
             <div className="flex text-yellow-400">
-              <FaStar />
-              <FaStar />
-              <FaStar />
-              <FaStar />
-              <FaStarHalfAlt />
+              <StarRating rating={product.rating} />
             </div>
 
             {/* Score */}
-            <span className="text-yellow-500 font-semibold">9.3</span>
+            <span className="text-yellow-500 font-semibold">
+              {product.rating}
+            </span>
 
             {/* Dot Separator */}
             <span className="text-gray-300">•</span>
@@ -74,7 +72,7 @@ const ProductPageCard = () => {
             {/* Reviews */}
             <div className="flex items-center space-x-1">
               <FaRegComment />
-              <span>32 reviews</span>
+              <span>{product.reviews}</span>
             </div>
 
             {/* Dot Separator */}
@@ -83,24 +81,68 @@ const ProductPageCard = () => {
             {/* Sales */}
             <div className="flex items-center space-x-1">
               <FaShoppingBasket />
-              <span>154 sold</span>
+              <span>{product.orders} sold</span>
             </div>
           </div>
 
           {/* Pricing */}
-          <div className="bg-[#FFEDCD] p-4 rounded flex justify-around">
+          {/* <div className="bg-[#FFEDCD] p-4 rounded flex justify-around">
             <div>
-              <span className="text-red-500 font-bold text-lg">$98.00</span>
-              <p className="text-sm">50-100 pcs</p>
+              <span className="text-red-500 font-bold text-lg">
+                ${product.bulkPricing[0].price.toFixed(2)}
+              </span>
+              <p className="text-sm">
+                {product.bulkPricing[0].minQuantity}-
+                {product.bulkPricing[0].maxQuantity} pcs
+              </p>
             </div>
             <div className="border-l pl-2 border-gray-400">
-              <span className="text-lg font-semibold">$90.00</span>
-              <p className="text-sm">100-700 pcs</p>
+              <span className="text-lg font-semibold">
+                ${product.bulkPricing[1].price.toFixed(2)}
+              </span>
+              <p className="text-sm">
+                {product.bulkPricing[1].minQuantity}-
+                {product.bulkPricing[1].maxQuantity} pcs
+              </p>
             </div>
             <div className="border-l pl-2 border-gray-400">
-              <span className="text-lg font-semibold">$78.00</span>
-              <p className="text-sm">700+ pcs</p>
+              <span className="text-lg font-semibold">
+                ${product.bulkPricing[2].price.toFixed(2)}
+              </span>
+              <p className="text-sm">
+                {product.bulkPricing[2].minQuantity}+ pcs
+              </p>
             </div>
+          </div> */}
+
+          {/* Pricing */}
+          <div className="bg-[#FFEDCD] p-4 rounded flex justify-around">
+            {product?.bulkPricing && product.bulkPricing.length > 0 ? (
+              product.bulkPricing.map((item, index) => (
+                <div
+                  key={index}
+                  className={index > 0 ? "border-l pl-2 border-gray-400" : ""}
+                >
+                  <span
+                    className={`text-lg font-semibold ${
+                      index === 0 ? "text-red-500 font-bold" : ""
+                    }`}
+                  >
+                    ${item.price.toFixed(2)}
+                  </span>
+                  <p className="text-sm">
+                    {item.maxQuantity && item.maxQuantity !== item.minQuantity
+                      ? `${item.minQuantity} - ${item.maxQuantity}`
+                      : `${item.minQuantity}+`}{" "}
+                    pcs
+                  </p>
+                </div>
+              ))
+            ) : (
+              <div className="text-gray-500 text-center w-full">
+                No bulk prices available
+              </div>
+            )}
           </div>
 
           {/* Details */}
@@ -112,26 +154,38 @@ const ProductPageCard = () => {
               <div className="col-span-2 border-t border-[#E0E0E0] my-2"></div>
 
               <p className="text-gray-400">Type:</p>
-              <p className="text-black">Classic shoes</p>
+              <p className="text-black">{product.type}</p>
 
               <p className="text-gray-400">Material:</p>
-              <p className="text-black">Plastic material</p>
+              <p className="text-black">{product.material}</p>
 
-              <p className="text-gray-400">Design:</p>
-              <p className="text-black">Modern nice</p>
+              {/* <p className="text-gray-400">Design:</p>
+              <p className="text-black">Modern nice</p> */}
+
+              <p className="text-gray-400">Sizes:</p>
+              <p className="text-black">
+                {Array.isArray(product.sizes) && product.sizes.length > 0 ? (
+                  product.sizes.map((size, index) => (
+                    <span key={index} className="">
+                      {size}
+                      {index < product.sizes.length - 1 ? ", " : ""}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-gray-500">No sizes available</span>
+                )}
+              </p>
 
               <div className="col-span-2 border-t border-[#E0E0E0] my-2"></div>
 
               <p className="text-gray-400">Customization:</p>
-              <p className="text-black">
-                Customized logo and design custom packages
-              </p>
+              <p className="text-black">{product.customization}</p>
 
               <p className="text-gray-400">Protection:</p>
-              <p className="text-black">Refund Policy</p>
+              <p className="text-black">{product.protection}</p>
 
               <p className="text-gray-400">Warranty:</p>
-              <p className="text-black">2 years full warranty</p>
+              <p className="text-black">{product.warranty}</p>
               <div className="col-span-2 border-t border-[#E0E0E0] my-2"></div>
             </div>
           </div>
@@ -148,17 +202,21 @@ const ProductPageCard = () => {
               />
               <div>
                 <p className="text-gray-700">Supplier:</p>
-                <p className="font-semibold">Guanjoi Trading LLC</p>
+                <p className="font-semibold">{product.supplier.name}</p>
               </div>
             </div>
             <hr className="my-2" />
             <ul className="text-gray-600 space-y-1">
-              <li>🇩🇪 Berlin, Germany</li>
+              <li>{product.supplier.location}</li>
               <li className="flex items-center gap-1">
-                <MdOutlineVerifiedUser /> Verified Seller
+                <MdOutlineVerifiedUser />{" "}
+                {product.supplier.verified ? "Verified" : "Not Verified"}
               </li>
               <li className="flex items-center gap-1">
-                <CiGlobe /> Worldwide shipping
+                <CiGlobe />{" "}
+                {product.supplier.worldwideShipping
+                  ? "Worldwide Shipping"
+                  : "Local Shipping"}
               </li>
             </ul>
             <div className="mt-3 space-y-2">

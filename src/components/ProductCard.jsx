@@ -4,15 +4,21 @@ import { BsHeart, BsHeartFill } from "react-icons/bs";
 
 const ProductCard = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   if (!product) return <p>Loading...</p>;
 
   return (
-    <div className="flex border relative border-[#E0E0E0] rounded-lg p-4 max-[680px]:flex-col shadow-xs items-center space-x-4 w-full bg-white">
+    <div
+      className={`flex border relative border-[#E0E0E0] rounded-lg p-4 max-[680px]:flex-col shadow-xs items-center space-x-4 w-full transition-all duration-300 bg-white ${
+        loaded ? "opacity-100 scale-100" : "opacity-0 min-h-[170px] scale-95"
+      }`}
+    >
       {/* Product Image */}
       <img
         src={product.image}
         alt={product.name}
+        onLoad={() => setLoaded(true)}
         className=" h-40 rounded-md object-cover"
       />
 

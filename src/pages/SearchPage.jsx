@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import { useState } from "react";
 import { FaTh, FaBars } from "react-icons/fa";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -7,6 +7,7 @@ import SidebarFilter from "../components/SidebarFilter";
 import ProductCardGrid from "../components/ProductCardGrid";
 import Pagination from "../components/Pagination";
 import ProductCard from "../components/ProductCard";
+import { ProductContext } from "../context/ProductContext";
 
 const SearchPage = () => {
   const [gridView, setGridView] = useState(true);
@@ -16,146 +17,13 @@ const SearchPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const buttonRef = useRef(null);
 
+  const { products, loading } = useContext(ProductContext);
+
   // const toggleSidebar = () => {
   //   setIsSidebarOpen(!isSidebarOpen);
   // };
 
   // const itemsPerPage = 9; // Number of products per page
-
-  const products = [
-    {
-      image: "/cloth/1.jpg",
-      name: "Stylish Cotton T-Shirt - Multiple Colors",
-      currentPrice: 24.0,
-      previousPrice: 30.0,
-      rating: 4.0,
-      orders: 120,
-      shipping: "Free Shipping",
-      description:
-        "Soft and comfortable cotton T-shirt available in multiple colors.",
-    },
-    {
-      image: "/cloth/2.jpg",
-      name: "Unisex Blue T-Shirt - Premium Fabric",
-      currentPrice: 29.9,
-      previousPrice: 35.0,
-      rating: 4.2,
-      orders: 85,
-      shipping: "Free Shipping",
-      description:
-        "High-quality unisex T-shirt in blue with premium breathable fabric.",
-    },
-    {
-      image: "/cloth/3.jpg",
-      name: "Casual Winter Jacket - Brown Color",
-      currentPrice: 790.5,
-      previousPrice: 850.0,
-      rating: 4.8,
-      orders: 60,
-      shipping: "Free Shipping",
-      description:
-        "Stylish brown winter jacket with cozy interior for warmth and comfort.",
-    },
-    {
-      image: "/cloth/4.jpg",
-      name: "Dark Blue Denim Shorts - Men’s Collection",
-      currentPrice: 12.0,
-      previousPrice: 20.0,
-      rating: 3.9,
-      orders: 200,
-      shipping: "Free Shipping",
-      description:
-        "Classic dark blue denim shorts with a modern slim-fit design.",
-    },
-    {
-      image: "/cloth/5.jpg",
-      name: "Lightweight Travel Jeans Bag - Unisex",
-      currentPrice: 192.5,
-      previousPrice: 220.0,
-      rating: 4.6,
-      orders: 90,
-      shipping: "Free Shipping",
-      description:
-        "Spacious and lightweight travel bag made with durable denim material.",
-    },
-    {
-      image: "/tech/6.jpg",
-      name: "GoPro HERO6 4K Action Camera - Black",
-      currentPrice: 99.5,
-      previousPrice: 1128.0,
-      rating: 4.2,
-      orders: 75,
-      shipping: "Free Shipping",
-      description:
-        "High-performance 4K action camera for adventure and sports recording.",
-    },
-    {
-      image: "/interior/1.jpg",
-      name: "Office Chair Soft Material - Yellow Color",
-      currentPrice: 390.0,
-      previousPrice: null,
-      rating: 3.5,
-      orders: 61,
-      shipping: "Free Shipping",
-      description:
-        "Ergonomic office chair with soft cushioning for long hours of comfort.",
-    },
-    {
-      image: "/cloth/7.jpg",
-      name: "Great Product Name Here - New Model",
-      currentPrice: 176.0,
-      previousPrice: null,
-      rating: 5.0,
-      orders: 61,
-      shipping: "Free Shipping",
-      description:
-        "High-quality new model clothing item for casual and formal wear.",
-    },
-    {
-      image: "/interior/3.jpg",
-      name: "Ceramic Jug for Kitchen - Medium Size",
-      currentPrice: 998.95,
-      previousPrice: null,
-      rating: 4.5,
-      orders: 61,
-      shipping: "Free Shipping",
-      description:
-        "Elegant ceramic jug perfect for serving water or juice in the kitchen.",
-    },
-    {
-      image: "/interior/4.jpg",
-      name: "Interior Plant with Natural Vase",
-      currentPrice: 68.99,
-      previousPrice: 94.0,
-      rating: 3.2,
-      orders: 61,
-      shipping: "Free Shipping",
-      description:
-        "Beautiful indoor plant with a stylish natural vase for home decor.",
-    },
-    {
-      image: "/interior/5.jpg",
-      name: "Airbed Blue Color - Soft Material with Pump",
-      currentPrice: 498.95,
-      previousPrice: null,
-      rating: 4.7,
-      orders: 61,
-      shipping: "Free Shipping",
-      description:
-        "Comfortable airbed with an easy-to-use pump for home or travel use.",
-    },
-    {
-      image: "/tech/5.jpg",
-      name: "Gaming Headset with Microphone",
-      currentPrice: 98.95,
-      previousPrice: 149.99,
-      rating: 4.2,
-      orders: 61,
-      shipping: "Free Shipping",
-      description:
-        "High-quality gaming headset with noise cancellation and a built-in mic.",
-    },
-  ];
 
   // Pagination Logic
   const indexOfLastProduct = currentPage * itemsPerPage;
@@ -164,6 +32,8 @@ const SearchPage = () => {
     indexOfFirstProduct,
     indexOfLastProduct
   );
+
+  if (loading) return <p>Loading products...</p>;
 
   return (
     <div>

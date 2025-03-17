@@ -4,14 +4,16 @@ import { BsHeart, BsHeartFill } from "react-icons/bs";
 
 const ProductCardGrid = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className="border rounded-lg border-[#E0E0E0] bg-white">
+    <div className={`border rounded-lg border-[#E0E0E0] bg-white transition-all duration-300 ${loaded ? "opacity-100 scale-100" : "opacity-0 min-h-[400px] scale-95"}`}>
       {/* Product Image */}
       <div className="relative">
         <img
           src={product.image}
           alt={product.name}
+          onLoad={() => setLoaded(true)}
           className="w-full object-cover rounded-md"
         />
       </div>

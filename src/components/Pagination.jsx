@@ -49,7 +49,7 @@ const Pagination = ({
       {Array.from({ length: totalPages }, (_, index) => (
         <button
           key={index + 1}
-          className={`px-3 corsor-pointer py-1 rounded-md border border-[#E0E0E0] 
+          className={`px-3 cursor-pointer py-1 rounded-md border border-[#E0E0E0] 
             ${currentPage === index + 1 ? "bg-blue-500 text-white font-semibold" : "hover:bg-gray-100"}`}
           onClick={() => handlePageChange(index + 1)}
           aria-label={`Go to page ${index + 1}`}

@@ -8,43 +8,53 @@ const SidebarFilter = ({ isOpen, setIsOpen, buttonRef }) => {
     {
       key: "categoryOpen",
       title: "Category",
-      items: ["Mobile accessory", "Electronics", "Smartphones", "Modern tech"],
+      items: [
+        "Interiors",
+        "Electronics",
+        "Clothing",
+        "Smartphones",
+        "Home Decor",
+        "Furniture",
+        "Casual Wear",
+        "Kitchen",
+        "Accessories",
+      ],
       isCheckbox: true,
       seeAllLink: "#category",
     },
-    {
-      key: "brandsOpen",
-      title: "Brands",
-      items: ["Samsung", "Apple", "Huawei", "Pocco", "Lenovo"],
-      isCheckbox: true,
-      seeAllLink: "#brands",
-    },
-    {
-      key: "featuresOpen",
-      title: "Features",
-      items: [
-        "Metallic",
-        "Plastic cover",
-        "8GB Ram",
-        "Super power",
-        "Large Memory",
-      ],
-      isCheckbox: true,
-      seeAllLink: "#features",
-    },
+    // {
+    //   key: "brandsOpen",
+    //   title: "Brands",
+    //   items: ["Samsung", "Apple", "Huawei", "Pocco", "Lenovo"],
+    //   isCheckbox: true,
+    //   seeAllLink: "#brands",
+    // },
+    // {
+    //   key: "featuresOpen",
+    //   title: "Features",
+    //   items: [
+    //     "Metallic",
+    //     "Plastic cover",
+    //     "8GB Ram",
+    //     "Super power",
+    //     "Large Memory",
+    //   ],
+    //   isCheckbox: true,
+    //   seeAllLink: "#features",
+    // },
     { key: "priceOpen", title: "Price range", isPrice: true },
-    {
-      key: "conditionOpen",
-      title: "Condition",
-      items: ["Any", "Refurbished", "Damaged", "Brand new"],
-      isRadio: true,
-    },
+    // {
+    //   key: "conditionOpen",
+    //   title: "Condition",
+    //   items: ["Any", "Refurbished", "Damaged", "Brand new"],
+    //   isRadio: true,
+    // },
     { key: "ratingsOpen", title: "Ratings", isRating: true },
-    {
-      key: "manufacturerOpen",
-      title: "Manufacturer",
-      seeAllLink: "#manufacturer",
-    },
+    // {
+    //   key: "manufacturerOpen",
+    //   title: "Manufacturer",
+    //   seeAllLink: "#manufacturer",
+    // },
   ];
 
   // Create state dynamically
@@ -265,7 +275,7 @@ const SidebarFilter = ({ isOpen, setIsOpen, buttonRef }) => {
                 href={seeAllLink}
                 className="text-blue-600 text-sm mt-2 block hover:underline"
               >
-                See all
+                Remove All
               </a>
             )}
           </div>

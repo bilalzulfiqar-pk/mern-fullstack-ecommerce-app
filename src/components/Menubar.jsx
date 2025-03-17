@@ -33,11 +33,11 @@ const Menubar = () => {
       <div className="max-w-[1580px] m-auto h-14 flex justify-between px-5 min-[1080px]:px-32 items-center">
         <div className="flex justify-center items-center gap-1">
           <CustomDropDown heading="All Category" items={categoryList} />
-          <Link to="">
+          <Link to="/search">
             <div
               className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-4 flex justify-center items-center rounded-lg`}
             >
-              Hot Offers
+              All Products
             </div>
           </Link>
           <Link to="">

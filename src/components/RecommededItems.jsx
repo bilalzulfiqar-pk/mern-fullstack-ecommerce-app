@@ -21,7 +21,7 @@ const RecommededItems = ({ products }) => {
             {/* Product Details */}
             <div className="mt-3">
               <p className="text-lg font-semibold">${product.currentPrice.toFixed(2)}</p>
-              <p className="text-[#8B96A5] text-lg">
+              <p className="text-[#8B96A5] text-base">
                 {product.name}
               </p>
             </div>

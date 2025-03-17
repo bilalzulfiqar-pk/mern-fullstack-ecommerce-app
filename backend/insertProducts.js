@@ -75,7 +75,7 @@ const insertProducts = async () => {
         supplier: {
           name: "Jiangsu Textile Ltd.",
           location: "Shanghai, China",
-          verified: true,
+          verified: false,
           worldwideShipping: true,
         },
       },
@@ -611,7 +611,7 @@ const insertProducts = async () => {
         supplier: {
           name: "SoundWave Audio Ltd.",
           location: "Berlin, Germany",
-          verified: true,
+          verified: false,
           worldwideShipping: true,
         },
       },
@@ -675,7 +675,7 @@ const insertProducts = async () => {
         supplier: {
           name: "Urban Denim Co.",
           location: "Los Angeles, USA",
-          verified: true,
+          verified: false,
           worldwideShipping: true,
         },
       },

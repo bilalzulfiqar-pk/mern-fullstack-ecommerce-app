@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import ProductsStartPriceSection from "../components/ProductsStartPriceSection";
 import InquirySection from "../components/InquirySection";
@@ -7,7 +7,10 @@ import ExtraServicesSection from "../components/ExtraServicesSection";
 import SupplierByRegionSection from "../components/SupplierByRegionSection";
 import NewsletterSection from "../components/NewsletterSection";
 import Footer from "../components/Footer";
+import { ProductContext } from "../context/ProductContext";
 const Mainpage = () => {
+  const { products, loading } = useContext(ProductContext);
+
   const categoryList = [
     { text: "Automobiles", link: "/category/automobiles" },
     { text: "Clothes and wears", link: "/category/clothes-and-wears" },
@@ -20,144 +23,194 @@ const Mainpage = () => {
     { text: "More category", link: "/category/more" },
   ];
 
+  // const deals = [
+  //   {
+  //     img: "/tech/smart-watch.jpg",
+  //     name: "Smart Watches",
+  //     discount: "-25%",
+  //   },
+  //   {
+  //     img: "/tech/laptop.jpg",
+  //     name: "Laptops",
+  //     discount: "-15%",
+  //   },
+  //   {
+  //     img: "/tech/camera.jpg",
+  //     name: "GoPro Cameras",
+  //     discount: "-35%",
+  //   },
+  //   {
+  //     img: "/tech/headphone.jpg",
+  //     name: "Headphones",
+  //     discount: "-25%",
+  //   },
+  //   {
+  //     img: "/tech/smart-phone.jpg",
+  //     name: "Canon Cameras",
+  //     discount: "-25%",
+  //   },
+  // ];
+
+  const deals = products
+  .filter((product) => product.previousPrice !== null) // Exclude products with null previous price
+  .map((product) => ({
+    type: product.type, // 1. Product Type
+    discount: Math.round(((product.previousPrice - product.currentPrice) / product.previousPrice) * 100), // 2. Discount Percentage
+    image: product.image, // 3. Image URL
+  }))
+  .sort(() => Math.random() - 0.5) // Shuffle products
+  .slice(0, 5); // Keep only 5 products
+
   const homeAndOutdoor = [
     {
       title: "Armchairs",
-      img: "/interior/1.jpg",
-      price: 25,
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135701/1_qdwtem.jpg",
+      price: 250,
     },
     {
       title: "Office chairs",
-      img: "/interior/2.jpg",
-      price: 19,
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135701/2_bcbhk6.jpg",
+      price: 120,
     },
     {
       title: "Kitchen dishes",
-      img: "/interior/3.jpg",
-      price: 7,
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135702/3_yisbza.jpg",
+      price: 20,
     },
     {
       title: "Home Plants",
-      img: "/interior/4.jpg",
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135702/4_ffe3jy.jpg",
       price: 10,
     },
     {
       title: "For Bedroom",
-      img: "/interior/5.jpg",
-      price: 12,
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135702/5_ezydth.jpg",
+      price: 80,
     },
     {
       title: "Home Lighting",
-      img: "/interior/6.jpg",
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135702/6_iuv8yc.jpg",
       price: 19,
     },
     {
       title: "Best items",
-      img: "/interior/7.jpg",
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135702/7_dqr1fv.jpg",
       price: 19,
     },
     {
-      title: "Category name",
-      img: "/interior/8.jpg",
-      price: 19,
+      title: "Kitchen Appliances",
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135702/8_wpyedw.jpg",
+      price: 120,
     },
   ];
 
   const electronics = [
     {
       title: "Smartphones",
-      img: "/tech/3.jpg",
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139012/3_rsh64i.jpg",
       price: 140,
     },
     {
       title: "Apple iPhone",
-      img: "/tech/4.jpg",
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139012/4_o88nsk.jpg",
       price: 850,
     },
     {
       title: "For Gaming",
-      img: "/tech/5.jpg",
-      price: 19,
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139013/5_duy6wi.jpg",
+      price: 15,
     },
     {
       title: "Cameras",
-      img: "/tech/6.jpg",
-      price: 120,
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139014/6_h1qmnk.jpg",
+      price: 100,
     },
     {
       title: "Laptops & PC",
-      img: "/tech/7.jpg",
-      price: 19,
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139014/7_jjpj8e.jpg",
+      price: 1200,
     },
     {
       title: "Smartwatches",
-      img: "/tech/8.jpg",
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139015/8_cvwab9.jpg",
       price: 19,
     },
     {
       title: "Headphones",
-      img: "/tech/9.jpg",
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139016/9_jznvzr.jpg",
       price: 19,
     },
     {
       title: "Electric kettle",
-      img: "/tech/10.jpg",
-      price: 19,
+      img: "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139011/10_na6rot.jpg",
+      price: 25,
     },
   ];
 
-  const recommendedProducts = [
-    {
-      img: "/cloth/1.jpg",
-      price: "$24.00",
-      description: "T-shirts with multiple colors, for men",
-    },
-    {
-      img: "/cloth/2.jpg",
-      price: "$29.90",
-      description: "T-shirts with blue color, unisex model",
-    },
-    {
-      img: "/cloth/3.jpg",
-      price: "$790.50",
-      description: "Casual Winter Jacket, Brown Color",
-    },
-    {
-      img: "/cloth/4.jpg",
-      price: "$12.00",
-      description: "Jeans shorts for men darkblue color",
-    },
-    {
-      img: "/cloth/5.jpg",
-      price: "$192.50",
-      description: "Lightweight Jeans bag for travel, Unisex model",
-    },
-    {
-      img: "/tech/6.jpg",
-      price: "$790.50",
-      description: "GoPro HERO6 4K Action Camera - Black",
-    },
-    {
-      img: "/interior/3.jpg",
-      price: "$790.50",
-      description: "Ceramic Jug for Kitchen, Medium size",
-    },
-    {
-      img: "/interior/2.jpg",
-      price: "$790.50",
-      description: "Armchair for Home and Office, Yellow color",
-    },
-    {
-      img: "/interior/5.jpg",
-      price: "$790.50",
-      description: "Airbed Blue Soft Material With Pump",
-    },
-    {
-      img: "/tech/5.jpg",
-      price: "$19.50",
-      description: "Modern Product Name Goes Here",
-    },
-  ];
+  // const recommendedProducts = [
+  //   {
+  //     img: "/cloth/1.jpg",
+  //     price: "$24.00",
+  //     description: "T-shirts with multiple colors, for men",
+  //   },
+  //   {
+  //     img: "/cloth/2.jpg",
+  //     price: "$29.90",
+  //     description: "T-shirts with blue color, unisex model",
+  //   },
+  //   {
+  //     img: "/cloth/3.jpg",
+  //     price: "$790.50",
+  //     description: "Casual Winter Jacket, Brown Color",
+  //   },
+  //   {
+  //     img: "/cloth/4.jpg",
+  //     price: "$12.00",
+  //     description: "Jeans shorts for men darkblue color",
+  //   },
+  //   {
+  //     img: "/cloth/5.jpg",
+  //     price: "$192.50",
+  //     description: "Lightweight Jeans bag for travel, Unisex model",
+  //   },
+  //   {
+  //     img: "/tech/6.jpg",
+  //     price: "$790.50",
+  //     description: "GoPro HERO6 4K Action Camera - Black",
+  //   },
+  //   {
+  //     img: "/interior/3.jpg",
+  //     price: "$790.50",
+  //     description: "Ceramic Jug for Kitchen, Medium size",
+  //   },
+  //   {
+  //     img: "/interior/2.jpg",
+  //     price: "$790.50",
+  //     description: "Armchair for Home and Office, Yellow color",
+  //   },
+  //   {
+  //     img: "/interior/5.jpg",
+  //     price: "$790.50",
+  //     description: "Airbed Blue Soft Material With Pump",
+  //   },
+  //   {
+  //     img: "/tech/5.jpg",
+  //     price: "$19.50",
+  //     description: "Modern Product Name Goes Here",
+  //   },
+  // ];
+
+  const recommendedProducts = products
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 10);
+
+  // const homeAndOutdoor = products.filter((product) =>
+  //   product.categories.includes("Interiors")
+  // );
+
+  // console.log(homeAndOutdoor);
+
+  if (loading) return <p>Loading products...</p>;
 
   return (
     <div className="w-full bg-[#F7FAFC] h-full">
@@ -254,46 +307,22 @@ const Mainpage = () => {
           {/* Product Grid with Borders */}
           <div className="max-[870px]:overflow-x-auto">
             <div className="grid h-full grid-cols-5 max-[1325px]:grid-cols-3 max-[870px]:grid-cols-[repeat(5,minmax(200px,1fr))] max-[870]:w-max">
-              {[
-                {
-                  img: "/tech/smart-watch.jpg",
-                  name: "Smart Watches",
-                  discount: "-25%",
-                },
-                {
-                  img: "/tech/laptop.jpg",
-                  name: "Laptops",
-                  discount: "-15%",
-                },
-                {
-                  img: "/tech/camera.jpg",
-                  name: "GoPro Cameras",
-                  discount: "-35%",
-                },
-                {
-                  img: "/tech/headphone.jpg",
-                  name: "Headphones",
-                  discount: "-25%",
-                },
-                {
-                  img: "/tech/smart-phone.jpg",
-                  name: "Canon Cameras",
-                  discount: "-25%",
-                },
-              ].map((product, index) => (
+              {deals.map((product, index) => (
                 <div
                   key={index}
                   className="flex flex-col justify-center space-y-3 items-center py-2 border border-[#E0E0E0]"
                 >
                   <img
-                    src={product.img}
-                    alt={product.name}
+                    src={product.image}
+                    alt={product.type}
+                    // width={162}
+                    // height={162}
                     className="w-[162px] h-[162px] object-cover"
                   />
                   <div className="flex flex-col justify-center items-center gap-1">
-                    <h3 className="text-xl">{product.name}</h3>
+                    <h3 className="text-lg">{product.type}</h3>
                     <div className="rounded-2xl bg-[#FFE3E3] text-[#EB001B] p-1 px-6 flex justify-center items-center w-16">
-                      {product.discount}
+                      -{product.discount}%
                     </div>
                   </div>
                 </div>

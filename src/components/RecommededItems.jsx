@@ -12,7 +12,7 @@ const RecommededItems = ({ products }) => {
             {/* Product Image */}
             <div className="w-full h-fit flex justify-center items-center">
               <img
-                src={product.img}
+                src={product.image}
                 alt="product"
                 className="w-full h-full object-cover rounded-md"
               />
@@ -20,9 +20,9 @@ const RecommededItems = ({ products }) => {
 
             {/* Product Details */}
             <div className="mt-3">
-              <p className="text-lg font-semibold">{product.price}</p>
+              <p className="text-lg font-semibold">${product.currentPrice.toFixed(2)}</p>
               <p className="text-[#8B96A5] text-lg">
-                {product.description}
+                {product.name}
               </p>
             </div>
           </div>

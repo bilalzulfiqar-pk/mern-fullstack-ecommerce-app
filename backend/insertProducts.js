@@ -20,7 +20,7 @@ const insertProducts = async () => {
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135705/1_eeazoj.jpg",
         name: "Stylish Cotton T-Shirt - Multiple Colors",
         categories: ["Clothing", "Summer Clothes", "Casual Wear"],
-        currentPrice: 24.0,
+        currentPrice: 22.0,
         bulkPricing: [
           { minQuantity: 50, maxQuantity: 100, price: 22.0 },
           { minQuantity: 101, maxQuantity: 500, price: 20.0 },
@@ -84,13 +84,13 @@ const insertProducts = async () => {
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135706/3_w92af7.jpg",
         name: "Casual Winter Jacket - Brown Color",
         categories: ["Clothing", "Winter Wear", "Outerwear"],
-        currentPrice: 790.5,
+        currentPrice: 290.5,
         bulkPricing: [
           { minQuantity: 10, maxQuantity: 50, price: 750.0 },
           { minQuantity: 51, maxQuantity: 200, price: 720.0 },
           { minQuantity: 201, maxQuantity: null, price: 700.0 },
         ],
-        previousPrice: 850.0,
+        previousPrice: 340.0,
         rating: 4.8,
         reviews: 60,
         orders: 60,
@@ -130,7 +130,7 @@ const insertProducts = async () => {
         shipping: "Free Shipping",
         description:
           "High-quality gaming headset with noise cancellation and a built-in mic.",
-        type: "Gaming Accessories",
+        type: "Gaming Headphone",
         material: "Plastic & Memory Foam",
         customization: "Logo printing available",
         protection: "Warranty claim available",
@@ -147,13 +147,13 @@ const insertProducts = async () => {
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135702/4_ffe3jy.jpg",
         name: "Interior Plant with Natural Vase",
         categories: ["Interiors", "Home Decor", "Plants"],
-        currentPrice: 68.99,
+        currentPrice: 20,
         bulkPricing: [
           { minQuantity: 10, maxQuantity: 50, price: 65.0 },
           { minQuantity: 51, maxQuantity: 150, price: 60.0 },
           { minQuantity: 151, maxQuantity: null, price: 55.0 },
         ],
-        previousPrice: 94.0,
+        previousPrice: 25,
         rating: 3.2,
         reviews: 61,
         orders: 61,
@@ -178,7 +178,7 @@ const insertProducts = async () => {
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139014/6_h1qmnk.jpg",
         name: "GoPro HERO6 4K Action Camera - Black",
         categories: ["Tech", "Electronics", "Cameras", "Action Cameras"],
-        currentPrice: 99.5,
+        currentPrice: 999.0,
         bulkPricing: [
           { minQuantity: 5, maxQuantity: 20, price: 95.0 },
           { minQuantity: 21, maxQuantity: 50, price: 90.0 },
@@ -192,7 +192,7 @@ const insertProducts = async () => {
         shipping: "Free Shipping",
         description:
           "High-performance 4K action camera for adventure and sports recording.",
-        type: "Electronics",
+        type: "Camera",
         material: "Plastic & Metal",
         customization: "Brand logo engraving available",
         protection: "1-month replacement policy",
@@ -207,9 +207,9 @@ const insertProducts = async () => {
       {
         image:
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135701/1_qdwtem.jpg",
-        name: "Office Chair Soft Material - Yellow Color",
+        name: "Office Chair Soft Material - Light Cream Color",
         categories: ["Interiors", "Office Furniture", "Home Decor"],
-        currentPrice: 390.0,
+        currentPrice: 250.0,
         bulkPricing: [
           { minQuantity: 5, maxQuantity: 20, price: 370.0 },
           { minQuantity: 21, maxQuantity: 100, price: 350.0 },
@@ -245,13 +245,13 @@ const insertProducts = async () => {
           "Ergonomic Seating",
           "Interiors",
         ],
-        currentPrice: 19.0,
+        currentPrice: 120.0,
         bulkPricing: [
           { minQuantity: 10, maxQuantity: 50, price: 18.0 },
           { minQuantity: 51, maxQuantity: 200, price: 16.0 },
           { minQuantity: 201, maxQuantity: null, price: 14.0 },
         ],
-        previousPrice: 25.0,
+        previousPrice: 150.0,
         rating: 4.3,
         reviews: 15,
         orders: 85,
@@ -276,7 +276,7 @@ const insertProducts = async () => {
         image:
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135702/3_yisbza.jpg",
         name: "Ceramic Kitchen Dish Set - 6 Pieces",
-        categories: ["Kitchen", "Dinnerware", "Ceramic Dishes","Interiors"],
+        categories: ["Kitchen", "Dinnerware", "Ceramic Dishes", "Interiors"],
         currentPrice: 7.0,
         bulkPricing: [
           { minQuantity: 20, maxQuantity: 100, price: 6.5 },
@@ -308,14 +308,14 @@ const insertProducts = async () => {
         image:
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135702/5_ezydth.jpg",
         name: "Luxury Bedroom Set - Wooden Frame",
-        categories: ["Furniture", "Bedroom", "Home Decor","Interiors"],
-        currentPrice: 12.0,
+        categories: ["Furniture", "Bedroom", "Home Decor", "Interiors"],
+        currentPrice: 80.0,
         bulkPricing: [
           { minQuantity: 5, maxQuantity: 20, price: 11.0 },
           { minQuantity: 21, maxQuantity: 100, price: 10.0 },
           { minQuantity: 101, maxQuantity: null, price: 9.0 },
         ],
-        previousPrice: 15.0,
+        previousPrice: 100.0,
         rating: 4.6,
         reviews: 18,
         orders: 90,
@@ -340,7 +340,7 @@ const insertProducts = async () => {
         image:
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135702/6_iuv8yc.jpg",
         name: "Modern Home Lighting - LED Ceiling Lamp",
-        categories: ["Lighting", "Home Decor", "LED Lights","Interiors"],
+        categories: ["Lighting", "Home Decor", "LED Lights", "Interiors"],
         currentPrice: 19.0,
         bulkPricing: [
           { minQuantity: 10, maxQuantity: 50, price: 18.0 },
@@ -372,7 +372,12 @@ const insertProducts = async () => {
         image:
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135702/7_dqr1fv.jpg",
         name: "Leather Magazine Holder - Brown",
-        categories: ["Furniture", "Office Decor", "Home Accessories","Interiors"],
+        categories: [
+          "Furniture",
+          "Office Decor",
+          "Home Accessories",
+          "Interiors",
+        ],
         currentPrice: 35.0,
         bulkPricing: [
           { minQuantity: 10, maxQuantity: 50, price: 32.0 },
@@ -403,7 +408,12 @@ const insertProducts = async () => {
         image:
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742135702/8_wpyedw.jpg",
         name: "Bosch Automatic Coffee Machine",
-        categories: ["Kitchen Appliances", "Electronics", "Coffee Makers","Interiors"],
+        categories: [
+          "Kitchen Appliances",
+          "Electronics",
+          "Coffee Makers",
+          "Interiors",
+        ],
         currentPrice: 120.0,
         bulkPricing: [
           { minQuantity: 10, maxQuantity: 50, price: 115.0 },
@@ -434,7 +444,7 @@ const insertProducts = async () => {
         image:
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139012/3_rsh64i.jpg",
         name: "Xiaomi Mi 9 - Dual Camera Smartphone",
-        categories: ["Smartphones", "Electronics", "Mobile Devices","Tech"],
+        categories: ["Smartphones", "Electronics", "Mobile Devices", "Tech"],
         currentPrice: 300.0,
         bulkPricing: [
           { minQuantity: 10, maxQuantity: 50, price: 290.0 },
@@ -471,7 +481,7 @@ const insertProducts = async () => {
         image:
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139012/4_o88nsk.jpg",
         name: "Apple iPhone 12 - 128GB, Blue",
-        categories: ["Smartphones", "Electronics", "Apple","Tech"],
+        categories: ["Smartphones", "Electronics", "Apple", "Tech"],
         currentPrice: 750.0,
         bulkPricing: [
           { minQuantity: 10, maxQuantity: 50, price: 730.0 },
@@ -508,7 +518,7 @@ const insertProducts = async () => {
         image:
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139014/7_jjpj8e.jpg",
         name: "High-Performance Ultrabook",
-        categories: ["Laptops", "Electronics", "Computers","Tech"],
+        categories: ["Laptops", "Electronics", "Computers", "Tech"],
         currentPrice: 1200.0,
         bulkPricing: [
           { minQuantity: 5, maxQuantity: 20, price: 1150.0 },
@@ -545,8 +555,8 @@ const insertProducts = async () => {
         image:
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139015/8_cvwab9.jpg",
         name: "Smartwatch - Fitness & Health Tracking",
-        categories: ["Electronics", "Wearable Tech", "Smartwatches","Tech"],
-        currentPrice: 19.0,
+        categories: ["Electronics", "Wearable Tech", "Smartwatches", "Tech"],
+        currentPrice: 18.0,
         bulkPricing: [
           { minQuantity: 10, maxQuantity: 50, price: 18.0 },
           { minQuantity: 51, maxQuantity: 200, price: 17.0 },
@@ -577,8 +587,8 @@ const insertProducts = async () => {
         image:
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139016/9_jznvzr.jpg",
         name: "Wireless Headphone - Noise Cancelling",
-        categories: ["Electronics", "Audio", "Headphones","Tech"],
-        currentPrice: 19.0,
+        categories: ["Electronics", "Audio", "Headphones", "Tech"],
+        currentPrice: 15.0,
         bulkPricing: [
           { minQuantity: 10, maxQuantity: 50, price: 18.5 },
           { minQuantity: 51, maxQuantity: 200, price: 17.5 },
@@ -592,7 +602,7 @@ const insertProducts = async () => {
         shipping: "Free Shipping",
         description:
           "Wireless Bluetooth headphones with active noise cancellation.",
-        type: "Audio",
+        type: "Headphone",
         material: "Plastic & Leather",
         sizes: ["One Size"],
         customization: "Custom branding available",
@@ -609,14 +619,14 @@ const insertProducts = async () => {
         image:
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139011/10_na6rot.jpg",
         name: "Electric Kettle - Fast Boil",
-        categories: ["Home Appliances", "Kitchen", "Electric Kettle","Tech"],
-        currentPrice: 19.0,
+        categories: ["Home Appliances", "Kitchen", "Electric Kettle", "Tech"],
+        currentPrice: 25.0,
         bulkPricing: [
           { minQuantity: 10, maxQuantity: 50, price: 18.0 },
           { minQuantity: 51, maxQuantity: 200, price: 17.0 },
           { minQuantity: 201, maxQuantity: null, price: 15.0 },
         ],
-        previousPrice: 22.0,
+        previousPrice: 30.0,
         rating: 4.5,
         reviews: 130,
         orders: 270,

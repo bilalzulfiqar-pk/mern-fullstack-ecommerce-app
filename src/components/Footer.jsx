@@ -149,7 +149,7 @@ const Footer = () => {
       <div className="bg-[#EFF2F4]">
         {/* Bottom Section */}
         <div className="mx-5 min-[1080px]:mx-32 py-6 flex flex-col md:flex-row text-lg justify-between text-gray-500">
-          <p>© 2023 Ecommerce.</p>
+          <p>© 2025 Ecommerce.</p>
           <div className="flex items-center space-x-2">
             <span></span>
             <p></p>

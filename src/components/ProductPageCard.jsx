@@ -28,7 +28,7 @@ const ProductPageCard = ({ product }) => {
 
             {/* Thumbnails */}
             <div className="flex gap-2 mt-3 max-[1024px]:max-w-[300px] lg:self-start overflow-auto custom-scrollbar">
-              {[1, 2, 3, 4,5,6,7,8,9].map((num) => {
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => {
                 const thumbnailSrc = `/Sample/thumb1.jpg`;
 
                 return (
@@ -53,14 +53,13 @@ const ProductPageCard = ({ product }) => {
         <main className="lg:col-span-9">
           {product.stock > 0 ? (
             <p className="text-green-600 font-medium flex gap-1 items-center">
-            <IoMdCheckmark className="text-2xl" /> In Stock
-          </p>
+              <IoMdCheckmark className="text-2xl" /> In Stock
+            </p>
           ) : (
             <p className="text-red-600 font-medium flex gap-1 items-center">
               <HiXMark className="text-2xl" /> Out of Stock
             </p>
-          )
-          }
+          )}
           <h4 className="text-lg font-semibold">{product.name}</h4>
 
           <div className="flex items-center space-x-2 my-3 text-gray-500 text-sm">
@@ -236,21 +235,26 @@ const ProductPageCard = ({ product }) => {
               </button>
             </div>
           </div>
-          <div>
+          <div className="border border-[#E0E0E0] rounded-md w-full p-4 pt-2 space-y-1 mt-4">
             {/* Wishlist Button */}
             <div className="flex justify-center items-center w-full">
               <button
-                className="cursor-pointer p-2 flex justify-center gap-2 items-center w-fit bg-white mt-4"
+                className="cursor-pointer p-2 flex justify-center gap-2 items-center w-fit bg-white"
                 onClick={() => setIsFavorite(!isFavorite)}
               >
                 {isFavorite ? (
                   <BsHeartFill className="text-red-500 text-xl font-semibold translate-y-[1px]" />
                 ) : (
-                  <FaRegHeart className="text-blue-500 text-xl font-semibold translate-y-[1px]" />
+                  <FaRegHeart className="text-red-500 text-xl font-semibold translate-y-[1px]" />
                 )}
-                <p className="text-blue-500 text-base font-semibold">
+                <p className="text-red-500 text-base font-semibold">
                   Save for later
                 </p>
+              </button>
+            </div>
+            <div>
+              <button className="w-full cursor-pointer bg-green-600 hover:bg-green-700 transition rounded-md font-semibold text-white py-2">
+                Add To Cart
               </button>
             </div>
           </div>

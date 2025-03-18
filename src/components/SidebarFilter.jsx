@@ -1,8 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { FaStar, FaRegStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-const SidebarFilter = ({ isOpen, setIsOpen, buttonRef }) => {
+const SidebarFilter = ({
+  isOpen,
+  setIsOpen,
+  buttonRef,
+  // onFiltersChange,
+  selectedCategories,
+  setSelectedCategories,
+  priceRange,
+  setPriceRange,
+  selectedRating,
+  setSelectedRating,
+}) => {
   // Define sections dynamically
   const sections = [
     {
@@ -69,8 +81,71 @@ const SidebarFilter = ({ isOpen, setIsOpen, buttonRef }) => {
     }, {})
   );
 
-  const [price, setPrice] = useState({ min: 0, max: 9999 });
-  const [selectedCondition, setSelectedCondition] = useState("Any");
+  const [tempPriceRange, setTempPriceRange] = useState({ min: 0, max: 9999 }); // Temporary state
+
+  // Handle input changes (stores values temporarily)
+  const handleTempPriceChange = (e) => {
+    setTempPriceRange((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  // Apply button updates the main price range
+  const applyPriceFilter = () => {
+    setPriceRange(tempPriceRange);
+    console.log("Applied Price Range:", tempPriceRange); // Debugging
+  };
+
+  // Reset button Function
+  const resetPriceFilter = () => {
+    // setTempPriceRange({ min: 0, max: 9999 });
+    setPriceRange({ min: null, max: null }); // Resets applied filter too
+  };
+
+  // const [selectedCondition, setSelectedCondition] = useState("Any");
+
+  // Handle category checkbox changes
+  const handleCategoryChange = (category) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
+  };
+
+  // Handle price input changes
+  // const handlePriceChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setPriceRange((prev) => ({
+  //     ...prev,
+  //     [name]: value ? parseFloat(value) : null, // Convert to number
+  //   }));
+  // };
+
+  const handlePriceChange = (e) => {
+    const { name, value } = e.target;
+    setPriceRange((prev) => {
+      const newValue = value ? parseFloat(value) : null;
+
+      return {
+        ...prev,
+        [name]: newValue,
+        ...(name === "min" && newValue !== null && prev.max === null
+          ? { max: 9999 }
+          : name === "max" && newValue !== null && prev.min === null
+          ? { min: 0 }
+          : {}),
+      };
+    });
+  };
+
+  // Handle rating change
+  const handleRatingChange = (rating) => {
+    setSelectedRating(rating);
+  };
+
+  // Pass filter values to SearchPage whenever they change
+  // useEffect(() => {
+  //   onFiltersChange({ selectedCategories, priceRange, selectedRating });
+  // }, [selectedCategories, priceRange, selectedRating]);
 
   const toggleSection = (key) => {
     setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -153,33 +228,50 @@ const SidebarFilter = ({ isOpen, setIsOpen, buttonRef }) => {
                   type="range"
                   min="0"
                   max="9999"
-                  value={price.max}
-                  onChange={(e) => setPrice({ ...price, max: e.target.value })}
+                  value={priceRange.max || ""}
+                  onChange={handlePriceChange}
+                  // value={tempPriceRange.max || ""}
+                  // onChange={handleTempPriceChange} // Updates temp state, NOT main state
+                  name="max" // Ensures correct field update
                   className="w-full cursor-pointer"
                 />
                 <div className="flex justify-between text-gray-600 mt-2">
                   <input
                     type="number"
-                    value={price.min}
-                    onChange={(e) =>
-                      setPrice({ ...price, min: e.target.value })
-                    }
+                    name="min" // Ensures correct field update
+                    value={priceRange.min || ""}
+                    onChange={handlePriceChange}
+                    // value={tempPriceRange.min || ""}
+                    // onChange={handleTempPriceChange} // Updates temp state, NOT main state
                     className="w-20 p-1 border border-[#E0E0E0] rounded"
                     placeholder="$0"
                   />
                   <input
                     type="number"
-                    value={price.max}
-                    onChange={(e) =>
-                      setPrice({ ...price, max: e.target.value })
-                    }
+                    name="max" // Ensures correct field update
+                    value={priceRange.max || ""}
+                    onChange={handlePriceChange}
+                    // value={tempPriceRange.max || ""}
+                    // onChange={handleTempPriceChange} // Updates temp state, NOT main state
                     className="w-20 p-1 border border-[#E0E0E0] rounded"
                     placeholder="$9999"
                   />
                 </div>
-                <button className="mt-3 w-full p-2 bg-blue-600 text-white rounded">
+                <div className="flex justify-between gap-2">
+                  {/* <button
+                  // onClick={handlePriceChange}
+                  onClick={applyPriceFilter} // Updates main state only when clicked
+                  className="mt-3 w-full p-2 bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700 transition-all duration-300"
+                  >
                   Apply
-                </button>
+                </button> */}
+                  <button
+                    onClick={resetPriceFilter} // Resets when clicked
+                    className="mt-3 w-full p-2 bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700 transition-all duration-300"
+                  >
+                    Reset
+                  </button>
+                </div>
               </div>
             )}
 
@@ -215,9 +307,14 @@ const SidebarFilter = ({ isOpen, setIsOpen, buttonRef }) => {
                     <input
                       type="checkbox"
                       id={`rating-${stars}`}
-                      className="w-4 h-4 accent-blue-600"
+                      className="w-4 h-4 accent-blue-600 cursor-pointer"
+                      checked={selectedRating === stars} // ✅ Bind to state
+                      onChange={() => handleRatingChange(stars)} // ✅ Uses handleRatingChange
                     />
-                    <label htmlFor={`rating-${stars}`} className="flex">
+                    <label
+                      htmlFor={`rating-${stars}`}
+                      className="flex cursor-pointer"
+                    >
                       {[...Array(5)].map((_, i) =>
                         i < stars ? (
                           <FaStar key={i} className="text-orange-400" />
@@ -228,6 +325,12 @@ const SidebarFilter = ({ isOpen, setIsOpen, buttonRef }) => {
                     </label>
                   </li>
                 ))}
+                <div
+                  onClick={() => handleRatingChange(0)}
+                  className="text-blue-600 text-sm mt-2 block hover:underline cursor-pointer"
+                >
+                  Reset
+                </div>
               </ul>
             )}
 
@@ -245,13 +348,15 @@ const SidebarFilter = ({ isOpen, setIsOpen, buttonRef }) => {
                         <input
                           type="checkbox"
                           id={id}
-                          className="w-4 h-4 accent-blue-600"
+                          className="w-4 h-4 accent-blue-600 cursor-pointer"
                           // defaultChecked={[
                           //   "Samsung",
                           //   "Apple",
                           //   "Pocco",
                           //   "Metallic",
                           // ].includes(item)}
+                          checked={selectedCategories.includes(item)}
+                          onChange={() => handleCategoryChange(item)}
                         />
                         <label htmlFor={id} className="cursor-pointer">
                           {item}
@@ -266,21 +371,31 @@ const SidebarFilter = ({ isOpen, setIsOpen, buttonRef }) => {
                       </li>
                     );
                   })}
+                  {isCheckbox && (
+                    <div
+                      onClick={() => setSelectedCategories([])}
+                      className="text-blue-600 text-sm mt-2 block hover:underline cursor-pointer"
+                    >
+                      Remove All
+                    </div>
+                  )}
                 </ul>
               )}
 
             {/* "See all" Link (only shown if the section has items) */}
-            {openSections[key] && items && seeAllLink && (
+            {/* {openSections[key] && items && seeAllLink && (
               <a
                 href={seeAllLink}
                 className="text-blue-600 text-sm mt-2 block hover:underline"
               >
-                Remove All
+                See all
               </a>
-            )}
+            )} */}
           </div>
         )
       )}
+
+      <div className="border-t border-[#E0E0E0]"></div>
     </div>
   );
 };

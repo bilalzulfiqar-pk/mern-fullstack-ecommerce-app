@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useRef } from "react";
+import React, { useContext, useEffect, useMemo, useRef } from "react";
 import { useState } from "react";
 import { FaTh, FaBars } from "react-icons/fa";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -8,7 +8,7 @@ import ProductCardGrid from "../components/ProductCardGrid";
 import Pagination from "../components/Pagination";
 import ProductCard from "../components/ProductCard";
 import { ProductContext } from "../context/ProductContext";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const SearchPage = () => {
   const [gridView, setGridView] = useState(true);
@@ -21,6 +21,8 @@ const SearchPage = () => {
   const buttonRef = useRef(null);
 
   const { products, loading } = useContext(ProductContext);
+  const [sidebarFilteredProducts, setSidebarFilteredProducts] = useState([]); // Holds products after sidebar filters
+  const [finalProducts, setFinalProducts] = useState([]); // Holds sorted & filtered products
 
   const location = useLocation();
 
@@ -29,30 +31,85 @@ const SearchPage = () => {
   const searchQuery = params.get("query")?.toLowerCase() || "";
   const searchCategory = params.get("category") || "all";
 
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [priceRange, setPriceRange] = useState({ min: null, max: null });
+  const [selectedRating, setSelectedRating] = useState(0);
+
   // Filter products based on search
-  const filteredProducts = products.filter((product) => {
-    const matchesQuery = product.name.toLowerCase().includes(searchQuery);
-    // const matchesCategory =
-    //   searchCategory === "all" ||
-    //   (product.categories && product.categories.includes(searchCategory));
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      const matchesQuery = product.name.toLowerCase().includes(searchQuery);
+      // const matchesCategory =
+      //   searchCategory === "all" ||
+      //   (product.categories && product.categories.includes(searchCategory));
 
-    const matchesCategory =
-      searchCategory === "all" ||
-      (product.categories &&
-        product.categories.some(
-          (cat) => cat.toLowerCase() === searchCategory.toLowerCase()
-        ));
+      const matchesCategory =
+        searchCategory === "all" ||
+        (product.categories &&
+          product.categories.some(
+            (cat) => cat.toLowerCase() === searchCategory.toLowerCase()
+          ));
 
-    // Check if the product's supplier is verified (if checkbox is checked)
-    const matchesVerified =
-      !verifiedOnly || (product.supplier && product.supplier.verified);
+      // Check if the product's supplier is verified (if checkbox is checked)
+      const matchesVerified =
+        !verifiedOnly || (product.supplier && product.supplier.verified);
 
-    return matchesQuery && matchesCategory && matchesVerified;
-  });
+      return matchesQuery && matchesCategory && matchesVerified;
+    });
+  }, [products, searchQuery, searchCategory, verifiedOnly]);
+
+  // useEffect(() => {
+  //   console.log("1. filteredProducts :",filteredProducts) //Testing
+  //   console.log("priceRange :",priceRange) //Testing
+
+  // }, [filteredProducts, priceRange])
+
+  // Sidebar related code
+
+  // const handleFiltersChange = (filters) => {
+  //   setSelectedCategories(filters.selectedCategories);
+  //   setPriceRange(filters.priceRange);
+  //   setSelectedRating(filters.selectedRating);
+  // };
+  // console.log("Filters changed:", filters);   //Testing
+
+  useEffect(() => {
+    let sideBarFiltered = [...filteredProducts]; // Start with searchpage filtered products
+
+    // console.log("2. SideBarFiltered :",sideBarFiltered); //testing
+
+    // Apply Category Filtering
+    if (selectedCategories.length > 0) {
+      sideBarFiltered = sideBarFiltered.filter((product) =>
+        product.categories.some((cat) => selectedCategories.includes(cat))
+      );
+    }
+
+    // Apply Price Range Filtering
+    if (priceRange.min !== null && priceRange.max !== null) {
+      sideBarFiltered = sideBarFiltered.filter(
+        (product) =>
+          product.currentPrice >= priceRange.min &&
+          product.currentPrice <= priceRange.max
+      );
+    }
+
+    // Apply Rating Filtering
+    if (selectedRating > 0) {
+      sideBarFiltered = sideBarFiltered.filter(
+        (product) => product.rating >= selectedRating
+      );
+    }
+
+    setSidebarFilteredProducts(sideBarFiltered); // Update sidebar filtered products
+
+    // console.log("2. SideBarFiltered :",sideBarFiltered); //testing
+  }, [filteredProducts, selectedCategories, priceRange, selectedRating]); // Run effect when filters change
 
   // Sort products based on selected price option
   const sortedProducts = useMemo(() => {
-    return [...filteredProducts].sort((a, b) => {
+    if (sortOption === "Featured") return sidebarFilteredProducts;
+    return [...sidebarFilteredProducts].sort((a, b) => {
       if (sortOption === "Price: Low to High") {
         return a.currentPrice - b.currentPrice;
       }
@@ -73,21 +130,20 @@ const SearchPage = () => {
           ((b.previousPrice - b.currentPrice) / b.previousPrice) * 100 || 0;
         return discountB - discountA;
       }
+      if (sortOption === "Rating: Low to High") {
+        return a.rating - b.rating;
+      }
+      if (sortOption === "Rating: High to Low") {
+        return b.rating - a.rating;
+      }
+
       return 0; // No sorting for "Featured"
     });
-  }, [filteredProducts, sortOption]); // Recalculate when sortOption or filteredProducts change
+  }, [sidebarFilteredProducts, sortOption]); // Recalculate when sortOption or filteredProducts change
 
   // const toggleSidebar = () => {
   //   setIsSidebarOpen(!isSidebarOpen);
   // };
-
-  // Pagination Logic
-  // const indexOfLastProduct = currentPage * itemsPerPage;
-  // const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-  // const currentProducts = filteredProducts.slice(
-  //   indexOfFirstProduct,
-  //   indexOfLastProduct
-  // );
 
   // Pagination Logic
   const indexOfLastProduct = currentPage * itemsPerPage;
@@ -96,6 +152,8 @@ const SearchPage = () => {
     indexOfFirstProduct,
     indexOfLastProduct
   );
+
+  // console.log(searchCategory);
 
   if (loading) return <p>Loading products...</p>;
 
@@ -107,17 +165,23 @@ const SearchPage = () => {
           <nav className="text-[#8B96A5] text-base py-6">
             <ul className="flex space-x-2">
               <li>
-                <a href="#" className="hover:underline">
+                <Link to={"/"} className="hover:underline">
                   Home
-                </a>
+                </Link>
               </li>
               <li>{" > "}</li>
               <li>
-                <a href="#" className="hover:underline">
-                  Clothings
-                </a>
+                <Link
+                  to={`/search?category=${searchCategory}`}
+                  className="hover:underline"
+                >
+                  {searchCategory === "all"
+                    ? "All Products"
+                    : searchCategory.charAt(0).toUpperCase() +
+                      searchCategory.slice(1)}
+                </Link>
               </li>
-              <li>{" > "}</li>
+              {/* <li>{" > "}</li>
               <li>
                 <a href="#" className="hover:underline">
                   Men’s wear
@@ -126,7 +190,7 @@ const SearchPage = () => {
               <li>{" > "}</li>
               <li>
                 <span className="text-gray-400">Summer clothing</span>
-              </li>
+              </li> */}
             </ul>
           </nav>
 
@@ -139,6 +203,13 @@ const SearchPage = () => {
                 isOpen={isSidebarOpen}
                 setIsOpen={setIsSidebarOpen}
                 buttonRef={buttonRef}
+                // onFiltersChange={handleFiltersChange}
+                selectedCategories={selectedCategories}
+                setSelectedCategories={setSelectedCategories}
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+                selectedRating={selectedRating}
+                setSelectedRating={setSelectedRating}
               />
             </div>
 
@@ -156,8 +227,8 @@ const SearchPage = () => {
               <div className="flex w-full items-center justify-between max-[700px]:flex-col max-[700px]:gap-2 p-3 border rounded-lg border-[#E0E0E0] bg-white">
                 {/* Left Side: Item Count */}
                 <p className="text-gray-700 font-medium">
-                  {filteredProducts.length}{" "}
-                  {filteredProducts.length < 2 ? "item" : "items"}
+                  {sortedProducts.length}{" "}
+                  {sortedProducts.length < 2 ? "item" : "items"}
                   <span>
                     {" "}
                     in <span className="font-bold">{searchCategory}</span>
@@ -167,10 +238,10 @@ const SearchPage = () => {
                 {/* Right Side: Controls */}
                 <div className="flex items-center gap-4 max-[500px]:flex-col">
                   {/* Checkbox */}
-                  <label className="flex items-center gap-2 text-gray-700">
+                  <label className="flex cursor-pointer items-center gap-2 text-gray-700">
                     <input
                       type="checkbox"
-                      className="w-4 h-4 border-gray-300 rounded"
+                      className="w-4 h-4 border-gray-300 cursor-pointer rounded"
                       checked={verifiedOnly}
                       onChange={() => setVerifiedOnly(!verifiedOnly)}
                     />
@@ -184,7 +255,7 @@ const SearchPage = () => {
                       <select
                         value={sortOption}
                         onChange={(e) => setSortOption(e.target.value)}
-                        className="border appearance-none border-[#E0E0E0] px-3 w-51 py-1.5 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                        className="border cursor-pointer hover:bg-[#f5f5f5] focus:bg-[#f5f5f5] transition-all duration-300 appearance-none border-[#E0E0E0] px-3 w-51 py-1.5 rounded-md focus:outline-none focus:ring focus:border-blue-300"
                       >
                         <option value="Featured">Featured</option>
                         <option value="Price: Low to High">
@@ -199,6 +270,12 @@ const SearchPage = () => {
                         <option value="Discount: Low to High">
                           Discount: Low to High
                         </option>
+                        <option value="Rating: High to Low">
+                          Rating: High to Low
+                        </option>
+                        <option value="Rating: Low to High">
+                          Rating: Low to High
+                        </option>
                       </select>
                       <div className="absolute top-1/2 right-2 transform -translate-y-1/2 pointer-events-none text-2xl text-gray-400">
                         <MdKeyboardArrowDown />
@@ -209,7 +286,7 @@ const SearchPage = () => {
                     <div className="flex border border-[#E0E0E0] rounded-md overflow-hidden">
                       <button
                         onClick={() => setGridView(true)}
-                        className={`p-2 cursor-pointer ${
+                        className={`p-2 cursor-pointer transition-all duration-300 ${
                           gridView ? "bg-gray-200" : "bg-white"
                         } hover:bg-gray-300`}
                       >
@@ -217,7 +294,7 @@ const SearchPage = () => {
                       </button>
                       <button
                         onClick={() => setGridView(false)}
-                        className={`p-2 cursor-pointer ${
+                        className={`p-2 cursor-pointer transition-all duration-300 ${
                           !gridView ? "bg-gray-200" : "bg-white"
                         } hover:bg-gray-300`}
                       >

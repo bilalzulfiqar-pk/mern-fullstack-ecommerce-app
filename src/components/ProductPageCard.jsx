@@ -18,7 +18,7 @@ const ProductPageCard = ({ product }) => {
       <div className="bg-white border border-[#E0E0E0] rounded-lg p-6 max-[350px]:p-3 grid lg:grid-cols-20 gap-6">
         {/* Image Section */}
         <aside className="lg:col-span-6">
-          <figure>
+          <figure className="flex flex-col items-center justify-center h-full">
             {/* Main Product Image */}
             <img
               src={selectedImage}
@@ -27,16 +27,16 @@ const ProductPageCard = ({ product }) => {
             />
 
             {/* Thumbnails */}
-            <div className="flex gap-2 mt-3 overflow-auto">
-              {[1, 2, 3, 4].map((num) => {
-                const thumbnailSrc = `/Sample/thumb${num}.jpg`;
+            <div className="flex gap-2 mt-3 max-[1024px]:max-w-[300px] lg:self-start overflow-auto custom-scrollbar">
+              {[1, 2, 3, 4,5,6,7,8,9].map((num) => {
+                const thumbnailSrc = `/Sample/thumb1.jpg`;
 
                 return (
                   <img
                     key={num}
                     src={thumbnailSrc}
                     alt={`Thumbnail ${num}`}
-                    className={`w-16 h-16 p-1 object-cover border rounded cursor-pointer ${
+                    className={`w-16 h-16 p-1 mb-0.5 object-cover border rounded cursor-pointer ${
                       selectedImage === thumbnailSrc
                         ? "border-blue-500"
                         : "border-[#E0E0E0]"

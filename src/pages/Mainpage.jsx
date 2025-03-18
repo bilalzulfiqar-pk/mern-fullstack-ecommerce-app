@@ -52,14 +52,18 @@ const Mainpage = () => {
   // ];
 
   const deals = products
-  .filter((product) => product.previousPrice !== null) // Exclude products with null previous price
-  .map((product) => ({
-    type: product.type, // 1. Product Type
-    discount: Math.round(((product.previousPrice - product.currentPrice) / product.previousPrice) * 100), // 2. Discount Percentage
-    image: product.image, // 3. Image URL
-  }))
-  .sort(() => Math.random() - 0.5) // Shuffle products
-  .slice(0, 5); // Keep only 5 products
+    .filter((product) => product.previousPrice !== null) // Exclude products with null previous price
+    .map((product) => ({
+      type: product.type, // 1. Product Type
+      discount: Math.round(
+        ((product.previousPrice - product.currentPrice) /
+          product.previousPrice) *
+          100
+      ), // 2. Discount Percentage
+      image: product.image, // 3. Image URL
+    }))
+    .sort(() => Math.random() - 0.5) // Shuffle products
+    .slice(0, 5); // Keep only 5 products
 
   const homeAndOutdoor = [
     {
@@ -210,7 +214,14 @@ const Mainpage = () => {
 
   // console.log(homeAndOutdoor);
 
-  if (loading) return <p>Loading products...</p>;
+  if (loading)
+    return (
+      <div className="w-full bg-[#F7FAFC] h-screen">
+        <div className="pt-6 max-w-[1580px]  m-auto h-full">
+          <p className="mx-5 min-[1080px]:mx-32">Loading products...</p>
+        </div>
+      </div>
+    );
 
   return (
     <div className="w-full bg-[#F7FAFC] h-full">

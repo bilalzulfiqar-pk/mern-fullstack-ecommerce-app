@@ -155,7 +155,14 @@ const SearchPage = () => {
 
   // console.log(searchCategory);
 
-  if (loading) return <p>Loading products...</p>;
+  if (loading)
+    return (
+      <div className="w-full bg-[#F7FAFC] h-screen">
+        <div className="pt-6 max-w-[1580px]  m-auto h-full">
+          <p className="mx-5 min-[1080px]:mx-32">Loading products...</p>
+        </div>
+      </div>
+    );
 
   return (
     <div>
@@ -330,7 +337,7 @@ const SearchPage = () => {
           <div className="flex justify-end pr-10 max-[400px]:pr-0">
             <Pagination
               currentPage={currentPage}
-              totalPages={Math.ceil(filteredProducts.length / itemsPerPage)}
+              totalPages={Math.ceil(sortedProducts.length / itemsPerPage)}
               setCurrentPage={setCurrentPage}
               itemsPerPage={itemsPerPage}
               setItemsPerPage={setitemsPerPage}

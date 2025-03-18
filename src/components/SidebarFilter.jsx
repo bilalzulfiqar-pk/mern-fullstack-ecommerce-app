@@ -81,7 +81,7 @@ const SidebarFilter = ({
     }, {})
   );
 
-  const [tempPriceRange, setTempPriceRange] = useState({ min: 0, max: 9999 }); // Temporary state
+  const [tempPriceRange, setTempPriceRange] = useState({ min: 0, max: 2000 }); // Temporary state
 
   // Handle input changes (stores values temporarily)
   const handleTempPriceChange = (e) => {
@@ -96,7 +96,7 @@ const SidebarFilter = ({
 
   // Reset button Function
   const resetPriceFilter = () => {
-    // setTempPriceRange({ min: 0, max: 9999 });
+    // setTempPriceRange({ min: 0, max: 2000 });
     setPriceRange({ min: null, max: null }); // Resets applied filter too
   };
 
@@ -120,22 +120,25 @@ const SidebarFilter = ({
   //   }));
   // };
 
-  const handlePriceChange = (e) => {
-    const { name, value } = e.target;
-    setPriceRange((prev) => {
-      const newValue = value ? parseFloat(value) : null;
+const handlePriceChange = (e) => {
+  const { name, value } = e.target;
+  setPriceRange((prev) => {
+    const newValue = value ? parseFloat(value) : null;
 
-      return {
-        ...prev,
-        [name]: newValue,
-        ...(name === "min" && newValue !== null && prev.max === null
-          ? { max: 9999 }
-          : name === "max" && newValue !== null && prev.min === null
-          ? { min: 0 }
-          : {}),
-      };
-    });
-  };
+    return {
+      ...prev,
+      [name]: newValue,
+      ...(name === "min" && newValue !== null && prev.max === null
+        ? { max: 2000 }
+        : name === "max" && newValue !== null && prev.min === null
+        ? { min: 1 }
+        : {}),
+      ...(name === "max" && newValue === 0 ? { max: null, min: null } : {}),
+      ...(name === "min" && newValue === 0 ? { max: null, min: null } : {}),
+    };
+  });
+};
+
 
   // Handle rating change
   const handleRatingChange = (rating) => {
@@ -226,8 +229,8 @@ const SidebarFilter = ({
               <div className="mt-3">
                 <input
                   type="range"
-                  min="0"
-                  max="9999"
+                  min="1"
+                  max="2000"
                   value={priceRange.max || ""}
                   onChange={handlePriceChange}
                   // value={tempPriceRange.max || ""}
@@ -245,6 +248,7 @@ const SidebarFilter = ({
                     // onChange={handleTempPriceChange} // Updates temp state, NOT main state
                     className="w-20 p-1 border border-[#E0E0E0] rounded"
                     placeholder="$0"
+                    min={0}
                   />
                   <input
                     type="number"
@@ -254,7 +258,8 @@ const SidebarFilter = ({
                     // value={tempPriceRange.max || ""}
                     // onChange={handleTempPriceChange} // Updates temp state, NOT main state
                     className="w-20 p-1 border border-[#E0E0E0] rounded"
-                    placeholder="$9999"
+                    placeholder="$2000"
+                    min={0}
                   />
                 </div>
                 <div className="flex justify-between gap-2">

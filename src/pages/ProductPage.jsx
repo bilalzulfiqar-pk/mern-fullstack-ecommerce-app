@@ -5,10 +5,16 @@ import DiscountBanner from "../components/DiscountBanner";
 import { ProductContext } from "../context/ProductContext";
 
 const ProductPage = () => {
+  const { products, loading } = useContext(ProductContext);
 
-    const { products, loading } = useContext(ProductContext);
-
-  if (loading) return <p>Loading products...</p>;
+  if (loading)
+    return (
+      <div className="w-full bg-[#F7FAFC] h-screen">
+        <div className="pt-6 max-w-[1580px]  m-auto h-full">
+          <p className="mx-5 min-[1080px]:mx-32">Loading products...</p>
+        </div>
+      </div>
+    );
 
   return (
     <div>

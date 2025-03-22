@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const RecommededItems = ({ products }) => {
   return (
@@ -8,13 +9,15 @@ const RecommededItems = ({ products }) => {
       </div>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(230px,1fr))] gap-5">
         {products.map((product, index) => (
-          <div key={index} className="border border-[#E0E0E0] cursor-pointer rounded-lg p-3 bg-white transition min-w-56">
+          <Link key={index} to={`/product/${product._id}`}>
+
+          <div key={index} className="border h-full group border-[#E0E0E0] cursor-pointer rounded-lg p-3 bg-white transition min-w-56">
             {/* Product Image */}
             <div className="w-full h-fit flex justify-center items-center">
               <img
                 src={product.image}
                 alt="product"
-                className="w-full h-full object-cover rounded-md"
+                className="w-full h-full object-cover rounded-md group-hover:scale-105 transition-transform duration-300 ease-in-out"
               />
             </div>
 
@@ -26,6 +29,7 @@ const RecommededItems = ({ products }) => {
               </p>
             </div>
           </div>
+        </Link>
         ))}
       </div>
     </div>

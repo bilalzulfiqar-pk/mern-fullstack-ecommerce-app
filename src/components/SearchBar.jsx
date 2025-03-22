@@ -9,7 +9,8 @@ const SearchBar = () => {
   const location = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Scrolls to top smoothly
   }, [location]);
 
   useEffect(() => {
@@ -34,7 +35,9 @@ const SearchBar = () => {
       return;
     }
     // onSearch(query, category);
-    navigate(`/search?query=${encodeURIComponent(trimmedQuery)}&category=${category}`);
+    navigate(
+      `/search?query=${encodeURIComponent(trimmedQuery)}&category=${category}`
+    );
   };
 
   return (

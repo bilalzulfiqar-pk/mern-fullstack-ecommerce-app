@@ -53,7 +53,10 @@ const SearchPage = () => {
     } else if (urlSortOption === "rating_high") {
       setSortOption("Rating: High to Low");
     }
-  }, [urlSortOption, setSortOption]);
+    else {
+      setSortOption("Featured"); // Reset to default if no sorting parameter is in the URL
+    }
+  }, [urlSortOption]);
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState({ min: null, max: null });

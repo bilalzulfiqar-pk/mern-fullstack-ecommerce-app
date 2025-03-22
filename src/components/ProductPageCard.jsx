@@ -253,8 +253,11 @@ const ProductPageCard = ({ product }) => {
               </button>
             </div>
             <div>
-              <button className="w-full cursor-pointer bg-green-600 hover:bg-green-700 transition rounded-md font-semibold text-white py-2">
-                Add To Cart
+              <button
+                className={`w-full bg-green-600 hover:bg-green-700 cursor-pointer transition rounded-md font-semibold text-white py-2 disabled:bg-gray-400 disabled:cursor-auto disabled:hover:bg-gray-400 `}
+                disabled={product.stock <= 0}
+              >
+                {product.stock > 0 ? "Add To Cart" : "Out of Stock"}
               </button>
             </div>
           </div>

@@ -31,12 +31,13 @@ const Mainpage = () => {
     { text: "Home Decoration", link: "/search?category=Home%20Decor" }, // 6 occurrences
     { text: "Modern Furniture", link: "/search?category=Furniture" }, // 4 occurrences
     { text: "Casual Wear", link: "/search?category=Casual%20Wear" }, // 4 occurrences
-    { text: "Kitchen Appliances", link: "/search?category=Kitchen%20Appliances" }, // New
+    {
+      text: "Kitchen Appliances",
+      link: "/search?category=Kitchen%20Appliances",
+    }, // New
     { text: "Smartphones", link: "/search?category=Smartphones" }, // New
-    { text: "More Categories", link: "/search" } // Additional category
+    { text: "More Categories", link: "/search" }, // Additional category
   ];
-  
-  
 
   // const deals = [
   //   {
@@ -76,9 +77,12 @@ const Mainpage = () => {
           100
       ), // 2. Discount Percentage
       image: product.image, // 3. Image URL
+      id: product._id, // 4. Product ID
     }))
     .sort(() => Math.random() - 0.5) // Shuffle products
     .slice(0, 5); // Keep only 5 products
+
+  // console.log(deals)
 
   const homeAndOutdoor = [
     {
@@ -334,24 +338,26 @@ const Mainpage = () => {
           <div className="max-[870px]:overflow-x-auto">
             <div className="grid h-full grid-cols-5 max-[1325px]:grid-cols-3 max-[870px]:grid-cols-[repeat(5,minmax(200px,1fr))] max-[870]:w-max">
               {deals.map((product, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col justify-center space-y-3 items-center py-2 border border-[#E0E0E0]"
-                >
-                  <img
-                    src={product.image}
-                    alt={product.type}
-                    // width={162}
-                    // height={162}
-                    className="w-[162px] h-[162px] object-cover"
-                  />
-                  <div className="flex flex-col justify-center items-center gap-1">
-                    <h3 className="text-lg">{product.type}</h3>
-                    <div className="rounded-2xl bg-[#FFE3E3] text-[#EB001B] p-1 px-6 flex justify-center items-center w-16">
-                      -{product.discount}%
+                <Link to={`/product/${product.id}`} key={index}>
+                  <div
+                    key={index}
+                    className="flex group flex-col justify-center space-y-3 items-center py-2 border h-full border-[#E0E0E0]"
+                  >
+                    <img
+                      src={product.image}
+                      alt={product.type}
+                      // width={162}
+                      // height={162}
+                      className="w-[162px] h-[162px] object-cover group-hover:scale-110 transition-transform duration-300 ease-in-out"
+                    />
+                    <div className="flex flex-col justify-center items-center gap-1">
+                      <h3 className="text-lg">{product.type}</h3>
+                      <div className="rounded-2xl bg-[#FFE3E3] text-[#EB001B] p-1 px-6 flex justify-center items-center w-16">
+                        -{product.discount}%
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

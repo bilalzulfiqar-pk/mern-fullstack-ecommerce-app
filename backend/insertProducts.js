@@ -619,7 +619,7 @@ const insertProducts = async () => {
         image:
           "https://res.cloudinary.com/db7jmsq76/image/upload/v1742139011/10_na6rot.jpg",
         name: "Electric Kettle - Fast Boil",
-        categories: ["Home Appliances", "Kitchen", "Electric Kettle", "Tech"],
+        categories: ["Home Appliances", "Kitchen", "Electric Kettle", "Tech", "Kitchen Appliances"],
         currentPrice: 25.0,
         bulkPricing: [
           { minQuantity: 10, maxQuantity: 50, price: 18.0 },

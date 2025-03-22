@@ -8,7 +8,7 @@ import ProductCardGrid from "../components/ProductCardGrid";
 import Pagination from "../components/Pagination";
 import ProductCard from "../components/ProductCard";
 import { ProductContext } from "../context/ProductContext";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 
 const SearchPage = () => {
   const [gridView, setGridView] = useState(true);
@@ -27,9 +27,33 @@ const SearchPage = () => {
   const location = useLocation();
 
   // Extract query and category from URL
-  const params = new URLSearchParams(location.search);
-  const searchQuery = params.get("query")?.toLowerCase() || "";
-  const searchCategory = params.get("category") || "all";
+
+  // const params = new URLSearchParams(location.search);
+  // const searchQuery = params.get("query")?.toLowerCase() || "";
+  // const searchCategory = params.get("category") || "all";
+
+  const { searchQuery, searchCategory } = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    return {
+      searchQuery: params.get("query")?.toLowerCase() || "",
+      searchCategory: params.get("category") || "all",
+    };
+  }, [location.search]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Scrolls to top smoothly
+  }, [currentPage]); // Runs when currentPage changes
+
+  const [searchParams] = useSearchParams();
+  const urlSortOption = searchParams.get("sort");
+
+  useEffect(() => {
+    if (urlSortOption === "discount_high") {
+      setSortOption("Discount: High to Low");
+    } else if (urlSortOption === "rating_high") {
+      setSortOption("Rating: High to Low");
+    }
+  }, [urlSortOption, setSortOption]);
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState({ min: null, max: null });

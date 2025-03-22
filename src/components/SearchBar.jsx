@@ -9,6 +9,10 @@ const SearchBar = () => {
   const location = useLocation();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
+  useEffect(() => {
     const params = new URLSearchParams(location.search);
     const newQuery = params.get("query") || "";
     const newCategory = params.get("category") || "all";

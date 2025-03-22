@@ -11,17 +11,32 @@ import { ProductContext } from "../context/ProductContext";
 const Mainpage = () => {
   const { products, loading } = useContext(ProductContext);
 
+  // const categoryList = [
+  //   { text: "Automobiles", link: "/category/automobiles" },
+  //   { text: "Clothes and wears", link: "/category/clothes-and-wears" },
+  //   { text: "Home interiors", link: "/category/home-interiors" },
+  //   { text: "Computer and tech", link: "/category/computer-and-tech" },
+  //   { text: "Tools, equipments", link: "/category/tools-equipments" },
+  //   { text: "Sports and outdoor", link: "/category/sports-and-outdoor" },
+  //   { text: "Animal and pets", link: "/category/animal-and-pets" },
+  //   { text: "Machinery tools", link: "/category/machinery-tools" },
+  //   { text: "More category", link: "/category/more" },
+  // ];
+
   const categoryList = [
-    { text: "Automobiles", link: "/category/automobiles" },
-    { text: "Clothes and wears", link: "/category/clothes-and-wears" },
-    { text: "Home interiors", link: "/category/home-interiors" },
-    { text: "Computer and tech", link: "/category/computer-and-tech" },
-    { text: "Tools, equipments", link: "/category/tools-equipments" },
-    { text: "Sports and outdoor", link: "/category/sports-and-outdoor" },
-    { text: "Animal and pets", link: "/category/animal-and-pets" },
-    { text: "Machinery tools", link: "/category/machinery-tools" },
-    { text: "More category", link: "/category/more" },
+    { text: "Home Interiors", link: "/search?category=Interiors" }, // 9 occurrences
+    // { text: "Electronic Devices", link: "/search?category=Electronics" }, // 8 occurrences
+    { text: "Technology Gadgets", link: "/search?category=Tech" }, // 7 occurrences
+    { text: "Fashion Clothing", link: "/search?category=Clothing" }, // 6 occurrences
+    { text: "Home Decoration", link: "/search?category=Home%20Decor" }, // 6 occurrences
+    { text: "Modern Furniture", link: "/search?category=Furniture" }, // 4 occurrences
+    { text: "Casual Wear", link: "/search?category=Casual%20Wear" }, // 4 occurrences
+    { text: "Kitchen Appliances", link: "/search?category=Kitchen%20Appliances" }, // New
+    { text: "Smartphones", link: "/search?category=Smartphones" }, // New
+    { text: "More Categories", link: "/search" } // Additional category
   ];
+  
+  
 
   // const deals = [
   //   {
@@ -244,7 +259,7 @@ const Mainpage = () => {
             <div className="mt-16 ml-10">
               <h1 className="text-4xl">Latest Trends</h1>
               <h2 className="text-4xl font-semibold">Electronics items</h2>
-              <Link to={"/category/computer-and-tech"}>
+              <Link to={"/search?category=Electronics"}>
                 <button className="mt-4 text-xl font-semibold bg-white py-2 pb-3 px-4 rounded-lg cursor-pointer hover:bg-slate-100 transition duration-300">
                   Learn more
                 </button>
@@ -348,7 +363,7 @@ const Mainpage = () => {
           <ProductsStartPriceSection
             products={homeAndOutdoor}
             heading="Home and outdoor"
-            link="/home-and-outdoor"
+            link="/search?category=Interiors"
             banner="/banners/interior.jpg"
           />
         }
@@ -359,7 +374,7 @@ const Mainpage = () => {
           <ProductsStartPriceSection
             products={electronics}
             heading="Consumer electronics and gadgets"
-            link="/electronics-and-gadgets"
+            link="/search?category=Electronics"
             banner="/banners/tech.jpg"
           />
         }

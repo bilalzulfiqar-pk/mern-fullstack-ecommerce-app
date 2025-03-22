@@ -7,6 +7,13 @@ const InquirySection = () => {
     quantity: "Quantity",
   });
 
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Prevent page reload
+    
+    console.log("Form submitted"); // Handle form data submission logic here
+  };
+  
+
   const handleFocus = (field) => {
     setPlaceholders((prev) => ({ ...prev, [field]: "" })); // Remove placeholder
   };
@@ -49,7 +56,7 @@ const InquirySection = () => {
               <h6 className="text-lg font-semibold mb-3">
                 Send quote to suppliers
               </h6>
-              <form>
+              <form onSubmit={handleSubmit}>
                 {/* Item Name */}
                 <div className="mb-3">
                   <input

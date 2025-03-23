@@ -9,11 +9,14 @@ import SearchPage from "./pages/SearchPage";
 import ProductPage from "./pages/ProductPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import AppRoutes from "./routes/AppRoutes";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
     <>
+    <AuthProvider>
       <AppRoutes />
+    </AuthProvider>
     </>
   );
 }

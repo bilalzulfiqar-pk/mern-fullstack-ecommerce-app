@@ -16,8 +16,10 @@ app.use(cors());
 app.use(express.json()); // Middleware to parse JSON
 
 const productRoutes = require("./routes/productRoutes");
-app.use("/api/products", productRoutes);
+const authRoutes = require("./routes/auth");
 
+app.use("/api/products", productRoutes);
+app.use("/api/auth", authRoutes); // Authentication routes
 
 // Start server
 app.listen(PORT, () => {

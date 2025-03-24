@@ -18,7 +18,7 @@ module.exports = function (req, res, next) {
     // console.log("Token received:", token);
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded.user;
-    console.log("Decoded user:", decoded.user); // Log the decoded user data
+    // console.log("Decoded user:", decoded.user); // Log the decoded user data
     next();
   } catch (error) {
     console.error("JWT Verification Error:", error.message);

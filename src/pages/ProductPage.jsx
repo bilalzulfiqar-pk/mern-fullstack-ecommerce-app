@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import ProductPageCard from "../components/ProductPageCard";
 import DiscountBanner from "../components/DiscountBanner";
 import { ProductContext } from "../context/ProductContext";
+import RelatedProducts from "../components/RelatedProducts";
 
 const ProductPage = () => {
   const { products, loading } = useContext(ProductContext);
@@ -22,11 +23,14 @@ const ProductPage = () => {
   // Find product by ID
   const product = products.find((p) => p._id === id);
 
-  if (!product) return (<div className="w-full bg-[#F7FAFC] h-screen">
-    <div className="pt-6 max-w-[1580px]  m-auto h-full">
-      <p className="mx-5 min-[1080px]:mx-32">Product not found</p>
-    </div>
-  </div>);
+  if (!product)
+    return (
+      <div className="w-full bg-[#F7FAFC] h-screen">
+        <div className="pt-6 max-w-[1580px]  m-auto h-full">
+          <p className="mx-5 min-[1080px]:mx-32">Product not found</p>
+        </div>
+      </div>
+    );
 
   return (
     <div>
@@ -43,8 +47,11 @@ const ProductPage = () => {
                 </li>
                 <li>{" > "}</li>
                 <li>
-                  <Link to={`/search?category=${product.categories[0]}`} className="hover:underline">
-                  {product.categories[0]}
+                  <Link
+                    to={`/search?category=${product.categories[0]}`}
+                    className="hover:underline"
+                  >
+                    {product.categories[0]}
                   </Link>
                 </li>
                 {/* <li>{" > "}</li>
@@ -63,6 +70,11 @@ const ProductPage = () => {
             {/* Product */}
 
             <ProductPageCard product={product} />
+
+            {/* Related Products  */}
+            <div className="mt-5">
+            <RelatedProducts products={products} category={product.categories[0]}/>
+            </div>
 
             {/* Discounted Banner */}
             <div className="mt-5">

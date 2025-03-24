@@ -62,7 +62,7 @@ const Navbar = () => {
           </div>
           <div>
             <Link
-              to="/checkout"
+              to="/cart"
               className="flex justify-center max-[680px]:hidden items-center flex-col text-gray-400 hover:text-black"
             >
               <MdShoppingCart className="text-xl" />

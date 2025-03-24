@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import ShoppingCart from "../components/ShopingCart";
 import { FaLock, FaCommentDots, FaTruck } from "react-icons/fa";
 import DiscountBanner from "../components/DiscountBanner";
 
-const CheckoutPage = () => {
+const CartPage = () => {
+
+const [cartCount, setcartCount] = useState(null);
+
   const features = [
     {
       icon: <FaLock />,
@@ -26,9 +29,9 @@ const CheckoutPage = () => {
     <div>
       <div className="w-full pb-6 bg-[#F7FAFC] h-full">
         <div className="max-w-[1580px] px-5 min-[1081px]:px-32 m-auto h-full">
-          <div className="text-2xl font-semibold py-6">My cart (3)</div>
+          <div className="text-2xl font-semibold py-6">My cart {cartCount ? `(${cartCount})` : ""}</div>
           <div>
-            <ShoppingCart />
+            <ShoppingCart setcartCount={setcartCount} />
           </div>
 
           {/* Features  */}
@@ -58,4 +61,4 @@ const CheckoutPage = () => {
   );
 };
 
-export default CheckoutPage;
+export default CartPage;

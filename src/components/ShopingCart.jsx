@@ -1,165 +1,402 @@
-import { useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import AuthContext from "../context/AuthContext";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
-const cartItems = [
-  {
-    id: 1,
-    name: "T-shirts with multiple colors, for men and lady",
-    size: "medium",
-    color: "blue",
-    material: "Plastic",
-    seller: "Artel Market",
-    price: 78.99,
-    qty: 9,
-    discount: 5,
-    tax: 2,
-    image: "cloth/1.jpg",
-  },
-  {
-    id: 2,
-    name: "T-shirts with multiple colors, for men and lady",
-    size: "medium",
-    color: "blue",
-    material: "Plastic",
-    seller: "Best factory LLC",
-    price: 39.0,
-    qty: 3,
-    discount: 5,
-    tax: 1.5,
-    image: "interior/3.jpg",
-  },
-  {
-    id: 3,
-    name: "T-shirts with multiple colors, for men and lady",
-    size: "medium",
-    color: "blue",
-    material: "Plastic",
-    seller: "Artel Market",
-    price: 170.5,
-    qty: 1,
-    discount: 10,
-    tax: 5,
-    image: "interior/1.jpg",
-  },
-];
+// const cartItems = [
+//   {
+//     id: 1,
+//     name: "T-shirts with multiple colors, for men and lady",
+//     size: "medium",
+//     color: "blue",
+//     material: "Plastic",
+//     seller: "Artel Market",
+//     price: 78.99,
+//     qty: 9,
+//     discount: 5,
+//     tax: 2,
+//     image: "cloth/1.jpg",
+//   },
+//   {
+//     id: 2,
+//     name: "T-shirts with multiple colors, for men and lady",
+//     size: "medium",
+//     color: "blue",
+//     material: "Plastic",
+//     seller: "Best factory LLC",
+//     price: 39.0,
+//     qty: 3,
+//     discount: 5,
+//     tax: 1.5,
+//     image: "interior/3.jpg",
+//   },
+//   {
+//     id: 3,
+//     name: "T-shirts with multiple colors, for men and lady",
+//     size: "medium",
+//     color: "blue",
+//     material: "Plastic",
+//     seller: "Artel Market",
+//     price: 170.5,
+//     qty: 1,
+//     discount: 10,
+//     tax: 5,
+//     image: "interior/1.jpg",
+//   },
+// ];
 
-const ShoppingCart = () => {
-  const [items, setItems] = useState(cartItems);
+const ShoppingCart = ({ setcartCount }) => {
+  const { user } = useContext(AuthContext); // Get logged-in user
+  const [items, setItems] = useState([]);
+  const [loading, setloading] = useState(true);
 
-  const updateQty = (id, qty) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, qty: parseInt(qty) } : item
-      )
-    );
+  const token = localStorage.getItem("token"); // Get token from localStorage
+  // console.log(token);
+
+  if (!token) {
+    console.error("No token found, user must log in");
+  }
+
+  // console.log("Cart Items:", items);
+  // console.log(user);
+
+  useEffect(() => {
+    if (user) {
+      axios
+        .get("http://localhost:5000/api/cart", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(async (res) => {
+          // console.log("res:", res.data);
+          const cartItems = res.data.items;
+
+          // console.log("Cart Items2:", cartItems);
+
+          // // Fetch product details for each item
+          // const updatedItems = await Promise.all(
+          //   cartItems.map(async (cartItem) => {
+          //     const productRes = await axios.get(
+          //       `http://localhost:5000/api/products/${cartItem.productId}`
+          //     );
+          //     return {
+          //       ...productRes.data,
+          //       qty: cartItem.qty,
+          //       _id: cartItem._id,
+          //     };
+          //   })
+          // );
+
+          setItems(cartItems);
+          setloading(false);
+          setcartCount(res.data.items.length);
+        })
+        .catch((err) => console.error("Error fetching cart:", err));
+    }
+  }, [user]);
+
+  const updateQty = async (id, qty) => {
+    try {
+      await axios.patch(
+        `http://localhost:5000/api/cart/update/${id}`, // Change the route
+        { qty: parseInt(qty) },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setItems((prevItems) =>
+        prevItems.map((item) =>
+          item.productId._id === id ? { ...item, qty: parseInt(qty) } : item
+        )
+      );
+    } catch (error) {
+      console.error("Error updating quantity:", error.response?.data || error);
+    }
   };
 
-  const removeItem = (id) => {
-    setItems(items.filter((item) => item.id !== id));
+  const removeItem = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/api/cart/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.data.success) {
+        setItems((prevItems) =>
+          prevItems.filter((item) => item.productId._id !== id)
+        );
+      } else {
+        console.error("Failed to remove item:", response.data.message);
+      }
+    } catch (error) {
+      console.error(
+        "Error removing item:",
+        error.response?.data?.message || error.message
+      );
+    }
   };
 
-  const clearCart = () => {
-    setItems([]);
+  const clearCart = async () => {
+    try {
+      await axios.delete("http://localhost:5000/api/cart/clear", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setItems([]); // Clear the cart state
+    } catch (error) {
+      console.error("Error clearing cart:", error);
+    }
   };
 
-  //   const subtotal = items.reduce((acc, item) => acc + item.price * item.qty, 0);
-  //   const discount = 60;
-  //   const tax = 14;
-  //   const total = subtotal - discount + tax;
+  const saveCartToDB = async (updatedItems) => {
+    if (!user) return;
 
-  const subtotal = items.reduce((acc, item) => acc + item.price * item.qty, 0);
-  const totalDiscount = items.reduce(
-    (acc, item) => acc + item.discount * item.qty,
-    0
+    try {
+      await axios.put(
+        "http://localhost:5000/api/cart",
+        { items: updatedItems },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (error) {
+      console.error("Error saving cart:", error);
+    }
+  };
+
+  const handleRemoveItem = (productId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This item will be removed from your cart.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, remove it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeItem(productId); // function to remove the item
+        // Swal.fire({
+        //   title: "Removed!",
+        //   text: "The item has been removed from your cart.",
+        //   icon: "success",
+        //   timer: 1000, // Auto close after 2 seconds
+        //   showConfirmButton: false,
+        // });
+      }
+    });
+  };
+
+  const handleClearCart = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This will remove all items from your cart.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, clear cart!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        clearCart(); // Your function to clear the cart
+        Swal.fire({
+          title: "Cart Cleared!",
+          text: "All items have been removed from your cart.",
+          icon: "success",
+          timer: 1000, // Auto close after 2 seconds
+          showConfirmButton: false,
+        });
+      }
+    });
+  };
+
+  // const subtotal = items.reduce((acc, item) => acc + item.price * item.qty, 0);
+  // const totalDiscount = items.reduce(
+  //   (acc, item) => acc + item.discount * item.qty,
+  //   0
+  // );
+  // const totalTax = items.reduce((acc, item) => acc + item.tax * item.qty, 0);
+  // const total = subtotal - totalDiscount + totalTax;
+
+  const subtotal = useMemo(
+    () =>
+      items.reduce(
+        (acc, item) => acc + item.productId.currentPrice * item.qty,
+        0
+      ),
+    [items]
   );
-  const totalTax = items.reduce((acc, item) => acc + item.tax * item.qty, 0);
-  const total = subtotal - totalDiscount + totalTax;
+
+  const totalDiscount = useMemo(
+    () =>
+      items.reduce((acc, item) => {
+        const discount =
+          item.productId.previousPrice && item.productId.currentPrice
+            ? (item.productId.previousPrice - item.productId.currentPrice) *
+              item.qty
+            : 0;
+        return acc + discount;
+      }, 0),
+    [items]
+  );
+
+  const totalTax = useMemo(
+    () => items.reduce((acc, item) => acc + item.productId.tax * item.qty, 0),
+    [items]
+  );
+
+  const total = useMemo(
+    () => subtotal - totalDiscount + totalTax,
+    [subtotal, totalDiscount, totalTax]
+  );
+
+  if (loading) {
+    return (
+      <>
+        <div className="flex flex-col min-[900px]:flex-row gap-4">
+          <div className="w-full text-2xl h-[50vh] flex justify-center items-center rounded-md p-4 max-[500px]:p-2">
+            Loading Cart...
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <div className="flex flex-col min-[900px]:flex-row gap-4">
-      <div className="w-full min-[900px]:w-3/4 bg-white border border-[#E0E0E0] rounded-md p-4 max-[500px]:p-2">
-        {items.map((item) => (
-          <div
-            key={item.id}
-            className="flex max-[500px]:flex-col border-b border-[#E0E0E0] py-4"
-          >
-            <img
-              src={item.image}
-              alt={item.name}
-              className="w-20 border border-[#E0E0E0] rounded-md h-20 object-cover"
-            />
-            <div className="ml-4 flex-1">
-              <h2 className="text-lg font-semibold">{item.name}</h2>
-              <p className="text-base text-gray-500">
-                Size: {item.size}, Color: {item.color}, Material:{" "}
-                {item.material}
-                <br /> Seller: {item.seller}
-              </p>
-              <div className="mt-2 flex gap-2">
-                <button
-                  onClick={() => removeItem(item.id)}
-                  className="text-red-500 border border-[#E0E0E0] transition duration-300 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md"
-                >
-                  Remove
-                </button>
-                <button className="text-blue-500 border border-[#E0E0E0] transition duration-300 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md">
-                  Save for later
-                </button>
+      <div className="w-full flex flex-col min-[900px]:w-3/4 bg-white border border-[#E0E0E0] rounded-md p-4 max-[500px]:p-2">
+        {items.length < 1 ? (
+          <div className="h-full flex items-center justify-center">
+            <h1 className="text-xl font-semibold">Your Cart is Empty</h1>
+          </div>
+        ) : (
+          items.map((item) => (
+            <div
+              key={item.productId._id}
+              className="flex max-[500px]:flex-col border-b border-[#E0E0E0] py-4"
+            >
+              <img
+                src={item.productId.image}
+                alt={item.productId.name}
+                className="w-20 border border-[#E0E0E0] rounded-md h-20 object-cover"
+              />
+              <div className="ml-4 flex-1">
+                <h2 className="text-lg font-semibold">{item.productId.name}</h2>
+                <p className="text-base text-gray-500">
+                  Size: {item.productId.sizes[0]}, Color: Any, Material:{" "}
+                  {item.productId.material}
+                  <br /> Seller: {item.productId.supplier.name}
+                </p>
+                <div className="mt-2 flex gap-2">
+                  <button
+                    onClick={() => handleRemoveItem(item.productId._id)}
+                    className="text-red-500 border border-[#E0E0E0] transition duration-300 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md"
+                  >
+                    Remove
+                  </button>
+                  <button className="text-blue-500 border border-[#E0E0E0] transition duration-300 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md">
+                    Save for later
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="text-right flex flex-col max-[500px]:flex-row max-[500px]:justify-end max-[500px]:items-center max-[500px]:gap-3 max-[375px]:flex-col max-[500px]:mt-2">
-              <div className="flex flex-col max-[500px]:flex-row max-[500px]:gap-3 max-[500px]:justify-center max-[500px]:items-center">
+              <div className="text-right flex flex-col max-[500px]:flex-row max-[500px]:justify-end max-[500px]:items-center max-[500px]:gap-3 max-[375px]:flex-col max-[500px]:mt-2">
+                <div className="flex flex-col max-[500px]:flex-row max-[500px]:gap-3 max-[500px]:justify-center max-[500px]:items-center">
+                  <p className="text-lg ">
+                    ${item.productId.currentPrice.toFixed(2)}
+                  </p>
+                  <p className="text-green-500">
+                    {item.productId.previousPrice
+                      ? `- $${(
+                          item.productId.previousPrice -
+                          item.productId.currentPrice
+                        ).toFixed(2)}`
+                      : "- 0$"}
+                  </p>
 
-              <p className="text-lg ">${item.price.toFixed(2)}</p>
-              <p className="text-green-500">- ${item.discount.toFixed(2)}</p>
-              <p className="text-red-500">+ ${item.tax.toFixed(2)}</p>
-              </div>
-              <div className="relative">
-                <select
-                  className="min-[500px]:mt-2 cursor-pointer hover:bg-gray-100 focus:bg-gray-100 border border-[#E0E0E0] appearance-none shadow-2xs rounded-md px-2 pr-10 py-1"
-                  onChange={(e) => updateQty(item.id, e.target.value)}
-                  value={item.qty}
-                >
-                  {[...Array(10).keys()].map((n) => (
-                    <option key={n + 1} value={n + 1}>
-                      Qty: {n + 1}
-                    </option>
-                  ))}
-                </select>
-                <div className="absolute z-10 top-1/2 right-2 transform -translate-y-[33%] pointer-events-none text-2xl text-gray-400">
-                  <MdKeyboardArrowDown />
+                  <p className="text-red-500">
+                    + ${item.productId.tax.toFixed(2)}
+                  </p>
+                </div>
+                <div className="relative">
+                  {/* <select
+                    className="min-[500px]:mt-2 cursor-pointer hover:bg-gray-100 focus:bg-gray-100 border border-[#E0E0E0] appearance-none shadow-2xs rounded-md px-2 pr-10 py-1"
+                    onChange={(e) =>
+                      updateQty(item.productId._id, e.target.value)
+                    }
+                    value={item.qty}
+                  >
+                    {[...Array(12).keys()].map((n) => (
+                      <option key={n + 1} value={n + 1}>
+                        Qty: {n + 1}
+                      </option>
+                    ))}
+                  </select> */}
+
+                  <div className="flex items-center space-x-2 min-[500px]:mt-2">
+                    {/* Decrease Button */}
+                    <button
+                      className="px-3 relative cursor-pointer py-1 bg-gray-200 hover:bg-gray-300 rounded"
+                      onClick={() =>
+                        updateQty(item.productId._id, Math.max(1, item.qty - 1))
+                      }
+                    >
+                      <span className="relative bottom-[1px]">-</span>
+                    </button>
+
+                    {/* Quantity Display */}
+                    <span className="px-4 py-1 border border-gray-300 rounded">
+                      {item.qty}
+                    </span>
+
+                    {/* Increase Button */}
+                    <button
+                      className="px-3 relative cursor-pointer py-1 bg-gray-200 hover:bg-gray-300 rounded"
+                      onClick={() =>
+                        updateQty(item.productId._id, item.qty + 1)
+                      }
+                    >
+                      <span className="relative bottom-[1px]">+</span>
+                    </button>
+                  </div>
+
+                  {/* <div className="absolute z-10 top-1/2 right-2 transform -translate-y-[33%] pointer-events-none text-2xl text-gray-400">
+                    <MdKeyboardArrowDown />
+                  </div> */}
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-        <div className="flex items-center justify-between w-full p-4">
+          ))
+        )}
+        <div className="mt-auto flex items-center justify-between w-full p-4">
           {/* Back to shop button */}
-          <button className="flex justify-center items-center gap-2 px-4 py-2 text-white cursor-pointer transition duration-300 bg-gradient-to-r from-blue-500 to-blue-600 hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-700 rounded-lg">
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 19l-7-7 7-7"
-              ></path>
-            </svg>
-            Back to shop
-          </button>
+          <Link to={"/search"}>
+            <button className="flex justify-center items-center gap-2 px-4 py-2 text-white cursor-pointer transition duration-300 bg-gradient-to-r from-blue-500 to-blue-600 hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-700 rounded-lg">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 19l-7-7 7-7"
+                ></path>
+              </svg>
+              Back to shop
+            </button>
+          </Link>
 
           {/* Remove all button */}
-          <button
-            onClick={clearCart}
-            className="px-4 py-2 text-blue-500 hover:bg-gray-100 duration-300 cursor-pointer transition border font-semibold border-gray-300 rounded-lg"
-          >
-            Remove all
-          </button>
+          {items.length > 0 && (
+            <button
+              onClick={handleClearCart}
+              className="px-4 py-2 text-blue-500 hover:bg-gray-100 duration-300 cursor-pointer transition border font-semibold border-gray-300 rounded-lg"
+            >
+              Remove all
+            </button>
+          )}
         </div>
       </div>
 
@@ -192,7 +429,9 @@ const ShoppingCart = () => {
             </div>
             <div className="flex justify-between">
               <span>Discount:</span>
-              <span className="text-green-500">- ${totalDiscount.toFixed(2)}</span>
+              <span className="text-green-500">
+                - ${totalDiscount.toFixed(2)}
+              </span>
             </div>
             <div className="flex justify-between">
               <span>Tax:</span>

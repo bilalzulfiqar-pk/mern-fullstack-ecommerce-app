@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ProductsStartPriceSection from "../components/ProductsStartPriceSection";
 import InquirySection from "../components/InquirySection";
 import RecommededItems from "../components/RecommededItems";
@@ -8,8 +8,19 @@ import SupplierByRegionSection from "../components/SupplierByRegionSection";
 import NewsletterSection from "../components/NewsletterSection";
 import Footer from "../components/Footer";
 import { ProductContext } from "../context/ProductContext";
+import AuthContext from "../context/AuthContext";
 const Mainpage = () => {
   const { products, loading } = useContext(ProductContext);
+  const { user, logout } = useContext(AuthContext);
+
+  // console.log(user);
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login"); // Redirect to login after logout
+  };
 
   // const categoryList = [
   //   { text: "Automobiles", link: "/category/automobiles" },
@@ -279,20 +290,45 @@ const Mainpage = () => {
                   className="w-11 h-11 rounded-full mr-2"
                   alt="User Avatar"
                 />
-                <span>
-                  Hi, user <br /> let's get started
-                </span>
+                {user ? (
+                  <span>
+                    Hi, {user.name} <br /> Welcome back
+                  </span>
+                ) : (
+                  <span>
+                    Hi, user <br /> let's get started
+                  </span>
+                )}
               </div>
-              <Link to={"/register"}>
-                <button className="cursor-pointer mt-2 block text-center bg-blue-500 text-white border border-gray-300 rounded-lg py-2 text-sm w-full">
-                  Join now
-                </button>
-              </Link>
-              <Link to={"/login"}>
-                <button className="cursor-pointer mt-2 block text-center bg-white text-blue-500 border border-gray-300 rounded-lg py-2 text-sm w-full">
-                  Login
-                </button>
-              </Link>
+              {user ? (
+                <>
+                  <Link to={"/cart"}>
+                    <button className="cursor-pointer mt-2 block text-center bg-blue-500 text-white border border-gray-300 rounded-lg py-2 text-sm w-full">
+                      Go to Cart
+                    </button>
+                  </Link>
+
+                  <button
+                    onClick={handleLogout}
+                    className="cursor-pointer mt-2 block text-center bg-white text-blue-500 border border-gray-300 rounded-lg py-2 text-sm w-full"
+                  >
+                    Log Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to={"/register"}>
+                    <button className="cursor-pointer mt-2 block text-center bg-blue-500 text-white border border-gray-300 rounded-lg py-2 text-sm w-full">
+                      Join now
+                    </button>
+                  </Link>
+                  <Link to={"/login"}>
+                    <button className="cursor-pointer mt-2 block text-center bg-white text-blue-500 border border-gray-300 rounded-lg py-2 text-sm w-full">
+                      Login
+                    </button>
+                  </Link>
+                </>
+              )}
             </div>
             <div className="h-[26%] rounded-xl bg-[#F38332] p-4">
               <p className="text-lg text-white">

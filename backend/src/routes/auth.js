@@ -88,7 +88,7 @@ router.post(
 );
 
 // Middleware to check if user is authenticated
-const auth = require("../../middleware/auth");
+const auth = require("../middleware/auth");
 
 // @route   GET /api/auth/user
 // @desc    Get logged-in user data

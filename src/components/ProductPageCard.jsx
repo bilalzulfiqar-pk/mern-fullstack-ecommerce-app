@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { IoMdCheckmark } from "react-icons/io";
 import { FaRegComment, FaShoppingBasket } from "react-icons/fa";
 import { MdOutlineVerifiedUser } from "react-icons/md";
@@ -8,10 +8,96 @@ import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { FaRegHeart } from "react-icons/fa";
 import { HiXMark } from "react-icons/hi2";
 import StarRating from "./StarRating";
+import AuthContext from "../context/AuthContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const ProductPageCard = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [selectedImage, setSelectedImage] = useState(product.image);
+  const [isAdding, setIsAdding] = useState(false);
+
+  const { user } = useContext(AuthContext);
+
+  const userId = user ? user._id : null;
+  // console.log("userid:",userId);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setSelectedImage(product.image);
+  }, [product]);
+  
+
+  const addToCart = async () => {
+    if (!userId) {
+      navigate("/login");
+      return;
+    }
+
+    if (product.stock <= 0) return; // Prevent adding out-of-stock items
+
+    setIsAdding(true);
+
+    try {
+      // Send request to update cart (increment qty if exists, else add new item)
+      const token = localStorage.getItem("token"); // Get token from localStorage
+
+      if (!token) {
+        console.error("No token found, user must log in");
+        return;
+      }
+
+      const response = await axios.patch(
+        "http://localhost:5000/api/cart/add",
+        { productId: product._id, userId }, // Your payload
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Send token in headers
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        toast.success(
+          <div className="flex justify-center items-center">
+            <span>Product added to cart! 🛒</span>
+            <Link to="/cart">
+              <button className="ml-3 mr-5 cursor-pointer px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-700">
+                View Cart
+              </button>
+            </Link>
+          </div>,
+          {
+            position: "top-right",
+            autoClose: 3000, // Auto close after 3 seconds
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "light",
+            style: { width: "auto", paddingRight: "10px" }, // Increase width
+          }
+        );
+      } else {
+        toast.error("Failed to add product to cart. ❌", {
+          position: "top-right",
+          autoClose: 3000, // Closes after 3 seconds
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      alert("Failed to add product to cart.");
+    } finally {
+      setIsAdding(false);
+    }
+  };
 
   return (
     <div>
@@ -254,10 +340,15 @@ const ProductPageCard = ({ product }) => {
             </div>
             <div>
               <button
-                className={`w-full bg-green-600 hover:bg-green-700 cursor-pointer transition rounded-md font-semibold text-white py-2 disabled:bg-gray-400 disabled:cursor-auto disabled:hover:bg-gray-400 `}
-                disabled={product.stock <= 0}
+                className="w-full cursor-pointer bg-green-600 hover:bg-green-700 transition rounded-md font-semibold text-white py-2 disabled:bg-gray-400 disabled:cursor-auto"
+                disabled={product.stock <= 0 || isAdding}
+                onClick={addToCart}
               >
-                {product.stock > 0 ? "Add To Cart" : "Out of Stock"}
+                {isAdding
+                  ? "Adding..."
+                  : product.stock > 0
+                  ? "Add To Cart"
+                  : "Out of Stock"}
               </button>
             </div>
           </div>

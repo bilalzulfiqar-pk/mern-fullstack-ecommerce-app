@@ -38,7 +38,6 @@ const ProductCardGrid = ({ product }) => {
             )}
 
             {/* Favorite Button */}
-            <Link>
             <button
               className="absolute cursor-pointer right-4 max-[840px]:-top-12 p-2 bg-white shadow-sm border border-[#E0E0E0] rounded-lg"
               onClick={() => setIsFavorite(!isFavorite)}
@@ -49,7 +48,6 @@ const ProductCardGrid = ({ product }) => {
                 <BsHeart className="text-blue-500 text-lg translate-y-[1px]" />
               )}
             </button>
-              </Link>
           </div>
 
           {/* Rating */}

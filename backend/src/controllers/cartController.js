@@ -3,7 +3,7 @@ const Cart = require("../models/cart");
 // Get user's cart
 const getCart = async (req, res) => {
   try {
-    const userId = req.userId; // Fix: req.userId is a string, not an object
+    const userId = req.user.id; // Fix: req.user.id is a string, not an object
     if (!userId)
       return res
         .status(401)
@@ -28,6 +28,7 @@ const getCart = async (req, res) => {
 // Add to cart / Increment quantity
 const addToCart = async (req, res) => {
   try {
+    // Could also use const userId = req.user.id;
     const { userId, productId } = req.body;
 
     if (!userId || !productId) {
@@ -66,7 +67,7 @@ const addToCart = async (req, res) => {
 // Remove item from cart
 const removeFromCart = async (req, res) => {
   try {
-    const userId = req.userId; // Get userId from the middleware
+    const userId = req.user.id; // Get userId from the middleware
     const { productId } = req.params; // Get productId from URL params
 
     if (!userId || !productId) {
@@ -92,7 +93,7 @@ const removeFromCart = async (req, res) => {
 // Update item quantity in cart
 const updateCartQty = async (req, res) => {
   try {
-    const userId = req.userId; // Extract from middleware
+    const userId = req.user.id; // Extract from middleware
     const { productId } = req.params;
     const { qty } = req.body;
 
@@ -123,7 +124,7 @@ const updateCartQty = async (req, res) => {
 
 const clearCart = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.user.id;
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized, userId missing" });
     }

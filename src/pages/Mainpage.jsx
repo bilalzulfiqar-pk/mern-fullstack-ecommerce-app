@@ -248,7 +248,14 @@ const Mainpage = () => {
     return (
       <div className="w-full bg-[#F7FAFC] h-screen">
         <div className="pt-6 max-w-[1580px]  m-auto h-full">
-          <p className="mx-5 min-[1080px]:mx-32">Loading products...</p>
+          <div className="mx-5 min-[1080px]:mx-32">
+            <div className="flex justify-center items-center h-[50vh]">
+              <div
+                className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
+                style={{ animationDuration: "0.5s" }}
+              ></div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -271,7 +278,7 @@ const Mainpage = () => {
           </div>
           {/* Banner section */}
           <div className="w-[55%] bg-[url('/main-tech.png')] bg-cover bg-center min-w-[350px] max-[840px]:w-full">
-            <div className="mt-16 ml-10">
+            <div className="mt-16 ml-10 max-[400px]:ml-5">
               <h1 className="text-4xl">Latest Trends</h1>
               <h2 className="text-4xl font-semibold">Electronics items</h2>
               <Link to={"/search?category=Electronics"}>
@@ -282,8 +289,8 @@ const Mainpage = () => {
             </div>
           </div>
           {/* Right sidebar */}
-          <div className="w-[20%] min-w-[187px] space-y-2 box-border max-[840px]:hidden">
-            <div className="h-[44%] rounded-xl bg-[#E3F0FF] p-3">
+          <div className="w-[20%] min-w-[187px] flex flex-col space-y-2 box-border max-[840px]:hidden">
+            <div className="h-fit rounded-xl bg-[#E3F0FF] p-3">
               <div className="flex items-center mb-3 text-base">
                 <img
                   src="/avatar.jpg"
@@ -291,9 +298,10 @@ const Mainpage = () => {
                   alt="User Avatar"
                 />
                 {user ? (
-                  <span>
-                    Hi, {user.name} <br /> Welcome back
-                  </span>
+                  <div className="flex flex-col">
+                    <span className="line-clamp-2">Hi, {user.name}</span>
+                    <span>Welcome back</span>
+                  </div>
                 ) : (
                   <span>
                     Hi, user <br /> let's get started
@@ -330,12 +338,12 @@ const Mainpage = () => {
                 </>
               )}
             </div>
-            <div className="h-[26%] rounded-xl bg-[#F38332] p-4">
+            <div className="grow rounded-xl bg-[#F38332] p-4 max-[1300px]:p-3 flex items-center justify-center">
               <p className="text-lg text-white">
                 Get US 10$ off with a new supplier
               </p>
             </div>
-            <div className="h-[26%] rounded-xl bg-[#55BDC3] p-4">
+            <div className="grow rounded-xl bg-[#55BDC3] p-4 max-[1300px]:p-3 flex items-center justify-center">
               <p className="text-lg text-white">
                 Send quotes with supplier preferences
               </p>

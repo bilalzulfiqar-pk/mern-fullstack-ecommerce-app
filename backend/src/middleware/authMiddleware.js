@@ -3,13 +3,14 @@ require("dotenv").config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const protect = (req, res, next) => {
+const authMiddleware = (req, res, next) => {
   const authHeader = req.header("Authorization");
 
   if (!authHeader) {
     return res.status(401).json({ message: "No token, authorization denied" });
   }
 
+  // Remove "Bearer " prefix if present (or use authHeader.replace("Bearer ", ""))
   // Extract token from "Bearer <token>"
   const token = authHeader.startsWith("Bearer ")
     ? authHeader.split(" ")[1]
@@ -19,14 +20,9 @@ const protect = (req, res, next) => {
     // Verify token
     const decoded = jwt.verify(token, JWT_SECRET);
 
-    // console.log("Token received:", token);
-    // console.log("Decoded user:", decoded);
-
-    req.user = decoded; // Attach decoded token to req.user
-    req.userId = decoded.user.id; // Attach userId directly for easier access
-
-    // console.log("req.user:", req.user);
-    // console.log("req.userId:", req.userId);
+    // Attach user info to request
+    req.user = decoded.user;
+    // req.userId = decoded.user.id; // Optional: Attach userId directly
 
     next();
   } catch (error) {
@@ -40,4 +36,4 @@ const protect = (req, res, next) => {
   }
 };
 
-module.exports = { protect };
+module.exports = authMiddleware;

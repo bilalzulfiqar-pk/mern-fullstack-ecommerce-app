@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import ShoppingCart from "../components/ShopingCart";
 import { FaLock, FaCommentDots, FaTruck } from "react-icons/fa";
 import DiscountBanner from "../components/DiscountBanner";
+import { useCart } from "../context/CartContext";
 
 const CartPage = () => {
+  const { cartItems } = useCart();
 
-const [cartCount, setcartCount] = useState(null);
+  // console.log(cartItems);
+  const cartCount = cartItems.reduce((count, item) => count + item.qty, 0);
 
   const features = [
     {
@@ -29,9 +32,11 @@ const [cartCount, setcartCount] = useState(null);
     <div>
       <div className="w-full pb-6 bg-[#F7FAFC] h-full">
         <div className="max-w-[1580px] px-5 min-[1081px]:px-32 m-auto h-full">
-          <div className="text-2xl font-semibold py-6">My cart {cartCount ? `(${cartCount})` : ""}</div>
+          <div className="text-2xl font-semibold py-6">
+            My cart {cartCount ? `(${cartCount})` : ""}
+          </div>
           <div>
-            <ShoppingCart setcartCount={setcartCount} />
+            <ShoppingCart />
           </div>
 
           {/* Features  */}

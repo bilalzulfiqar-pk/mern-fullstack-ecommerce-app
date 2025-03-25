@@ -1,9 +1,8 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import AuthContext from "../context/AuthContext";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useCart } from "../context/CartContext";
 
 // const cartItems = [
 //   {
@@ -47,121 +46,8 @@ import Swal from "sweetalert2";
 //   },
 // ];
 
-const ShoppingCart = ({ setcartCount }) => {
-  const { user } = useContext(AuthContext); // Get logged-in user
-  const [items, setItems] = useState([]);
-  const [loading, setloading] = useState(true);
-
-  const token = localStorage.getItem("token"); // Get token from localStorage
-  // console.log(token);
-
-  if (!token) {
-    console.error("No token found, user must log in");
-  }
-
-  // console.log("Cart Items:", items);
-  // console.log(user);
-
-  useEffect(() => {
-    if (user) {
-      axios
-        .get("http://localhost:5000/api/cart", {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then(async (res) => {
-          // console.log("res:", res.data);
-          const cartItems = res.data.items;
-
-          // console.log("Cart Items2:", cartItems);
-
-          // // Fetch product details for each item
-          // const updatedItems = await Promise.all(
-          //   cartItems.map(async (cartItem) => {
-          //     const productRes = await axios.get(
-          //       `http://localhost:5000/api/products/${cartItem.productId}`
-          //     );
-          //     return {
-          //       ...productRes.data,
-          //       qty: cartItem.qty,
-          //       _id: cartItem._id,
-          //     };
-          //   })
-          // );
-
-          setItems(cartItems);
-          setloading(false);
-          setcartCount(res.data.items.length);
-        })
-        .catch((err) => console.error("Error fetching cart:", err));
-    }
-  }, [user]);
-
-  const updateQty = async (id, qty) => {
-    try {
-      await axios.patch(
-        `http://localhost:5000/api/cart/update/${id}`, // Change the route
-        { qty: parseInt(qty) },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      setItems((prevItems) =>
-        prevItems.map((item) =>
-          item.productId._id === id ? { ...item, qty: parseInt(qty) } : item
-        )
-      );
-    } catch (error) {
-      console.error("Error updating quantity:", error.response?.data || error);
-    }
-  };
-
-  const removeItem = async (id) => {
-    try {
-      const response = await axios.delete(
-        `http://localhost:5000/api/cart/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (response.data.success) {
-        setItems((prevItems) =>
-          prevItems.filter((item) => item.productId._id !== id)
-        );
-      } else {
-        console.error("Failed to remove item:", response.data.message);
-      }
-    } catch (error) {
-      console.error(
-        "Error removing item:",
-        error.response?.data?.message || error.message
-      );
-    }
-  };
-
-  const clearCart = async () => {
-    try {
-      await axios.delete("http://localhost:5000/api/cart/clear", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setItems([]); // Clear the cart state
-    } catch (error) {
-      console.error("Error clearing cart:", error);
-    }
-  };
-
-  const saveCartToDB = async (updatedItems) => {
-    if (!user) return;
-
-    try {
-      await axios.put(
-        "http://localhost:5000/api/cart",
-        { items: updatedItems },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-    } catch (error) {
-      console.error("Error saving cart:", error);
-    }
-  };
+const ShoppingCart = () => {
+  const { cartItems, loading, updateQty, removeItem, clearCart } = useCart();
 
   const handleRemoveItem = (productId) => {
     Swal.fire({
@@ -209,26 +95,18 @@ const ShoppingCart = ({ setcartCount }) => {
     });
   };
 
-  // const subtotal = items.reduce((acc, item) => acc + item.price * item.qty, 0);
-  // const totalDiscount = items.reduce(
-  //   (acc, item) => acc + item.discount * item.qty,
-  //   0
-  // );
-  // const totalTax = items.reduce((acc, item) => acc + item.tax * item.qty, 0);
-  // const total = subtotal - totalDiscount + totalTax;
-
   const subtotal = useMemo(
     () =>
-      items.reduce(
+      cartItems.reduce(
         (acc, item) => acc + item.productId.currentPrice * item.qty,
         0
       ),
-    [items]
+    [cartItems]
   );
 
   const totalDiscount = useMemo(
     () =>
-      items.reduce((acc, item) => {
+      cartItems.reduce((acc, item) => {
         const discount =
           item.productId.previousPrice && item.productId.currentPrice
             ? (item.productId.previousPrice - item.productId.currentPrice) *
@@ -236,12 +114,13 @@ const ShoppingCart = ({ setcartCount }) => {
             : 0;
         return acc + discount;
       }, 0),
-    [items]
+    [cartItems]
   );
 
   const totalTax = useMemo(
-    () => items.reduce((acc, item) => acc + item.productId.tax * item.qty, 0),
-    [items]
+    () =>
+      cartItems.reduce((acc, item) => acc + item.productId.tax * item.qty, 0),
+    [cartItems]
   );
 
   const total = useMemo(
@@ -254,7 +133,13 @@ const ShoppingCart = ({ setcartCount }) => {
       <>
         <div className="flex flex-col min-[900px]:flex-row gap-4">
           <div className="w-full text-2xl h-[50vh] flex justify-center items-center rounded-md p-4 max-[500px]:p-2">
-            Loading Cart...
+            <div className="flex justify-center flex-col gap-3 items-center h-[50vh]">
+              {/* Loading Cart... */}
+              <div
+                className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
+                style={{ animationDuration: "0.5s" }}
+              ></div>
+            </div>
           </div>
         </div>
       </>
@@ -264,12 +149,14 @@ const ShoppingCart = ({ setcartCount }) => {
   return (
     <div className="flex flex-col min-[900px]:flex-row gap-4">
       <div className="w-full flex flex-col min-[900px]:w-3/4 bg-white border border-[#E0E0E0] rounded-md p-4 max-[500px]:p-2">
-        {items.length < 1 ? (
-          <div className="h-full flex items-center justify-center">
-            <h1 className="text-xl font-semibold">Your Cart is Empty</h1>
+        {cartItems.length < 1 ? (
+          <div className="h-full flex items-center justify-center p-4 flex-col gap-1">
+            <img src="cart-emty.png" alt="Empty Cart" className="object-cover" />
+            <p className="text-3xl font-semibold">Empty Cart</p>
+            <p className="text-lg">Go find the products you like.</p>
           </div>
         ) : (
-          items.map((item) => (
+          cartItems.map((item) => (
             <div
               key={item.productId._id}
               className="flex max-[500px]:flex-col border-b border-[#E0E0E0] py-4"
@@ -389,7 +276,7 @@ const ShoppingCart = ({ setcartCount }) => {
           </Link>
 
           {/* Remove all button */}
-          {items.length > 0 && (
+          {cartItems.length > 0 && (
             <button
               onClick={handleClearCart}
               className="px-4 py-2 text-blue-500 hover:bg-gray-100 duration-300 cursor-pointer transition border font-semibold border-gray-300 rounded-lg"

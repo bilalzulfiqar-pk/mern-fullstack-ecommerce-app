@@ -13,7 +13,14 @@ const ProductPage = () => {
     return (
       <div className="w-full bg-[#F7FAFC] h-screen">
         <div className="pt-6 max-w-[1580px]  m-auto h-full">
-          <p className="mx-5 min-[1080px]:mx-32">Loading products...</p>
+          <div className="mx-5 min-[1080px]:mx-32">
+            <div className="flex justify-center items-center h-[50vh]">
+              <div
+                className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
+                style={{ animationDuration: "0.5s" }}
+              ></div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -35,10 +42,10 @@ const ProductPage = () => {
   return (
     <div>
       <div className="w-full pb-6 bg-[#F7FAFC] flex justify-center items-center h-full">
-        <div className="max-w-[1580px] min-[1340px]:px-32 px-5 max-[380px]:px-0  h-full flex justify-center items-center">
-          <div className="">
+        <div className="max-w-[1580px] min-[1080px]:px-20 min-[1170px]:px-32 px-5 max-[380px]:px-0 w-full h-full flex justify-center items-center">
+          <div className="w-full">
             {/* Breadcrumb */}
-            <nav className="text-[#8B96A5] text-base py-6">
+            <nav className="text-[#8B96A5] text-base py-6 max-[380px]:px-3">
               <ul className="flex space-x-2">
                 <li>
                   <Link href="#" className="hover:underline">
@@ -72,8 +79,11 @@ const ProductPage = () => {
             <ProductPageCard product={product} />
 
             {/* Related Products  */}
-            <div className="mt-5">
-            <RelatedProducts products={products} category={product.categories[0]}/>
+            <div className="mt-5 max-[390px]:px-3">
+              <RelatedProducts
+                products={products}
+                category={product.categories[0]}
+              />
             </div>
 
             {/* Discounted Banner */}

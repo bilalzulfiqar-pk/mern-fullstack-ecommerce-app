@@ -52,8 +52,7 @@ const SearchPage = () => {
       setSortOption("Discount: High to Low");
     } else if (urlSortOption === "rating_high") {
       setSortOption("Rating: High to Low");
-    }
-    else {
+    } else {
       setSortOption("Featured"); // Reset to default if no sorting parameter is in the URL
     }
   }, [urlSortOption]);
@@ -186,7 +185,14 @@ const SearchPage = () => {
     return (
       <div className="w-full bg-[#F7FAFC] h-screen">
         <div className="pt-6 max-w-[1580px]  m-auto h-full">
-          <p className="mx-5 min-[1080px]:mx-32">Loading products...</p>
+          <div className="mx-5 min-[1080px]:mx-32">
+            <div className="flex justify-center items-center h-[50vh]">
+              <div
+                className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
+                style={{ animationDuration: "0.5s" }}
+              ></div>
+            </div>
+          </div>
         </div>
       </div>
     );

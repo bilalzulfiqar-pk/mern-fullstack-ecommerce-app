@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ProductCardGrid = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const navigate = useNavigate();
+
+  if (!product) return <p>Loading...</p>;
 
   return (
-    <Link to={`/product/${product._id}`}>
       <div
-        className={`border group h-full rounded-lg border-[#E0E0E0] bg-white transition-all overflow-hidden duration-300 ${
+      onClick={() => navigate(`/product/${product._id}`)} // Navigate when clicking anywhere except button
+        className={`border group h-full rounded-lg border-[#E0E0E0] cursor-pointer bg-white transition-all overflow-hidden duration-300 ${
           loaded ? "opacity-100 scale-100" : "opacity-0 min-h-[400px] scale-95"
         }`}
       >
@@ -40,8 +43,11 @@ const ProductCardGrid = ({ product }) => {
             {/* Favorite Button */}
             <button
               className="absolute cursor-pointer right-4 max-[840px]:-top-12 p-2 bg-white shadow-sm border border-[#E0E0E0] rounded-lg"
-              onClick={() => setIsFavorite(!isFavorite)}
-              >
+              onClick={(e) => {
+                e.stopPropagation(); // Prevents event from bubbling up to the Link
+                setIsFavorite(!isFavorite);
+              }}
+            >
               {isFavorite ? (
                 <BsHeartFill className="text-red-500 text-lg translate-y-[1px]" />
               ) : (
@@ -69,7 +75,6 @@ const ProductCardGrid = ({ product }) => {
           <p className="text-gray-700 mt-1 text-base">{product.name}</p>
         </div>
       </div>
-    </Link>
   );
 };
 

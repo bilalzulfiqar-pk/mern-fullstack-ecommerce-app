@@ -272,7 +272,7 @@ const handlePriceChange = (e) => {
                 </button> */}
                   <button
                     onClick={resetPriceFilter} // Resets when clicked
-                    className="mt-3 w-full p-2 bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700 transition-all duration-300"
+                    className="mt-3 w-full p-2 bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-600 transition-all duration-300"
                   >
                     Reset
                   </button>

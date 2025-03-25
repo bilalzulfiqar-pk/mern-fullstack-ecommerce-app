@@ -88,12 +88,12 @@ router.post(
 );
 
 // Middleware to check if user is authenticated
-const auth = require("../middleware/auth");
+const authMiddleware = require("../middleware/authMiddleware");
 
 // @route   GET /api/auth/user
 // @desc    Get logged-in user data
 // @access  Private
-router.get("/user", auth, async (req, res) => {
+router.get("/user", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password"); // Exclude password
     res.json(user);

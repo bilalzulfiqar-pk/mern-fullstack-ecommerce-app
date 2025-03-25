@@ -11,6 +11,7 @@ import StarRating from "./StarRating";
 import AuthContext from "../context/AuthContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useCart } from "../context/CartContext";
 
 const ProductPageCard = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -18,6 +19,7 @@ const ProductPageCard = ({ product }) => {
   const [isAdding, setIsAdding] = useState(false);
 
   const { user } = useContext(AuthContext);
+  const { fetchCartItems, addToCart } = useCart();
 
   const userId = user ? user._id : null;
   // console.log("userid:",userId);
@@ -27,39 +29,28 @@ const ProductPageCard = ({ product }) => {
   useEffect(() => {
     setSelectedImage(product.image);
   }, [product]);
-  
 
-  const addToCart = async () => {
+  const handleAddToCart = async () => {
     if (!userId) {
+      toast.info("You have to login first.", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        theme: "light",
+      });
       navigate("/login");
       return;
     }
-
+  
     if (product.stock <= 0) return; // Prevent adding out-of-stock items
-
+  
     setIsAdding(true);
-
+  
     try {
-      // Send request to update cart (increment qty if exists, else add new item)
-      const token = localStorage.getItem("token"); // Get token from localStorage
-
-      if (!token) {
-        console.error("No token found, user must log in");
-        return;
-      }
-
-      const response = await axios.patch(
-        "http://localhost:5000/api/cart/add",
-        { productId: product._id, userId }, // Your payload
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Send token in headers
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.data.success) {
+      const success = await addToCart(product._id, userId);
+      if (success) {
         toast.success(
           <div className="flex justify-center items-center">
             <span>Product added to cart! 🛒</span>
@@ -71,7 +62,7 @@ const ProductPageCard = ({ product }) => {
           </div>,
           {
             position: "top-right",
-            autoClose: 3000, // Auto close after 3 seconds
+            autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -83,7 +74,7 @@ const ProductPageCard = ({ product }) => {
       } else {
         toast.error("Failed to add product to cart. ❌", {
           position: "top-right",
-          autoClose: 3000, // Closes after 3 seconds
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -101,19 +92,19 @@ const ProductPageCard = ({ product }) => {
 
   return (
     <div>
-      <div className="bg-white border border-[#E0E0E0] rounded-lg p-6 max-[350px]:p-3 grid lg:grid-cols-20 gap-6">
+      <div className="bg-white border border-[#E0E0E0] rounded-lg p-6 max-[350px]:p-3 grid grid-cols-1 w-full min-[950px]:grid-cols-20 gap-6">
         {/* Image Section */}
-        <aside className="lg:col-span-6">
+        <aside className="min-[950px]:col-span-6">
           <figure className="flex flex-col items-center justify-center h-full">
             {/* Main Product Image */}
             <img
               src={selectedImage}
               alt="Product"
-              className="w-[345px] h-[440px] border border-[#E0E0E0] object-contain rounded-md"
+              className="w-[345px] max-[950px]:w-full h-[440px] border border-[#E0E0E0] object-contain rounded-md"
             />
 
             {/* Thumbnails */}
-            <div className="flex gap-2 mt-3 max-[1024px]:max-w-[300px] lg:self-start overflow-auto custom-scrollbar">
+            <div className="flex gap-2 mt-3 max-[1024px]:max-w-[300px] max-[950px]:max-w-fit min-[950px]:self-start overflow-auto custom-scrollbar">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => {
                 const thumbnailSrc = `/Sample/thumb1.jpg`;
 
@@ -122,7 +113,7 @@ const ProductPageCard = ({ product }) => {
                     key={num}
                     src={thumbnailSrc}
                     alt={`Thumbnail ${num}`}
-                    className={`w-16 h-16 p-1 mb-0.5 object-cover border rounded cursor-pointer ${
+                    className={`w-16 h-16 p-1 mb-0.5 object-contain border rounded cursor-pointer ${
                       selectedImage === thumbnailSrc
                         ? "border-blue-500"
                         : "border-[#E0E0E0]"
@@ -136,7 +127,7 @@ const ProductPageCard = ({ product }) => {
         </aside>
 
         {/* Product Info */}
-        <main className="lg:col-span-9">
+        <main className="min-[950px]:col-span-9">
           {product.stock > 0 ? (
             <p className="text-green-600 font-medium flex gap-1 items-center">
               <IoMdCheckmark className="text-2xl" /> In Stock
@@ -285,7 +276,7 @@ const ProductPageCard = ({ product }) => {
         </main>
 
         {/* Seller Info */}
-        <aside className="lg:col-span-5 bg-white">
+        <aside className="min-[950px]:col-span-5 bg-white">
           <div className="border border-[#E0E0E0] rounded-md w-full p-4">
             <div className="flex items-center gap-3">
               <img
@@ -342,7 +333,7 @@ const ProductPageCard = ({ product }) => {
               <button
                 className="w-full cursor-pointer bg-green-600 hover:bg-green-700 transition rounded-md font-semibold text-white py-2 disabled:bg-gray-400 disabled:cursor-auto"
                 disabled={product.stock <= 0 || isAdding}
-                onClick={addToCart}
+                onClick={handleAddToCart}
               >
                 {isAdding
                   ? "Adding..."

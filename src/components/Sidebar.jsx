@@ -1,10 +1,24 @@
-import { useEffect, useRef } from "react";
-import { FaUserCircle, FaGlobe, FaHeadphones, FaBuilding, FaBars } from "react-icons/fa";
+import { useContext, useEffect, useRef } from "react";
+import {
+  FaUserCircle,
+  FaGlobe,
+  FaHeadphones,
+  FaBuilding,
+  FaBars,
+} from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
 import { FiHeart, FiBox, FiList } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const sidebarRef = useRef(null);
+  const { user, logout } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    logout();
+    setIsOpen(false);
+  };
 
   // Close sidebar when clicking outside
   useEffect(() => {
@@ -46,35 +60,67 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         <div className="flex items-start justify-center flex-col space-y-2 p-4 border-b border-[#8B96A5]">
           {/* <FaUserCircle size={32} className="text-gray-500" /> */}
           <img
-                  src="/avatar.jpg"
-                  className="w-11 h-11 rounded-full mr-2 border border-[#E0E0E0]" 
-                  alt="User Avatar"
-                />
-          <span className="text-gray-800 font-medium">
-            <a href="#" className="hover:underline">Sign in</a> | <a href="#" className="hover:underline">Register</a>
-          </span>
+            src="/avatar.jpg"
+            className="w-11 h-11 rounded-full mr-2 border border-[#E0E0E0]"
+            alt="User Avatar"
+          />
+          {user ? (
+            <span>
+              <span className="text-gray-800 font-medium line-clamp-2">
+                {user.name}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="hover:underline cursor-pointer"
+              >
+                Sign out
+              </button>
+            </span>
+          ) : (
+            <span className="text-gray-800 font-medium">
+              <Link to={"/login"} onClick={() => setIsOpen(false)} className="hover:underline">
+                Sign in
+              </Link>{" "}
+              |{" "}
+              <Link to={"/register"} onClick={() => setIsOpen(false)} className="hover:underline">
+                Register
+              </Link>
+            </span>
+          )}
         </div>
 
         {/* Menu Items */}
         <ul className="mt-3 space-y-3">
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
-            <FiList size={20} /> <span className="text-black hover:text-blue-500">Categories</span>
+            <FiList size={20} />{" "}
+            <Link to={"/search"} onClick={() => setIsOpen(false)}>
+              <span className="text-black hover:text-blue-500">Categories</span>
+            </Link>
           </li>
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
-            <FiHeart size={20} /> <span className="text-black hover:text-blue-500">Favorites</span>
+            <FiHeart size={20} />{" "}
+            <span className="text-black hover:text-blue-500">Favorites</span>
           </li>
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
-            <FiBox size={20} /> <span className="text-black hover:text-blue-500">My orders</span>
+            <FiBox size={20} />{" "}
+            <Link to={"/cart"} onClick={() => setIsOpen(false)}>
+              <span className="text-black hover:text-blue-500">My cart</span>
+            </Link>
           </li>
 
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2 border-t border-[#8B96A5] pt-3">
-            <FaGlobe size={20} /> <span className="text-black hover:text-blue-500">English | USD</span>
+            <FaGlobe size={20} />{" "}
+            <span className="text-black hover:text-blue-500">
+              English | USD
+            </span>
           </li>
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
-            <FaHeadphones size={20} /> <span className="text-black hover:text-blue-500">Contact us</span>
+            <FaHeadphones size={20} />{" "}
+            <span className="text-black hover:text-blue-500">Contact us</span>
           </li>
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
-            <FaBuilding size={20} /> <span className="text-black hover:text-blue-500">About</span>
+            <FaBuilding size={20} />{" "}
+            <span className="text-black hover:text-blue-500">About</span>
           </li>
         </ul>
 
@@ -88,7 +134,10 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
       {/* Overlay (Click to Close) */}
       {isOpen && (
-        <div className={`fixed inset-0 bg-black opacity-50 z-40`} onClick={() => setIsOpen(false)}></div>
+        <div
+          className={`fixed inset-0 bg-black opacity-50 z-40`}
+          onClick={() => setIsOpen(false)}
+        ></div>
       )}
     </>
   );

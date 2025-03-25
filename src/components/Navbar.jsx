@@ -5,9 +5,12 @@ import { MdMessage, MdShoppingCart } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { IoMenu } from "react-icons/io5";
 import Sidebar from "./Sidebar";
+import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { cartItems } = useCart();
+  const cartCount = cartItems.reduce((count, item) => count + item.qty, 0);
 
   return (
     <div className="w-full border-b border-[#E0E0E0]">
@@ -60,13 +63,20 @@ const Navbar = () => {
               <p>Orders</p>
             </Link>
           </div>
-          <div>
+          <div className="relative">
             <Link
               to="/cart"
               className="flex justify-center max-[680px]:hidden items-center flex-col text-gray-400 hover:text-black"
             >
               <MdShoppingCart className="text-xl" />
               <p className="max-[840px]:hidden">My Cart</p>
+
+              {/* Notification Badge */}
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-6 h-6 flex justify-center items-center rounded-full">
+                  {cartCount}
+                </span>
+              )}
             </Link>
           </div>
         </div>

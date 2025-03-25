@@ -11,8 +11,13 @@ export const AuthProvider = ({ children }) => {
     () => localStorage.getItem("token") || null
   );
 
+  const [loading, setLoading] = useState(true);
+
   const fetchUser = async () => {
-    if (!token) return;
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
     try {
       //   console.log("Token:", localStorage.getItem("token"));
@@ -27,6 +32,8 @@ export const AuthProvider = ({ children }) => {
         error.response?.data || error.message
       );
       logout(); // Clear token if unauthorized
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -43,7 +50,9 @@ export const AuthProvider = ({ children }) => {
       if (!newToken) throw new Error("No token received");
       setToken(newToken);
       localStorage.setItem("token", newToken);
-      fetchUser(); // Fetch user after login
+      // fetchUser(); // Fetch user after login
+      setLoading(true); // Set loading to true before fetching user
+      await fetchUser(); // Ensure user is fetched before setting loading false
     } catch (error) {
       console.error("Login failed", error.response?.data || error.message);
       throw error;
@@ -77,7 +86,7 @@ export const AuthProvider = ({ children }) => {
   //   console.log("Token:", localStorage.getItem("token"));
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

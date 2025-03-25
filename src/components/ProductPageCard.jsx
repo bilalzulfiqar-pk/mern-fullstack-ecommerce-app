@@ -43,11 +43,11 @@ const ProductPageCard = ({ product }) => {
       navigate("/login");
       return;
     }
-  
+
     if (product.stock <= 0) return; // Prevent adding out-of-stock items
-  
+
     setIsAdding(true);
-  
+
     try {
       const success = await addToCart(product._id, userId);
       if (success) {
@@ -232,8 +232,15 @@ const ProductPageCard = ({ product }) => {
           {/* Details */}
           <div className="mt-4 text-gray-600">
             <div className="grid grid-cols-[auto,1fr] gap-x-4 gap-y-2">
-              <p className="text-gray-400">Price:</p>
-              <p className="text-black">Negotiable</p>
+              <p className="text-gray-400 text-lg">Price:</p>
+              <span className="flex items-center space-x-2">
+                <span className="text-black text-lg font-semibold">
+                  ${product.currentPrice.toFixed(2)}
+                </span>
+                <span className="text-gray-400 line-through">
+                  ${product.previousPrice.toFixed(2)}
+                </span>
+              </span>
 
               <div className="col-span-2 border-t border-[#E0E0E0] my-2"></div>
 

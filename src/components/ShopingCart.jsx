@@ -4,48 +4,6 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useCart } from "../context/CartContext";
 
-// const cartItems = [
-//   {
-//     id: 1,
-//     name: "T-shirts with multiple colors, for men and lady",
-//     size: "medium",
-//     color: "blue",
-//     material: "Plastic",
-//     seller: "Artel Market",
-//     price: 78.99,
-//     qty: 9,
-//     discount: 5,
-//     tax: 2,
-//     image: "cloth/1.jpg",
-//   },
-//   {
-//     id: 2,
-//     name: "T-shirts with multiple colors, for men and lady",
-//     size: "medium",
-//     color: "blue",
-//     material: "Plastic",
-//     seller: "Best factory LLC",
-//     price: 39.0,
-//     qty: 3,
-//     discount: 5,
-//     tax: 1.5,
-//     image: "interior/3.jpg",
-//   },
-//   {
-//     id: 3,
-//     name: "T-shirts with multiple colors, for men and lady",
-//     size: "medium",
-//     color: "blue",
-//     material: "Plastic",
-//     seller: "Artel Market",
-//     price: 170.5,
-//     qty: 1,
-//     discount: 10,
-//     tax: 5,
-//     image: "interior/1.jpg",
-//   },
-// ];
-
 const ShoppingCart = () => {
   const { cartItems, loading, updateQty, removeItem, clearCart } = useCart();
 
@@ -98,7 +56,7 @@ const ShoppingCart = () => {
   const subtotal = useMemo(
     () =>
       cartItems.reduce(
-        (acc, item) => acc + item.productId.currentPrice * item.qty,
+        (acc, item) => acc + item.productId.previousPrice * item.qty,
         0
       ),
     [cartItems]
@@ -151,7 +109,11 @@ const ShoppingCart = () => {
       <div className="w-full flex flex-col min-[900px]:w-3/4 bg-white border border-[#E0E0E0] rounded-md p-4 max-[500px]:p-2">
         {cartItems.length < 1 ? (
           <div className="h-full flex items-center justify-center p-4 flex-col gap-1">
-            <img src="cart-emty.png" alt="Empty Cart" className="object-cover" />
+            <img
+              src="cart-emty.png"
+              alt="Empty Cart"
+              className="object-cover"
+            />
             <p className="text-3xl font-semibold">Empty Cart</p>
             <p className="text-lg">Go find the products you like.</p>
           </div>
@@ -188,7 +150,7 @@ const ShoppingCart = () => {
               <div className="text-right flex flex-col max-[500px]:flex-row max-[500px]:justify-end max-[500px]:items-center max-[500px]:gap-3 max-[375px]:flex-col max-[500px]:mt-2">
                 <div className="flex flex-col max-[500px]:flex-row max-[500px]:gap-3 max-[500px]:justify-center max-[500px]:items-center">
                   <p className="text-lg ">
-                    ${item.productId.currentPrice.toFixed(2)}
+                    ${item.productId.previousPrice.toFixed(2)}
                   </p>
                   <p className="text-green-500">
                     {item.productId.previousPrice

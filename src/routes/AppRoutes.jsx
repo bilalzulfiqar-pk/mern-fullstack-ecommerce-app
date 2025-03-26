@@ -20,7 +20,7 @@ const ProtectedRoute = ({ element, adminOnly }) => {
 
   if (loading)
     return (
-      <div className="text-xl h-[65vh] flex justify-center items-center">
+      <div className={`text-xl ${!adminOnly ? "h-[90vh]" : "h-[90dvh]"} flex -translate-y-22 justify-center items-center`}>
         Verifying User...
       </div>
     );
@@ -60,7 +60,7 @@ const AppRoutes = () => {
         />
         <Route
           path="/admin/edit-product/:id"
-          element={<ProtectedRoute element={<EditProduct />} />}
+          element={<ProtectedRoute element={<EditProduct />} adminOnly />}
         />
       </Routes>
       {!isAdminPage ? <Footer /> : <BottomSection />} {/* Hide Footer in Admin Pages */}

@@ -60,7 +60,7 @@ const AdminPanel = () => {
 
   if (authLoading || loading) {
     return (
-      <div className="flex w-full justify-center flex-col gap-3 items-center h-[50vh]">
+      <div className="flex w-full justify-center flex-col gap-3 items-center h-[90vh] -translate-y-22">
         <div
           className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
           style={{ animationDuration: "0.5s" }}
@@ -81,7 +81,8 @@ const AdminPanel = () => {
         Add New Product
       </Link>
 
-      <table className="w-full max-w-4xl bg-white shadow-lg">
+      {/* Table Design to display products */}
+      {/* <table className="w-full max-w-4xl bg-white shadow-lg">
         <thead>
           <tr className="bg-blue-600 text-white">
             <th className="py-2 px-4">Product</th>
@@ -130,7 +131,57 @@ const AdminPanel = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
+
+      {/* Grid Design to display products */}
+      <div className="max-w-7xl mx-auto p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {products.map((product) => (
+            <div
+              key={product._id}
+              className="bg-white shadow-md rounded-lg p-4 flex flex-col items-center transition-transform transform hover:scale-102"
+            >
+              <Link to={`/product/${product._id}`}>
+                <img
+                  className="aspect-square w-full object-cover rounded-md mb-3"
+                  src={product.image}
+                  alt={product.name}
+                />
+              </Link>
+              <h3 className="text-lg font-semibold text-center">
+                <Link
+                  to={`/product/${product._id}`}
+                  className="hover:text-blue-600"
+                >
+                  {product.name}
+                </Link>
+              </h3>
+              <p className="text-gray-700 mt-1">
+                ${product.currentPrice}{" "}
+                {product.previousPrice > 0 && (
+                  <span className="ml-1 text-gray-500 line-through text-sm">
+                    ${product.previousPrice.toFixed(2)}
+                  </span>
+                )}
+              </p>
+              <div className="flex gap-2 mt-auto pt-1">
+                <Link
+                  to={`/admin/edit-product/${product._id}`}
+                  className="px-3 py-1 font-semibold bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+                >
+                  Edit
+                </Link>
+                <button
+                  onClick={() => deleteProduct(product._id)}
+                  className="px-3 py-1 font-semibold cursor-pointer bg-red-600 text-white rounded-md hover:bg-red-700"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

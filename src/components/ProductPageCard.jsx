@@ -104,7 +104,7 @@ const ProductPageCard = ({ product }) => {
             />
 
             {/* Thumbnails */}
-            <div className="flex gap-2 mt-3 max-[1024px]:max-w-[300px] max-[950px]:max-w-fit min-[950px]:self-start overflow-auto custom-scrollbar">
+            {/* <div className="flex gap-2 mt-3 max-[1024px]:max-w-[300px] max-[950px]:max-w-fit min-[950px]:self-start overflow-auto custom-scrollbar">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => {
                 const thumbnailSrc = `/Sample/thumb1.jpg`;
 
@@ -122,7 +122,7 @@ const ProductPageCard = ({ product }) => {
                   />
                 );
               })}
-            </div>
+            </div> */}
           </figure>
         </aside>
 

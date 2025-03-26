@@ -4,6 +4,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { FaLinkedinIn } from "react-icons/fa";
 import { FaYoutube } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -24,21 +25,21 @@ const Footer = () => {
 
                 {/* Social Icons */}
                 <div className="flex max-[600px]:flex-wrap space-x-3 max-[600px]:gap-y-3 mt-4">
-                  <a href="#" className="text-white hover:text-blue-500 text-lg rounded-full bg-[#BDC4CD] p-2 transition">
+                  <Link href="#" className="text-white hover:text-blue-500 text-lg rounded-full bg-[#BDC4CD] p-2 transition">
                     <FaFacebookF />
-                  </a>
-                  <a href="#" className="text-white hover:text-black text-lg rounded-full bg-[#BDC4CD] p-2 transition">
+                  </Link>
+                  <Link href="#" className="text-white hover:text-black text-lg rounded-full bg-[#BDC4CD] p-2 transition">
                     <FaXTwitter />
-                  </a>
-                  <a href="#" className="text-white hover:text-[#016DAB] text-lg rounded-full bg-[#BDC4CD] p-2 transition">
+                  </Link>
+                  <Link href="#" className="text-white hover:text-[#016DAB] text-lg rounded-full bg-[#BDC4CD] p-2 transition">
                     <FaLinkedinIn />
-                  </a>
-                  <a href="#" className="text-white hover:text-[#dd2a7b] text-lg rounded-full bg-[#BDC4CD] p-2 transition">
+                  </Link>
+                  <Link href="#" className="text-white hover:text-[#dd2a7b] text-lg rounded-full bg-[#BDC4CD] p-2 transition">
                     <AiFillInstagram />
-                  </a>
-                  <a href="#" className="text-white hover:text-red-500 text-lg rounded-full bg-[#BDC4CD] p-2 transition">
+                  </Link>
+                  <Link href="#" className="text-white hover:text-red-500 text-lg rounded-full bg-[#BDC4CD] p-2 transition">
                     <FaYoutube />
-                  </a>
+                  </Link>
                 </div>
               </div>
 
@@ -48,16 +49,16 @@ const Footer = () => {
                   <h3 className="font-semibold text-black">About</h3>
                   <ul className="text-gray-500 space-y-2 mt-3">
                     <li>
-                      <a href="#">About Us</a>
+                      <Link href="#">About Us</Link>
                     </li>
                     <li>
-                      <a href="#">Find Store</a>
+                      <Link href="#">Find Store</Link>
                     </li>
                     <li>
-                      <a href="#">Categories</a>
+                      <Link href="#">Categories</Link>
                     </li>
                     <li>
-                      <a href="#">Blogs</a>
+                      <Link href="#">Blogs</Link>
                     </li>
                   </ul>
                 </div>
@@ -67,16 +68,16 @@ const Footer = () => {
                   <h3 className="font-semibold text-black">Partnership</h3>
                   <ul className="text-gray-500 space-y-2 mt-3">
                     <li>
-                      <a href="#">About Us</a>
+                      <Link href="#">About Us</Link>
                     </li>
                     <li>
-                      <a href="#">Find Store</a>
+                      <Link href="#">Find Store</Link>
                     </li>
                     <li>
-                      <a href="#">Categories</a>
+                      <Link href="#">Categories</Link>
                     </li>
                     <li>
-                      <a href="#">Blogs</a>
+                      <Link href="#">Blogs</Link>
                     </li>
                   </ul>
                 </div>
@@ -86,16 +87,16 @@ const Footer = () => {
                   <h3 className="font-semibold text-black">Information</h3>
                   <ul className="text-gray-500 space-y-2 mt-3">
                     <li>
-                      <a href="#">Help Center</a>
+                      <Link href="#">Help Center</Link>
                     </li>
                     <li>
-                      <a href="#">Money Refund</a>
+                      <Link href="#">Money Refund</Link>
                     </li>
                     <li>
-                      <a href="#">Shipping</a>
+                      <Link href="#">Shipping</Link>
                     </li>
                     <li>
-                      <a href="#">Contact Us</a>
+                      <Link href="#">Contact Us</Link>
                     </li>
                   </ul>
                 </div>
@@ -105,16 +106,16 @@ const Footer = () => {
                   <h3 className="font-semibold text-black">For Users</h3>
                   <ul className="text-gray-500 space-y-2 mt-3">
                     <li>
-                      <a href="#">Login</a>
+                      <Link href="/login">Login</Link>
                     </li>
                     <li>
-                      <a href="#">Register</a>
+                      <Link href="/register">Register</Link>
                     </li>
                     <li>
-                      <a href="#">Settings</a>
+                      <Link href="#">Settings</Link>
                     </li>
                     <li>
-                      <a href="#">My Orders</a>
+                      <Link href="#">My Orders</Link>
                     </li>
                   </ul>
                 </div>
@@ -124,20 +125,20 @@ const Footer = () => {
               <div className="w-fit">
                 <h3 className="font-semibold text-black">Get App</h3>
                 <div className="mt-3">
-                  <a href="#" className="block mb-2">
+                  <Link href="#" className="block mb-2">
                     <img
                       src="/appstore.png"
                       alt="App Store"
                       className="h-10"
                     />
-                  </a>
-                  <a href="#">
+                  </Link>
+                  <Link href="#">
                     <img
                       src="/googleplay.png"
                       alt="Google Play"
                       className="h-10"
                     />
-                  </a>
+                  </Link>
                 </div>
               </div>
               </div>

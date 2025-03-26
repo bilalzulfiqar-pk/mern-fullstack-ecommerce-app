@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import SearchPage from "../pages/SearchPage";
 import ProductPage from "../pages/ProductPage";
 import CartPage from "../pages/CartPage";
@@ -13,6 +13,7 @@ import AuthContext from "../context/AuthContext";
 import AdminPanel from "../pages/AdminPanel";
 import AddProduct from "../pages/AddProduct";
 import EditProduct from "../pages/EditProduct";
+import BottomSection from "../components/BottomSection";
 
 const ProtectedRoute = ({ element, adminOnly }) => {
   const { user, loading } = useContext(AuthContext);
@@ -32,6 +33,9 @@ const ProtectedRoute = ({ element, adminOnly }) => {
 };
 
 const AppRoutes = () => {
+  const location = useLocation();
+  const isAdminPage = location.pathname.startsWith("/admin");
+
   return (
     <>
       <Navbar />
@@ -59,7 +63,7 @@ const AppRoutes = () => {
           element={<ProtectedRoute element={<EditProduct />} />}
         />
       </Routes>
-      <Footer />
+      {!isAdminPage ? <Footer /> : <BottomSection />} {/* Hide Footer in Admin Pages */}
     </>
   );
 };

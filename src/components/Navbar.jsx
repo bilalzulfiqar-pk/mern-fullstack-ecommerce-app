@@ -17,7 +17,7 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  console.log("🚀 ~ Navbar ~ user:", user?.isAdmin);
+  // console.log("🚀 ~ Navbar ~ user:", user?.isAdmin);
 
   // Close dropdown when clicking outside
   useEffect(() => {

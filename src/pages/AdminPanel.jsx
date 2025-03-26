@@ -5,16 +5,18 @@ import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { ProductContext } from "../context/ProductContext";
+import { useCart } from "../context/CartContext";
 
 const AdminPanel = () => {
-  const {products, setProducts, loading} = useContext(ProductContext);
-//   const [loading, setLoading] = useState(true);
+  const { products, setProducts, loading } = useContext(ProductContext);
+  //   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { user, authLoading } = useContext(AuthContext);
   const [token, setToken] = useState(
     () => localStorage.getItem("token") || null
   );
+  const { fetchCartItems } = useCart();
 
   // Redirect if not an admin
   useEffect(() => {
@@ -43,13 +45,14 @@ const AdminPanel = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProducts(products.filter((product) => product._id !== id));
+      fetchCartItems();
       Swal.fire({
-                title: "Deleted!",
-                text: "Product has been deleted.",
-                icon: "success",
-                timer: 1000, // Auto close after 2 seconds
-                showConfirmButton: false,
-              });
+        title: "Deleted!",
+        text: "Product has been deleted.",
+        icon: "success",
+        timer: 1000, // Auto close after 2 seconds
+        showConfirmButton: false,
+      });
     } catch (err) {
       Swal.fire("Error", "Failed to delete product", "error");
     }
@@ -78,9 +81,10 @@ const AdminPanel = () => {
         Add New Product
       </Link>
 
-      <table className="w-full max-w-4xl bg-white rounded-lg shadow-lg">
+      <table className="w-full max-w-4xl bg-white shadow-lg">
         <thead>
           <tr className="bg-blue-600 text-white">
+            <th className="py-2 px-4">Product</th>
             <th className="py-2 px-4">Name</th>
             <th className="py-2 px-4">Price</th>
             <th className="py-2 px-4">Actions</th>
@@ -89,8 +93,26 @@ const AdminPanel = () => {
         <tbody>
           {products.map((product) => (
             <tr key={product._id} className="text-center border-b">
-              <td className="py-2 px-4">{product.name}</td>
-              <td className="py-2 px-4">${product.currentPrice}</td>
+              <td className="py-2 px-4">
+                <Link to={`/product/${product._id}`}>
+                  <img
+                    className="w-16 h-16 object-cover rounded-md"
+                    src={product.image}
+                    alt={product.name}
+                  />
+                </Link>
+              </td>
+              <td className="py-2 px-4">
+                <Link to={`/product/${product._id}`}>{product.name}</Link>
+              </td>
+              <td className="py-2 px-4">
+                ${product.currentPrice}{" "}
+                {product.previousPrice > 0 && (
+                  <span className="ml-1 text-gray-500 line-through">
+                    ${product.previousPrice.toFixed(2)}
+                  </span>
+                )}
+              </td>
               <td className="py-2 px-4">
                 <Link
                   to={`/admin/edit-product/${product._id}`}
@@ -100,7 +122,7 @@ const AdminPanel = () => {
                 </Link>
                 <button
                   onClick={() => deleteProduct(product._id)}
-                  className="px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700"
+                  className="px-3 py-1 cursor-pointer bg-red-600 text-white rounded-md hover:bg-red-700"
                 >
                   Delete
                 </button>

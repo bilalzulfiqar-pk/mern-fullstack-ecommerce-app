@@ -17,7 +17,12 @@ export const CartProvider = ({ children }) => {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
-          setCartItems(res.data.items);
+          // console.log("CART ITEMS AT API",res.data.items);
+
+          // Filter out items where productId is null (removed items)
+          const filteredItems = res.data.items.filter(item => item.productId);
+
+          setCartItems(filteredItems);
           setLoading(false);
         })
         .catch((err) => console.error("Error fetching cart:", err));

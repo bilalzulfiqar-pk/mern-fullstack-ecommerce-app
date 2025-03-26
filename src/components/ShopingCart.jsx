@@ -53,10 +53,26 @@ const ShoppingCart = () => {
     });
   };
 
+  // const subtotal = useMemo(
+  //   () =>
+  //     cartItems.reduce(
+  //       (acc, item) => acc + (item.productId.previousPrice ?? item.productId.currentPrice) * item.qty,
+  //       0
+  //     ),
+  //   [cartItems]
+  // );
+
+  // console.log(cartItems);
+
   const subtotal = useMemo(
     () =>
       cartItems.reduce(
-        (acc, item) => acc + (item.productId.previousPrice ?? item.productId.currentPrice) * item.qty,
+        (acc, item) =>
+          acc +
+          (item.productId.previousPrice > 0
+            ? item.productId.previousPrice
+            : item.productId.currentPrice) *
+            item.qty,
         0
       ),
     [cartItems]
@@ -146,7 +162,10 @@ const ShoppingCart = () => {
               <div className="text-right flex flex-col max-[500px]:flex-row max-[500px]:justify-end max-[500px]:items-center max-[500px]:gap-3 max-[375px]:flex-col max-[500px]:mt-2">
                 <div className="flex flex-col max-[500px]:flex-row max-[500px]:gap-3 max-[500px]:justify-center max-[500px]:items-center">
                   <p className="text-lg ">
-                    ${item.productId?.previousPrice ? item.productId?.previousPrice.toFixed(2) : item.productId?.currentPrice.toFixed(2)}
+                    $
+                    {item.productId?.previousPrice
+                      ? item.productId?.previousPrice.toFixed(2)
+                      : item.productId?.currentPrice.toFixed(2)}
                   </p>
                   <p className="text-green-500">
                     {item.productId.previousPrice
@@ -158,7 +177,10 @@ const ShoppingCart = () => {
                   </p>
 
                   <p className="text-red-500">
-                    + ${item.productId?.tax ? `${item.productId?.tax.toFixed(2)}` : "0"}
+                    + $
+                    {item.productId?.tax
+                      ? `${item.productId?.tax.toFixed(2)}`
+                      : "0"}
                   </p>
                 </div>
                 <div className="relative">

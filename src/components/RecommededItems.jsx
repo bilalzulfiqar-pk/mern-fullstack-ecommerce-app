@@ -11,13 +11,13 @@ const RecommededItems = ({ products }) => {
         {products.map((product, index) => (
           <Link key={index} to={`/product/${product._id}`}>
 
-          <div key={index} className="border h-full group border-[#E0E0E0] cursor-pointer rounded-lg p-3 bg-white transition min-w-56">
+          <div key={index} className="border h-full group flex flex-col border-[#E0E0E0] cursor-pointer rounded-lg p-3 bg-white transition min-w-56">
             {/* Product Image */}
             <div className="w-full h-fit flex justify-center items-center">
               <img
                 src={product.image}
                 alt="product"
-                className="w-full h-full object-cover rounded-md group-hover:scale-105 transition-transform duration-300 ease-in-out"
+                className="w-full aspect-square h-full object-cover rounded-md group-hover:scale-105 transition-transform duration-300 ease-in-out"
               />
             </div>
 

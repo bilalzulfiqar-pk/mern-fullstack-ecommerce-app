@@ -24,7 +24,7 @@ const RelatedProducts = ({ products, category }) => {
                 <img
                   src={product.image}
                   alt="product"
-                  className="w-full h-full object-cover rounded-md group-hover:scale-105 transition-transform duration-300 ease-in-out"
+                  className="w-full aspect-square h-full object-cover rounded-md group-hover:scale-105 transition-transform duration-300 ease-in-out"
                 />
               </div>
 

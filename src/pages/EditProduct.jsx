@@ -39,6 +39,7 @@ const EditProduct = () => {
   });
 
   const [error, setError] = useState(null);
+  const [valueError, setvalueError] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,27 +48,39 @@ const EditProduct = () => {
     }
   }, [id, products]); // Depend on both `id` and `products`
 
-  // // Fetch product details
-  // useEffect(() => {
-  //   const fetchProduct = async () => {
-  //     try {
-  //       const res = await axios.get(`http://localhost:5000/api/products/${id}`);
-  //       setProduct(res.data);
-  //     } catch (err) {
-  //       console.error("Error fetching product:", err);
-  //       setError("Failed to fetch product details");
-  //     }
-  //   };
-  //   fetchProduct();
-  // }, [id]);
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   if (name === "categories" || name === "sizes") {
+  //     setProduct({ ...product, [name]: value.split(",") }); // Convert CSV to array
+  //   } else {
+  //     setProduct({ ...product, [name]: value });
+  //   }
+  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    let updatedProduct = { ...product, [name]: value };
+
+    // Convert CSV to array for categories and sizes
     if (name === "categories" || name === "sizes") {
-      setProduct({ ...product, [name]: value.split(",") }); // Convert CSV to array
-    } else {
-      setProduct({ ...product, [name]: value });
+      updatedProduct[name] = value.split(",");
     }
+
+    // Validation: Ensure previousPrice is not less than currentPrice
+    if (name === "previousPrice" || name === "currentPrice") {
+      if (
+        updatedProduct.previousPrice &&
+        updatedProduct.currentPrice &&
+        Number(updatedProduct.previousPrice) <
+          Number(updatedProduct.currentPrice)
+      ) {
+        setvalueError("Previous price cannot be less than the current price.");
+      } else {
+        setvalueError(null);
+      }
+    }
+
+    setProduct(updatedProduct);
   };
 
   const handleCheckboxChange = (e) => {
@@ -116,6 +129,10 @@ const EditProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (valueError) {
+      return;
+    }
+
     if (!isValidBulkPricing()) {
       setBulkError(true);
       return;
@@ -138,21 +155,23 @@ const EditProduct = () => {
         }
       );
 
-      // Update the products state in ProductContext
-      setProducts((prevProducts) =>
-        prevProducts.map((p) => (p._id === id ? res.data : p))
-      );
-      // console.log(res.data);
+      if (res.data) {
+        // Update the products state in ProductContext
+        setProducts((prevProducts) =>
+          prevProducts.map((p) => (p._id === id ? res.data : p))
+        );
+        // console.log(res.data);
 
-      Swal.fire({
-        title: "Updated!",
-        text: "Product has been updated successfully.",
-        icon: "success",
-        timer: 1000, // Auto close after 2 seconds
-        showConfirmButton: false,
-      });
+        Swal.fire({
+          title: "Updated!",
+          text: "Product has been updated successfully.",
+          icon: "success",
+          timer: 1000, // Auto close after 2 seconds
+          showConfirmButton: false,
+        });
 
-      navigate("/admin"); // Redirect back to admin panel
+        navigate("/admin"); // Redirect back to admin panel
+      }
     } catch (err) {
       console.error("Error updating product:", err);
       setError("Failed to update product");
@@ -222,6 +241,10 @@ const EditProduct = () => {
               onChange={handleChange}
             />
           </div>
+          {/* Show error message if validation fails */}
+          {valueError && (
+            <p className="text-red-500 text-sm mt-1">{valueError}</p>
+          )}
           <div>
             <label className="block font-semibold" htmlFor="tax">
               Tax:
@@ -278,23 +301,33 @@ const EditProduct = () => {
             />
           </div>
 
-          {/* <input
-            type="number"
-            name="rating"
-            placeholder="Rating"
-            className="w-full px-4 py-2 border rounded-md"
-            value={product.rating}
-            onChange={handleChange}
-          /> */}
+          {/* <div>
+            <label className="block font-semibold" htmlFor="rating">
+              Rating:
+            </label>
+            <input
+              type="number"
+              name="rating"
+              placeholder="Rating"
+              className="w-full px-4 py-2 border rounded-md"
+              value={product.rating}
+              onChange={handleChange}
+            />
+          </div> */}
 
-          {/* <input
-            type="text"
-            name="shipping"
-            placeholder="Shipping Details"
-            className="w-full px-4 py-2 border rounded-md"
-            value={product.shipping}
-            onChange={handleChange}
-          /> */}
+          {/* <div>
+            <label className="block font-semibold" htmlFor="shipping">
+              Shipping Details:
+            </label>
+            <input
+              type="text"
+              name="shipping"
+              placeholder="Shipping Details"
+              className="w-full px-4 py-2 border rounded-md"
+              value={product.shipping}
+              onChange={handleChange}
+            />
+          </div> */}
 
           <div>
             <label className="block font-semibold" htmlFor="type">
@@ -380,6 +413,19 @@ const EditProduct = () => {
             />
           </div>
 
+          <div>
+            <label className="block font-semibold" htmlFor="description">
+              Description:
+            </label>
+            <textarea
+              name="description"
+              placeholder="Enter product description"
+              className="w-full px-4 py-2 border rounded-md"
+              value={product.description}
+              onChange={handleChange}
+            />
+          </div>
+
           <h3 className="text-lg font-semibold mt-4">
             Bulk Pricing{" "}
             <p className="text-sm">(Last tier max quantity can be empty)</p>
@@ -443,35 +489,45 @@ const EditProduct = () => {
             </button>
           </div>
 
-          {/* <h3 className="text-lg font-semibold mt-4">Supplier Info</h3>
+          <h3 className="text-lg font-semibold mt-4">Supplier Info</h3>
 
-          <input
-            type="text"
-            name="supplier.name"
-            placeholder="Supplier Name"
-            className="w-full px-4 py-2 border rounded-md"
-            value={product.supplier.name}
-            onChange={(e) =>
-              setProduct({
-                ...product,
-                supplier: { ...product.supplier, name: e.target.value },
-              })
-            }
-          />
+          {/* <div>
+            <label className="block font-semibold" htmlFor="supplier.name">
+              Supplier Name:
+            </label>
+            <input
+              type="text"
+              name="supplier.name"
+              placeholder="Supplier Name"
+              className="w-full px-4 py-2 border rounded-md"
+              value={product.supplier.name}
+              onChange={(e) =>
+                setProduct({
+                  ...product,
+                  supplier: { ...product.supplier, name: e.target.value },
+                })
+              }
+            />
+          </div>
 
-          <input
-            type="text"
-            name="supplier.location"
-            placeholder="Supplier Location"
-            className="w-full px-4 py-2 border rounded-md"
-            value={product.supplier.location}
-            onChange={(e) =>
-              setProduct({
-                ...product,
-                supplier: { ...product.supplier, location: e.target.value },
-              })
-            }
-          /> */}
+          <div>
+            <label className="block font-semibold" htmlFor="supplier.location">
+              Supplier Location:
+            </label>
+            <input
+              type="text"
+              name="supplier.location"
+              placeholder="Supplier Location"
+              className="w-full px-4 py-2 border rounded-md"
+              value={product.supplier.location}
+              onChange={(e) =>
+                setProduct({
+                  ...product,
+                  supplier: { ...product.supplier, location: e.target.value },
+                })
+              }
+            />
+          </div> */}
 
           <label className="flex items-center space-x-2">
             <input

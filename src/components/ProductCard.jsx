@@ -22,11 +22,11 @@ const ProductCard = ({ product }) => {
         src={product.image}
         alt={product.name}
         onLoad={() => setLoaded(true)}
-        className=" h-40 rounded-md object-cover group-hover:scale-107 transition-transform duration-300 ease-in-out"
+        className=" h-40 aspect-square rounded-md object-cover group-hover:scale-107 transition-transform duration-300 ease-in-out"
       />
 
       {/* Product Info */}
-      <div className="flex-1">
+      <div className="w-full px-4">
         <h2 className="text-lg font-semibold text-gray-800">{product.name}</h2>
 
         {/* Pricing */}
@@ -34,7 +34,7 @@ const ProductCard = ({ product }) => {
           <span className="text-xl font-bold text-black">
             ${product.currentPrice.toFixed(2)}
           </span>
-          {product.previousPrice && (
+          {product.previousPrice > 0 && (
             <span className="text-gray-500 line-through">
               ${product.previousPrice.toFixed(2)}
             </span>

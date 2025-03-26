@@ -86,7 +86,9 @@ export const AuthProvider = ({ children }) => {
   //   console.log("Token:", localStorage.getItem("token"));
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+    <AuthContext.Provider
+      value={{ user, login, register, logout, loading, authLoading: loading }}
+    >
       {children}
     </AuthContext.Provider>
   );

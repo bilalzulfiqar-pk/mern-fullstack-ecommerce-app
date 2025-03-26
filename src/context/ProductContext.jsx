@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useState, useEffect } from "react";
 
 export const ProductContext = createContext();
@@ -13,15 +14,11 @@ export const ProductProvider = ({ children }) => {
       setError(null); // Reset error state
 
       try {
-        const res = await fetch("http://localhost:5000/api/products");
-        if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-        const data = await res.json();
-        setProducts(data);
+        const res = await axios.get("http://localhost:5000/api/products");
+        setProducts(res.data);
       } catch (err) {
         console.error("Error fetching products:", err);
-        setError(err.message);
+        setError(err.response?.data?.message || err.message);
       } finally {
         setLoading(false);
       }
@@ -31,7 +28,7 @@ export const ProductProvider = ({ children }) => {
   }, []);
 
   return (
-    <ProductContext.Provider value={{ products, loading, error }}>
+    <ProductContext.Provider value={{ products, setProducts, loading, error }}>
       {children}
     </ProductContext.Provider>
   );

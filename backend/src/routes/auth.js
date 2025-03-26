@@ -26,7 +26,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
 
     try {
-      const { name, email, password } = req.body;
+      const { name, email, password, isAdmin } = req.body;
 
       // Check if the user already exists
       let user = await User.findOne({ email });
@@ -37,11 +37,11 @@ router.post(
       const hashedPassword = await bcrypt.hash(password, salt);
 
       // Create new user
-      user = new User({ name, email, password: hashedPassword });
+      user = new User({ name, email, password: hashedPassword,  isAdmin: isAdmin || false  });
       await user.save();
 
       // Generate JWT Token
-      const payload = { user: { id: user.id } };
+      const payload = { user: { id: user.id,  isAdmin: user.isAdmin } };
       const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1d" });
 
       res.json({ token });
@@ -77,7 +77,7 @@ router.post(
       if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
 
       // Generate JWT Token
-      const payload = { user: { id: user.id } };
+      const payload = { user: { id: user.id, isAdmin: user.isAdmin } };
       const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1d" });
 
       res.json({ token });

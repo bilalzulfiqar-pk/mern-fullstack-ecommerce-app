@@ -17,6 +17,8 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
+  console.log("🚀 ~ Navbar ~ user:", user?.isAdmin);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -74,9 +76,17 @@ const Navbar = () => {
             </button>
 
             {isOpen && (
-              <div className="absolute border z-10 w-32 border-[#E0E0E0] rounded-md bg-white p-2 mt-2 max-[840px]:right-0 max-[840px]:left-auto left-0 shadow-md">
+              <div className="absolute border z-10 w-28 border-[#E0E0E0] rounded-md bg-white p-2 mt-2 max-[840px]:right-0 max-[840px]:left-auto left-0 shadow-md">
                 {user ? (
                   <>
+                    {user?.isAdmin && (
+                      <button
+                        onClick={() => handleNavigation("/admin")}
+                        className="block text-center cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full"
+                      >
+                        Admin
+                      </button>
+                    )}
                     <button
                       onClick={() => handleNavigation("/#")}
                       className="block text-center cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full"

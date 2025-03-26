@@ -10,10 +10,12 @@ import Mainpage from "../pages/Mainpage";
 import Login from "../pages/login";
 import Register from "../pages/register";
 import AuthContext from "../context/AuthContext";
+import AdminPanel from "../pages/AdminPanel";
+import AddProduct from "../pages/AddProduct";
+import EditProduct from "../pages/EditProduct";
 
-const ProtectedRoute = ({ element }) => {
+const ProtectedRoute = ({ element, adminOnly }) => {
   const { user, loading } = useContext(AuthContext);
-  // console.log(user);
 
   if (loading)
     return (
@@ -22,7 +24,11 @@ const ProtectedRoute = ({ element }) => {
       </div>
     );
 
-  return user ? element : <Navigate to="/" />;
+  if (!user) return <Navigate to="/login" />;
+
+  if (adminOnly && !user.isAdmin) return <Navigate to="/" />;
+
+  return element;
 };
 
 const AppRoutes = () => {
@@ -34,13 +40,24 @@ const AppRoutes = () => {
         <Route path="/" element={<Mainpage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/product/:id" element={<ProductPage />} />
-        {/* <Route path="/cart" element={<CartPage />} /> */}
         <Route
           path="/cart"
           element={<ProtectedRoute element={<CartPage />} />}
         />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route
+          path="/admin"
+          element={<ProtectedRoute element={<AdminPanel />} adminOnly />}
+        />
+        <Route
+          path="/admin/add-product"
+          element={<ProtectedRoute element={<AddProduct />} adminOnly />}
+        />
+        <Route
+          path="/admin/edit-product/:id"
+          element={<ProtectedRoute element={<EditProduct />} />}
+        />
       </Routes>
       <Footer />
     </>

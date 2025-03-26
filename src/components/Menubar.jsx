@@ -56,10 +56,10 @@ const categoryList = [
 ].sort((a, b) => a.text.localeCompare(b.text));
 
 const helpList = [
-  { text: "FAQs", link: "/faqs" },
-  { text: "Support", link: "/support" },
-  { text: "Contact Us", link: "/contact" },
-  { text: "Returns", link: "/returns" },
+  { text: "FAQs", link: "#" },
+  { text: "Support", link: "#" },
+  { text: "Contact Us", link: "#" },
+  { text: "Returns", link: "#" },
 ];
 
 const currencyList = ["USD", "PKR", "EUR", "GBP"];

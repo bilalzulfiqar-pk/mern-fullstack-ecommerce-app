@@ -238,7 +238,9 @@ const ProductPageCard = ({ product }) => {
                   ${product.currentPrice.toFixed(2)}
                 </span>
                 <span className="text-gray-400 line-through">
-                  ${product.previousPrice.toFixed(2)}
+                {product?.previousPrice ? `$${product.previousPrice.toFixed(2)}` : ""}
+
+
                 </span>
               </span>
 

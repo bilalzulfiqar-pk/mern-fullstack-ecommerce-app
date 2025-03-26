@@ -1,16 +1,41 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import SearchBar from "./SearchBar";
 import { FaUser, FaHeart } from "react-icons/fa";
 import { MdMessage, MdShoppingCart } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoMenu } from "react-icons/io5";
 import Sidebar from "./Sidebar";
 import { useCart } from "../context/CartContext";
+import AuthContext from "../context/AuthContext";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { cartItems } = useCart();
   const cartCount = cartItems.reduce((count, item) => count + item.qty, 0);
+  const [isOpen, setIsOpen] = useState(false);
+  const { user, logout } = useContext(AuthContext);
+  const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Function to handle navigation and close the dropdown
+  const handleNavigation = (path) => {
+    setIsOpen(false); // Close dropdown before navigation
+    navigate(path);
+  };
 
   return (
     <div className="w-full border-b border-[#E0E0E0]">
@@ -35,16 +60,51 @@ const Navbar = () => {
 
         <SearchBar />
 
+        {/* Icons */}
+
         <div className="flex justify-center items-center gap-5 max-[680px]:hidden">
-          <div className="">
-            <Link
-              to="#"
-              className="flex justify-center items-center flex-col text-gray-400 hover:text-black"
+          {/* {Profile} */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="flex cursor-pointer justify-center items-center flex-col text-gray-400 hover:text-black focus:outline-none"
             >
               <FaUser className="text-xl" />
               <p className="max-[840px]:hidden">Profile</p>
-            </Link>
+            </button>
+
+            {isOpen && (
+              <div className="absolute border z-10 w-32 border-[#E0E0E0] rounded-md bg-white p-2 mt-2 max-[840px]:right-0 max-[840px]:left-auto left-0 shadow-md">
+                {user ? (
+                  <>
+                    <button
+                      onClick={() => handleNavigation("/#")}
+                      className="block text-center cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full"
+                    >
+                      Settings
+                    </button>
+                    <button
+                      onClick={() => {
+                        setIsOpen(false); // Close before logout action
+                        logout();
+                      }}
+                      className="cursor-pointer block text-center w-full hover:bg-red-50 bg-white text-red-500 rounded-lg py-2 text-sm mt-1"
+                    >
+                      Log Out
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => handleNavigation("/login")}
+                    className="block cursor-pointer text-center text-blue-500 hover:bg-blue-50 rounded-lg py-2 text-sm w-full"
+                  >
+                    Log In
+                  </button>
+                )}
+              </div>
+            )}
           </div>
+
           <div className="max-[840px]:hidden">
             <Link
               to="#"
@@ -72,8 +132,8 @@ const Navbar = () => {
               <p className="max-[840px]:hidden">My Cart</p>
 
               {/* Notification Badge */}
-              {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-6 h-6 flex justify-center items-center rounded-full">
+              {user && cartCount > 0 && (
+                <span className="absolute -top-3 -right-0 max-[840px]:-right-3 max-[840px]:-top-3 bg-red-500 text-white text-xs w-6 h-6 flex justify-center items-center rounded-full">
                   {cartCount}
                 </span>
               )}

@@ -89,16 +89,12 @@ const ShoppingCart = () => {
   if (loading) {
     return (
       <>
-        <div className="flex flex-col min-[900px]:flex-row gap-4">
-          <div className="w-full text-2xl h-[50vh] flex justify-center items-center rounded-md p-4 max-[500px]:p-2">
-            <div className="flex justify-center flex-col gap-3 items-center h-[50vh]">
-              {/* Loading Cart... */}
-              <div
-                className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
-                style={{ animationDuration: "0.5s" }}
-              ></div>
-            </div>
-          </div>
+        <div className="flex w-full justify-center flex-col gap-3 items-center h-[50vh]">
+          {/* Loading Cart... */}
+          <div
+            className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
+            style={{ animationDuration: "0.5s" }}
+          ></div>
         </div>
       </>
     );

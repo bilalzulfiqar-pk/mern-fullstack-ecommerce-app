@@ -276,7 +276,7 @@ const Mainpage = () => {
             </ul>
           </div>
           {/* Banner section */}
-          <div className="w-[55%] bg-[url('/main-tech.png')] bg-cover bg-center min-w-[350px] max-[840px]:w-full">
+          <div className="w-[55%] bg-[url('/main-tech.png')] bg-cover bg-center min-w-auto max-[840px]:w-full">
             <div className="mt-16 ml-10 max-[400px]:ml-5">
               <h1 className="text-4xl">Latest Trends</h1>
               <h2 className="text-4xl font-semibold">Electronics items</h2>

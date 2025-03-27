@@ -51,8 +51,8 @@ const Navbar = () => {
           <IoMenu
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             className="text-4xl translate-y-1 hidden max-[840px]:block cursor-pointer max-[680px]:absolute max-[680px]:left-0"
-          />
-          <Link to={"/"} className="flex justify-center items-center gap-1">
+          /> 
+          <Link to={"/"} className="flex justify-center items-center gap-1 max-[680px]:pt-3">
             <img src="/logo.png" alt="" className="w-10 h-10" />
             <div className="logo text-3xl text-[#8cb7f5] -tracking-wider font-bold">
               Brand

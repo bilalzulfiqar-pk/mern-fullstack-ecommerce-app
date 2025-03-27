@@ -33,8 +33,28 @@ const ProductPage = () => {
   if (!product)
     return (
       <div className="w-full bg-[#F7FAFC] h-screen">
-        <div className="pt-6 max-w-[1580px]  m-auto h-full">
-          <p className="mx-5 min-[1080px]:mx-32">Product not found</p>
+        <div className="pt-6 max-w-[1580px]  m-auto h-2/3 flex flex-col gap-3 justify-center items-center">
+          <p className="mx-5 min-[1080px]:mx-32 text-2xl">Product not found</p>
+          {/* Back to shop button */}
+          <Link to={"/"}>
+            <button className="flex justify-center items-center gap-2 px-4 py-2 text-white cursor-pointer transition duration-300 bg-gradient-to-r from-blue-500 to-blue-600 hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-700 rounded-lg">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 19l-7-7 7-7"
+                ></path>
+              </svg>
+              Back to Home
+            </button>
+          </Link>
         </div>
       </div>
     );

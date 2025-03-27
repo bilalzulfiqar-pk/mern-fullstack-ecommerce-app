@@ -24,6 +24,7 @@ const AddProduct = () => {
     customization: "",
     protection: "Return Policy",
     warranty: "",
+    thumbnails: [],
     supplier: {
       name: "",
       location: "",
@@ -105,6 +106,35 @@ const AddProduct = () => {
   // Validation function
   const isValidBulkPricing = () => {
     return product.bulkPricing.every((tier) => tier.minQuantity && tier.price);
+  };
+
+  const handleThumbnailChange = (index, value) => {
+    const updatedThumbnails = [...product.thumbnails];
+    updatedThumbnails[index] = value;
+    setProduct({ ...product, thumbnails: updatedThumbnails });
+  };
+
+  const addThumbnail = () => {
+    if (product.thumbnails.length < 10 && isValidThumbnail()) {
+      setProduct({
+        ...product,
+        thumbnails: [...product.thumbnails, ""],
+      });
+    }
+  };
+
+  const removeThumbnail = (index) => {
+    const updatedThumbnails = [...product.thumbnails];
+    updatedThumbnails.splice(index, 1);
+    setProduct({ ...product, thumbnails: updatedThumbnails });
+  };
+
+  // Validation function: Ensures the last thumbnail input is filled before adding a new one
+  const isValidThumbnail = () => {
+    return (
+      product.thumbnails.length === 0 ||
+      product.thumbnails[product.thumbnails.length - 1]
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -398,6 +428,37 @@ const AddProduct = () => {
             />
           </div>
 
+          <h3 className="text-lg font-semibold mt-4">Thumbnails</h3>
+          {product.thumbnails.map((thumbnail, index) => (
+            <div key={index} className="flex space-x-2 items-center">
+              <input
+                type="text"
+                placeholder={`Thumbnail ${index + 1} URL`}
+                className="w-full px-4 py-2 border rounded-md"
+                value={thumbnail}
+                onChange={(e) => handleThumbnailChange(index, e.target.value)}
+              />
+              <button
+                type="button"
+                className="px-2 cursor-pointer py-1 bg-red-500 hover:bg-red-600 text-white rounded-md"
+                onClick={() => removeThumbnail(index)}
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+
+          <div className="mt-2">
+            <button
+              type="button"
+              className="px-4 py-2 bg-green-500 hover:bg-green-600 cursor-pointer disabled:bg-gray-200 disabled:cursor-not-allowed text-white rounded-md"
+              onClick={addThumbnail}
+              disabled={product.thumbnails.length >= 10 || !isValidThumbnail()}
+            >
+              + Add Thumbnail
+            </button>
+          </div>
+
           <h3 className="text-lg font-semibold mt-4">
             Bulk Pricing{" "}
             <p className="text-sm">(Last tier max quantity can be empty)</p>
@@ -433,7 +494,7 @@ const AddProduct = () => {
               />
               <button
                 type="button"
-                className="px-2 py-1 bg-red-500 text-white rounded-md"
+                className="px-2 py-1 cursor-pointer hover:bg-red-600 bg-red-500 text-white rounded-md"
                 onClick={() => removeBulkPricing(index)}
               >
                 ✕

@@ -27,6 +27,7 @@ const productSchema = new mongoose.Schema({
   customization: String,
   protection: String,
   warranty: String,
+  thumbnails: [String],
   supplier: {
     name: String,
     location: String,

@@ -6,7 +6,6 @@ import RecommededItems from "../components/RecommededItems";
 import ExtraServicesSection from "../components/ExtraServicesSection";
 import SupplierByRegionSection from "../components/SupplierByRegionSection";
 import NewsletterSection from "../components/NewsletterSection";
-import Footer from "../components/Footer";
 import { ProductContext } from "../context/ProductContext";
 import AuthContext from "../context/AuthContext";
 const Mainpage = () => {

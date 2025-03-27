@@ -41,6 +41,7 @@ const insertProducts = async () => {
         customization: "Custom logo and design available",
         protection: "Refund Policy",
         warranty: "1 year warranty",
+        thumbnails: [],
         supplier: {
           name: "Guanjoi Trading LLC",
           location: "Istanbul, Turkiye",
@@ -74,6 +75,7 @@ const insertProducts = async () => {
         customization: "Available for bulk orders",
         protection: "Money-back guarantee",
         warranty: "6 months warranty",
+        thumbnails: [],
         supplier: {
           name: "Jiangsu Textile Ltd.",
           location: "Shanghai, China",
@@ -107,6 +109,7 @@ const insertProducts = async () => {
         customization: "Custom embroidery available",
         protection: "Quality assurance guarantee",
         warranty: "2 years warranty",
+        thumbnails: [],
         supplier: {
           name: "Arctic Gear Inc.",
           location: "Toronto, Canada",
@@ -139,6 +142,7 @@ const insertProducts = async () => {
         customization: "Logo printing available",
         protection: "Warranty claim available",
         warranty: "1-year manufacturer warranty",
+        thumbnails: [],
         supplier: {
           name: "TechSound Electronics",
           location: "Berlin, Germany",
@@ -171,6 +175,7 @@ const insertProducts = async () => {
         customization: "Pot color customization available",
         protection: "Damage replacement policy",
         warranty: "3-month plant health warranty",
+        thumbnails: [],
         supplier: {
           name: "GreenLife Nurseries",
           location: "California, USA",
@@ -203,6 +208,7 @@ const insertProducts = async () => {
         customization: "Brand logo engraving available",
         protection: "1-month replacement policy",
         warranty: "1-year international warranty",
+        thumbnails: [],
         supplier: {
           name: "ActionCam Ltd.",
           location: "Tokyo, Japan",
@@ -235,6 +241,7 @@ const insertProducts = async () => {
         customization: "Available in multiple colors",
         protection: "Warranty Coverage",
         warranty: "2 years",
+        thumbnails: [],
         supplier: {
           name: "Comfort Chairs Ltd.",
           location: "Berlin, Germany",
@@ -273,6 +280,7 @@ const insertProducts = async () => {
         customization: "Custom color and branding available",
         protection: "Refund Policy",
         warranty: "2 years warranty",
+        thumbnails: [],
         supplier: {
           name: "Office Solutions Ltd.",
           location: "Berlin, Germany",
@@ -306,6 +314,7 @@ const insertProducts = async () => {
         customization: "Custom logo available",
         protection: "Breakage Protection",
         warranty: "1 year warranty",
+        thumbnails: [],
         supplier: {
           name: "Fine Dine Co.",
           location: "Paris, France",
@@ -339,6 +348,7 @@ const insertProducts = async () => {
         customization: "Custom wood finish available",
         protection: "Damage Protection",
         warranty: "5 years warranty",
+        thumbnails: [],
         supplier: {
           name: "Luxury Living Inc.",
           location: "Milan, Italy",
@@ -372,6 +382,7 @@ const insertProducts = async () => {
         customization: "Custom color and design available",
         protection: "Refund Policy",
         warranty: "2 years warranty",
+        thumbnails: [],
         supplier: {
           name: "BrightGlow Lighting Co.",
           location: "Shenzhen, China",
@@ -409,6 +420,7 @@ const insertProducts = async () => {
         customization: "Custom colors available",
         protection: "Refund Policy",
         warranty: "1 year warranty",
+        thumbnails: [],
         supplier: {
           name: "Elite Home Furnishings",
           location: "Berlin, Germany",
@@ -446,6 +458,7 @@ const insertProducts = async () => {
         customization: "Custom branding available",
         protection: "Return Policy",
         warranty: "2 years warranty",
+        thumbnails: [],
         supplier: {
           name: "Bosch Appliances",
           location: "Munich, Germany",
@@ -479,11 +492,7 @@ const insertProducts = async () => {
         customization: "Custom engraving available",
         protection: "Return Policy",
         warranty: "1 year warranty",
-        // thumbnails: [
-        //   "/tech/smartphone_front.jpg",
-        //   "/tech/smartphone_back.jpg",
-        //   "/tech/smartphone_side.jpg",
-        // ],
+        thumbnails: [],
         supplier: {
           name: "Xiaomi Official Store",
           location: "Beijing, China",
@@ -517,11 +526,7 @@ const insertProducts = async () => {
         customization: "No customization available",
         protection: "AppleCare+ available",
         warranty: "1 year warranty",
-        // thumbnails: [
-        //   "/tech/iphone12_front.jpg",
-        //   "/tech/iphone12_back.jpg",
-        //   "/tech/iphone12_side.jpg",
-        // ],
+        thumbnails: [],
         supplier: {
           name: "Apple Official Store",
           location: "Cupertino, USA",
@@ -555,11 +560,7 @@ const insertProducts = async () => {
         customization: "Company logo engraving available",
         protection: "Return Policy",
         warranty: "2 years warranty",
-        // thumbnails: [
-        //   "/tech/laptop_front.jpg",
-        //   "/tech/laptop_side.jpg",
-        //   "/tech/laptop_back.jpg",
-        // ],
+        thumbnails: [],
         supplier: {
           name: "TechWorld Ltd.",
           location: "Shenzhen, China",
@@ -593,6 +594,7 @@ const insertProducts = async () => {
         customization: "Custom watch faces available",
         protection: "Refund Policy",
         warranty: "1 year warranty",
+        thumbnails: [],
         supplier: {
           name: "FutureTech Gadgets",
           location: "Shenzhen, China",
@@ -626,6 +628,7 @@ const insertProducts = async () => {
         customization: "Custom branding available",
         protection: "Money-Back Guarantee",
         warranty: "2 years warranty",
+        thumbnails: [],
         supplier: {
           name: "SoundWave Audio Ltd.",
           location: "Berlin, Germany",
@@ -665,6 +668,7 @@ const insertProducts = async () => {
         customization: "Custom logo available",
         protection: "Return Policy",
         warranty: "1 year warranty",
+        thumbnails: [],
         supplier: {
           name: "HomeTech Solutions",
           location: "Istanbul, Turkiye",
@@ -698,6 +702,7 @@ const insertProducts = async () => {
         customization: "Custom fit available",
         protection: "Money-Back Guarantee",
         warranty: "6 months warranty",
+        thumbnails: [],
         supplier: {
           name: "Urban Denim Co.",
           location: "Los Angeles, USA",
@@ -731,6 +736,7 @@ const insertProducts = async () => {
         customization: "Custom logo and name engraving available",
         protection: "Return Policy",
         warranty: "2 years warranty",
+        thumbnails: [],
         supplier: {
           name: "Nomad Gear Co.",
           location: "Istanbul, Turkiye",
@@ -763,6 +769,7 @@ const insertProducts = async () => {
         customization: "Custom engraving available",
         protection: "Money-Back Guarantee",
         warranty: "1 year warranty",
+        thumbnails: [],
         supplier: {
           name: "Elite Accessories Co.",
           location: "Milan, Italy",
@@ -796,6 +803,7 @@ const insertProducts = async () => {
         customization: "Custom fitting available",
         protection: "Return Policy",
         warranty: "1 year warranty",
+        thumbnails: [],
         supplier: {
           name: "Elegant Suits Ltd.",
           location: "London, UK",

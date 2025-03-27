@@ -104,25 +104,25 @@ const ProductPageCard = ({ product }) => {
             />
 
             {/* Thumbnails */}
-            {/* <div className="flex gap-2 mt-3 max-[1024px]:max-w-[300px] max-[950px]:max-w-fit min-[950px]:self-start overflow-auto custom-scrollbar">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => {
-                const thumbnailSrc = `/Sample/thumb1.jpg`;
+            <div className="flex gap-2 w-full mt-3 max-[1024px]:max-w-[300px] max-[950px]:max-w-fit min-[950px]:self-start overflow-x-auto custom-scrollbar">
+              {product.thumbnails.map((thumbnail, index) => {
+                // const thumbnail = `/Sample/thumb1.jpg`;
 
                 return (
                   <img
-                    key={num}
-                    src={thumbnailSrc}
-                    alt={`Thumbnail ${num}`}
+                    key={index}
+                    src={thumbnail}
+                    alt={`Thumbnail ${index + 1}`}
                     className={`w-16 h-16 p-1 mb-0.5 object-contain border rounded cursor-pointer ${
-                      selectedImage === thumbnailSrc
+                      selectedImage === thumbnail
                         ? "border-blue-500"
                         : "border-[#E0E0E0]"
                     }`}
-                    onClick={() => setSelectedImage(thumbnailSrc)}
+                    onClick={() => setSelectedImage(thumbnail)}
                   />
                 );
               })}
-            </div> */}
+            </div>
           </figure>
         </aside>
 

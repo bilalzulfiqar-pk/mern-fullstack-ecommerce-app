@@ -56,6 +56,48 @@ This is a **MERN stack-based** full-stack e-commerce web application. It provide
 ## 🔧 Development Status
 The application is actively being developed. Future updates may include **order processing** and **payment integration**.
 
+## 🛠 How to Run the Project
+
+Follow these steps to set up and run the project locally:
+
+### 1️⃣ Clone the Repository
+```
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
+```
+
+### 2️⃣ Install Dependencies  
+**For Frontend:**
+```
+npm install
+```
+
+**For Backend:**
+```
+cd backend
+npm install
+```
+
+### 3️⃣ Set Up Environment Variables  
+Create a `.env` file in the `backend` directory and add the necessary environment variables. Example:
+```
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+```
+
+### 4️⃣ Run the Project  
+**Start Backend:**
+```
+cd backend
+npm run dev
+```
+
+**Start Frontend:**
+```
+cd frontend
+npm run dev
+```
+
 ---
 
 ### 💡 Want to Contribute?

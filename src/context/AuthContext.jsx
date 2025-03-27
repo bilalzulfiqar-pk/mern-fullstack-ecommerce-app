@@ -3,7 +3,9 @@ import axios from "axios";
 
 const AuthContext = createContext();
 
-const API_URL = "http://localhost:5000/api/auth";
+// const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/auth";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -22,7 +24,7 @@ export const AuthProvider = ({ children }) => {
     try {
       //   console.log("Token:", localStorage.getItem("token"));
 
-      const res = await axios.get(`${API_URL}/user`, {
+      const res = await axios.get(`${API_BASE_URL}/api/auth/user`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser(res.data);
@@ -45,7 +47,10 @@ export const AuthProvider = ({ children }) => {
   // Login function
   const login = async (email, password) => {
     try {
-      const res = await axios.post(`${API_URL}/login`, { email, password });
+      const res = await axios.post(`${API_BASE_URL}/api/auth/login`, {
+        email,
+        password,
+      });
       const newToken = res.data.token;
       if (!newToken) throw new Error("No token received");
       setToken(newToken);
@@ -62,7 +67,7 @@ export const AuthProvider = ({ children }) => {
   // Register function
   const register = async (name, email, password) => {
     try {
-      const res = await axios.post(`${API_URL}/register`, {
+      const res = await axios.post(`${API_BASE_URL}/api/auth/register`, {
         name,
         email,
         password,

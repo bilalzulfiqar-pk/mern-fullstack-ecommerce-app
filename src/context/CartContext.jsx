@@ -9,18 +9,20 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
   const fetchCartItems = async () => {
     if (user && token) {
       axios
-        .get("http://localhost:5000/api/cart", {
+        .get(`${API_BASE_URL}/api/cart`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
           // console.log("CART ITEMS AT API",res.data.items);
 
           // Filter out items where productId is null (removed items)
-          const filteredItems = res.data.items.filter(item => item.productId);
+          const filteredItems = res.data.items.filter((item) => item.productId);
 
           setCartItems(filteredItems);
           setLoading(false);
@@ -36,7 +38,7 @@ export const CartProvider = ({ children }) => {
   const updateQty = async (id, qty) => {
     try {
       const response = await axios.patch(
-        `http://localhost:5000/api/cart/update/${id}`,
+        `${API_BASE_URL}/api/cart/update/${id}`,
         { qty: parseInt(qty) },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -59,12 +61,9 @@ export const CartProvider = ({ children }) => {
 
   const removeItem = async (id) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:5000/api/cart/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await axios.delete(`${API_BASE_URL}/api/cart/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       if (response.data.success) {
         // or simply use fetchCartItems(); but it would be bit slow i think
@@ -81,12 +80,9 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = async () => {
     try {
-      const response = await axios.delete(
-        "http://localhost:5000/api/cart/clear",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await axios.delete(`${API_BASE_URL}/api/cart/clear`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       if (response.data.success) {
         // or simply use fetchCartItems(); but it would be bit slow i think
@@ -104,7 +100,7 @@ export const CartProvider = ({ children }) => {
     if (user && token) {
       try {
         const response = await axios.patch(
-          "http://localhost:5000/api/cart/add",
+          `${API_BASE_URL}/api/cart/add`,
           { productId, userId },
           {
             headers: {

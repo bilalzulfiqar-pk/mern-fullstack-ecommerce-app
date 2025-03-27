@@ -47,14 +47,15 @@ const Navbar = () => {
         <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
         {/* Logo */}
-        <div className="flex justify-center max-[680px]:w-full max-[680px]:justify-start items-center gap-2">
+        <div className="relative flex justify-center max-[680px]:w-full max-[680px]:justify-center items-center gap-4">
           <IoMenu
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-4xl translate-y-1 hidden max-[840px]:block cursor-pointer"
+            className="text-4xl translate-y-1 hidden max-[840px]:block cursor-pointer max-[680px]:absolute max-[680px]:left-0"
           />
-          <Link to={"/"}>
-            <div className="logo text-4xl text-[#8cb7f5] font-semibold">
-              eStore
+          <Link to={"/"} className="flex justify-center items-center gap-1">
+            <img src="/logo.png" alt="" className="w-10 h-10" />
+            <div className="logo text-3xl text-[#8cb7f5] -tracking-wider font-bold">
+              Brand
             </div>
           </Link>
         </div>

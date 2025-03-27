@@ -11,6 +11,7 @@ connectDB();
 
 // CORS to allow frontend requests
 // app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+
 app.use(cors());
 
 app.use(express.json()); // Middleware to parse JSON
@@ -25,5 +26,5 @@ app.use("/api/cart", cartRoutes);
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on PORT:${PORT}`);
 });

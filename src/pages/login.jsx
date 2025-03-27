@@ -33,6 +33,7 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            autoComplete="username"
           />
           <input
             type="password"
@@ -41,8 +42,12 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            autoComplete="current-password"
           />
-          <button type="submit" className="w-full cursor-pointer bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">
+          <button
+            type="submit"
+            className="w-full cursor-pointer bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+          >
             Login
           </button>
         </form>

@@ -5,6 +5,8 @@ import Swal from "sweetalert2";
 import { ProductContext } from "../context/ProductContext";
 
 const AddProduct = () => {
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
   const [product, setProduct] = useState({
     name: "",
     image: "",
@@ -156,13 +158,9 @@ const AddProduct = () => {
     try {
       const token = localStorage.getItem("token"); // Retrieve token from localStorage
 
-      const res = await axios.post(
-        "http://localhost:5000/api/products",
-        product,
-        {
-          headers: { Authorization: `Bearer ${token}` }, // Pass token in headers
-        }
-      );
+      const res = await axios.post(`${API_BASE_URL}/api/products`, product, {
+        headers: { Authorization: `Bearer ${token}` }, // Pass token in headers
+      });
 
       if (res.data) {
         setProducts((prevProducts) => [...prevProducts, res.data]);

@@ -17,6 +17,8 @@ const AdminPanel = () => {
     () => localStorage.getItem("token") || null
   );
   const { fetchCartItems } = useCart();
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
   // Redirect if not an admin
   useEffect(() => {
@@ -41,7 +43,7 @@ const AdminPanel = () => {
     if (!confirmDelete.isConfirmed) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/products/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/products/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProducts(products.filter((product) => product._id !== id));

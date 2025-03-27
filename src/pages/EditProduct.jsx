@@ -9,6 +9,8 @@ const EditProduct = () => {
   const [updating, setUpdating] = useState(false); // State for updating
   const { id } = useParams(); // Get product ID from URL
   const [bulkError, setBulkError] = useState(false);
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
   const [product, setProduct] = useState({
     name: "",
@@ -178,7 +180,7 @@ const EditProduct = () => {
       const token = localStorage.getItem("token"); // Retrieve token from localStorage
 
       const res = await axios.put(
-        `http://localhost:5000/api/products/${id}`,
+        `${API_BASE_URL}/api/products/${id}`,
         product,
         {
           headers: { Authorization: `Bearer ${token}` }, // Pass token in headers

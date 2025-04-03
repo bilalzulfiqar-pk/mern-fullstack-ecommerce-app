@@ -262,7 +262,7 @@ const Mainpage = () => {
   return (
     <div className="w-full bg-[#F7FAFC] h-full">
       <div className="pt-6 max-w-[1580px] m-auto h-full">
-        <div className="mx-5 min-[1080px]:mx-32 h-[425px] bg-white rounded-lg flex gap-4 overflow-hidden border border-[#E0E0E0] p-3">
+        <div className="mx-5 min-[1080px]:mx-32 h-[425px] max-[600px]:h-[250px] max-[840px]:p-0 bg-white rounded-lg flex gap-4 overflow-hidden border border-[#E0E0E0] p-3">
           {/* Category Section */}
           <div className="min-w-[200px] w-[25%] max-[840px]:hidden">
             <ul className="">
@@ -276,12 +276,12 @@ const Mainpage = () => {
             </ul>
           </div>
           {/* Banner section */}
-          <div className="w-[55%] bg-[url('/main-tech.png')] bg-cover bg-center min-w-auto max-[840px]:w-full">
-            <div className="mt-16 ml-10 max-[400px]:ml-5">
-              <h1 className="text-4xl">Latest Trends</h1>
-              <h2 className="text-4xl font-semibold">Electronics items</h2>
+          <div className="w-[55%] bg-[url('/main-tech.png')] max-[840px]:-mt-[1px] bg-cover bg-center max-[840px]:w-full">
+            <div className="mt-16 ml-10 max-[600px]:mt-5 max-[600px]:ml-5">
+              <h1 className="text-4xl max-[600px]:text-2xl">Latest Trends</h1>
+              <h2 className="text-4xl max-[600px]:text-2xl font-semibold">Electronics items</h2>
               <Link to={"/search?category=Electronics"}>
-                <button className="mt-4 text-xl font-semibold bg-white py-2 pb-3 px-4 rounded-lg cursor-pointer hover:bg-slate-100 transition duration-300">
+                <button className="mt-4 text-xl max-[600px]:text-base font-semibold bg-white py-2 pb-3 px-4 max-[600px]:px-3 max-[600px]:py-2 rounded-lg cursor-pointer hover:bg-slate-100 transition duration-300">
                   Learn more
                 </button>
               </Link>

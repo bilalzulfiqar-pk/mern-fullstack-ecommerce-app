@@ -5,15 +5,19 @@ import {
   FaHeadphones,
   FaBuilding,
   FaBars,
+  FaUser,
 } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
 import { FiHeart, FiBox, FiList } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const sidebarRef = useRef(null);
   const { user, logout } = useContext(AuthContext);
+  const { cartItems } = useCart();
+  const cartCount = cartItems.reduce((count, item) => count + item.qty, 0);
 
   const handleLogout = () => {
     logout();
@@ -78,11 +82,19 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             </span>
           ) : (
             <span className="text-gray-800 font-medium">
-              <Link to={"/login"} onClick={() => setIsOpen(false)} className="hover:underline">
+              <Link
+                to={"/login"}
+                onClick={() => setIsOpen(false)}
+                className="hover:underline"
+              >
                 Sign in
               </Link>{" "}
               |{" "}
-              <Link to={"/register"} onClick={() => setIsOpen(false)} className="hover:underline">
+              <Link
+                to={"/register"}
+                onClick={() => setIsOpen(false)}
+                className="hover:underline"
+              >
                 Register
               </Link>
             </span>
@@ -101,12 +113,34 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             <FiHeart size={20} />{" "}
             <span className="text-black hover:text-blue-500">Favorites</span>
           </li>
-          <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
+          <li className="flex relative items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
             <FiBox size={20} />{" "}
-            <Link to={"/cart"} onClick={() => setIsOpen(false)}>
-              <span className="text-black hover:text-blue-500">My cart</span>
+            <Link
+              to={"/cart"}
+              onClick={() => setIsOpen(false)}
+              className="relative"
+            >
+              <span className="text-black hover:text-blue-500">My Cart</span>
+              {/* Notification Badge */}
+              {user && cartCount > 0 && (
+                <span className="absolute pr-[1px] -top-1/2 -right-1/3 bg-red-500 text-white text-[10px] w-5 h-5 flex justify-center items-center rounded-full">
+                  {cartCount}
+                </span>
+              )}
             </Link>
           </li>
+          {user?.isAdmin && (
+            <li className="flex relative items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
+            <FaUser size={20} />{" "}
+            <Link
+              to={"/admin"}
+              onClick={() => setIsOpen(false)}
+              className="relative"
+            >
+              <span className="text-black hover:text-blue-500">Admin Panel</span>
+            </Link>
+          </li>
+          )}
 
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2 border-t border-[#8B96A5] pt-3">
             <FaGlobe size={20} />{" "}

@@ -100,7 +100,7 @@ const ProductPageCard = ({ product }) => {
             <img
               src={selectedImage}
               alt="Product"
-              className="w-[345px] max-[950px]:w-full h-[440px] border border-[#E0E0E0] object-contain rounded-md"
+              className="w-full p-5 h-[440px] border border-[#E0E0E0] object-contain rounded-md"
             />
 
             {/* Thumbnails */}

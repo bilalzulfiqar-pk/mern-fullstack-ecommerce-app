@@ -133,28 +133,28 @@ const ShoppingCart = () => {
           cartItems.map((item) => (
             <div
               key={item.productId._id}
-              className="flex max-[500px]:flex-col border-b border-[#E0E0E0] py-4"
+              className="flex max-[500px]:flex-col max-[500px]:justify-center max-[500px]:items-center border-b border-[#E0E0E0] py-4"
             >
               <img
                 src={item.productId.image}
                 alt={item.productId.name}
-                className="w-20 border border-[#E0E0E0] rounded-md h-20 object-cover"
+                className="w-20 border border-[#E0E0E0] max-[500px]:w-40 max-[500px]:h-40 rounded-md h-20 object-cover"
               />
-              <div className="ml-4 flex-1">
-                <h2 className="text-lg font-semibold">{item.productId.name}</h2>
-                <p className="text-base text-gray-500">
+              <div className="ml-4 max-[500px]:mx-1 max-[500px]:w-full flex flex-col max-[500px]:items-center flex-1">
+                <h2 className="text-lg font-semibold max-[500px]:text-center">{item.productId.name}</h2>
+                <p className="text-base text-gray-500 max-[500px]:text-center">
                   Size: {item.productId.sizes[0]}, Color: Any, Material:{" "}
                   {item.productId.material}
                   <br /> Seller: {item.productId.supplier.name}
                 </p>
-                <div className="mt-2 flex gap-2">
+                <div className="mt-2 flex gap-2 w-full max-w-[300px] max-[500px]:items-center max-[500px]:justify-center">
                   <button
                     onClick={() => handleRemoveItem(item.productId._id)}
-                    className="text-red-500 border border-[#E0E0E0] transition duration-300 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md"
+                    className="text-red-500 border border-[#E0E0E0] transition duration-300 cursor-pointer hover:bg-gray-100 px-2 max-[500px]:w-1/2 py-1 rounded-md"
                   >
                     Remove
                   </button>
-                  <button className="text-blue-500 border border-[#E0E0E0] transition duration-300 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md">
+                  <button className="text-blue-500 border border-[#E0E0E0] transition duration-300 cursor-pointer hover:bg-gray-100 max-[500px]:w-1/2 px-2 py-1 rounded-md">
                     Save for later
                   </button>
                 </div>

@@ -39,28 +39,42 @@ const placeOrder = async (req, res) => {
     );
 
     // Calculate subtotal using previousPrice if it exists, else currentPrice
-    const subtotal = orderProducts.reduce((acc, item) => {
-      const priceToUse =
-        item.previousPrice > 0 ? item.previousPrice : item.price;
-      return acc + priceToUse * item.qty;
-    }, 0);
+    const subtotal = parseFloat(
+      orderProducts
+        .reduce((acc, item) => {
+          const priceToUse =
+            item.previousPrice > 0 ? item.previousPrice : item.price;
+          return acc + priceToUse * item.qty;
+        }, 0)
+        .toFixed(2)
+    );
 
     // Calculate total discount
-    const totalDiscount = orderProducts.reduce((acc, item) => {
-      const hasDiscount = item.previousPrice > 0 && item.price;
-      const discount = hasDiscount
-        ? (item.previousPrice - item.price) * item.qty
-        : 0;
-      return acc + discount;
-    }, 0);
+    const totalDiscount = parseFloat(
+      orderProducts
+        .reduce((acc, item) => {
+          const hasDiscount = item.previousPrice > 0 && item.price;
+          const discount = hasDiscount
+            ? (item.previousPrice - item.price) * item.qty
+            : 0;
+          return acc + discount;
+        }, 0)
+        .toFixed(2)
+    );
 
     // Calculate total tax
-    const totalTax = orderProducts.reduce((acc, item) => {
-      return acc + (item.tax || 0) * item.qty;
-    }, 0);
+    const totalTax = parseFloat(
+      orderProducts
+        .reduce((acc, item) => {
+          return acc + (item.tax || 0) * item.qty;
+        }, 0)
+        .toFixed(2)
+    );
 
     // Final total price
-    const totalPrice = subtotal - totalDiscount + totalTax;
+    const totalPrice = parseFloat(
+      (subtotal - totalDiscount + totalTax).toFixed(2)
+    );
 
     // Create the order
     const order = new Order({

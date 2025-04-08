@@ -148,6 +148,7 @@ export const CartProvider = ({ children }) => {
         setCartItems,
         fetchCartItems,
         addToCart,
+        user,
       }}
     >
       {children}

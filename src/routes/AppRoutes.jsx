@@ -14,14 +14,19 @@ import AdminPanel from "../pages/AdminPanel";
 import AddProduct from "../pages/AddProduct";
 import EditProduct from "../pages/EditProduct";
 import BottomSection from "../components/BottomSection";
+import CheckoutPage from "../pages/CheckoutPage";
 
 const ProtectedRoute = ({ element, adminOnly }) => {
   const { user, loading } = useContext(AuthContext);
 
   if (loading)
     return (
-      <div className={`text-xl ${!adminOnly ? "h-[90vh]" : "h-[90dvh]"} flex -translate-y-22 justify-center items-center`}>
-        Verifying User...
+      <div
+        className={`text-xl ${
+          !adminOnly ? "h-[90vh]" : "h-[90dvh]"
+        } flex justify-center bg-[#F7FAFC] items-center`}
+      >
+        <div className="-translate-y-17">Verifying User...</div>
       </div>
     );
 
@@ -48,6 +53,10 @@ const AppRoutes = () => {
           path="/cart"
           element={<ProtectedRoute element={<CartPage />} />}
         />
+        <Route
+          path="/checkout"
+          element={<ProtectedRoute element={<CheckoutPage />} />}
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route
@@ -63,7 +72,8 @@ const AppRoutes = () => {
           element={<ProtectedRoute element={<EditProduct />} adminOnly />}
         />
       </Routes>
-      {!isAdminPage ? <Footer /> : <BottomSection />} {/* Hide Footer in Admin Pages */}
+      {!isAdminPage ? <Footer /> : <BottomSection />}{" "}
+      {/* Hide Footer in Admin Pages */}
     </>
   );
 };

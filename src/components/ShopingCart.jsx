@@ -141,7 +141,9 @@ const ShoppingCart = () => {
                 className="w-20 border border-[#E0E0E0] max-[500px]:w-40 max-[500px]:h-40 rounded-md h-20 object-cover"
               />
               <div className="ml-4 max-[500px]:mx-1 max-[500px]:w-full flex flex-col max-[500px]:items-center flex-1">
-                <h2 className="text-lg font-semibold max-[500px]:text-center">{item.productId.name}</h2>
+                <h2 className="text-lg font-semibold max-[500px]:text-center">
+                  {item.productId.name}
+                </h2>
                 <p className="text-base text-gray-500 max-[500px]:text-center">
                   Size: {item.productId.sizes[0]}, Color: Any, Material:{" "}
                   {item.productId.material}
@@ -313,9 +315,14 @@ const ShoppingCart = () => {
           </div>
 
           {/* Checkout Button */}
-          <button className="w-full bg-[#00B517] text-white py-4 text-lg mt-4 rounded-lg hover:bg-[#009814] duration-300 cursor-pointer transition">
-            Checkout
-          </button>
+          <Link to={"/checkout"}>
+            <button
+              disabled={cartItems.length < 1}
+              className="w-full bg-[#00B517] text-white py-4 text-lg mt-4 rounded-lg hover:bg-[#009814] duration-300 cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Checkout
+            </button>
+          </Link>
 
           {/* Payment Methods */}
           {/* <div className="flex justify-center space-x-2 mt-4">

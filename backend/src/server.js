@@ -19,10 +19,13 @@ app.use(express.json()); // Middleware to parse JSON
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/auth");
 const cartRoutes = require("./routes/cartRoutes");
+const orderRoutes = require('./routes/orderRoutes');
+
 
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes); // Authentication routes
 app.use("/api/cart", cartRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Start server
 app.listen(PORT, () => {

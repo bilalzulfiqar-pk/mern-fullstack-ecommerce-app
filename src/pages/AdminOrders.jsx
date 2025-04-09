@@ -69,7 +69,7 @@ const AdminOrders = () => {
         title: "Success",
         text: `Order marked as ${newStatus}`,
         icon: "success",
-        timer: 3000, // auto-close after 2 seconds
+        timer: 5000, // auto-close after 2 seconds
         // showConfirmButton: false, // hide the OK button
       });
     } catch (err) {

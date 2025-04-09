@@ -141,13 +141,16 @@ const OrderDetails = () => {
                   <strong>Subtotal:</strong> ${order.subtotal.toFixed(2)}
                 </p>
                 <p>
-                  <strong>Discount:</strong> ${order.totalDiscount.toFixed(2)}
+                  <strong>Discount:</strong>{" "}
+                  <span> ${order.totalDiscount.toFixed(2)}</span>
                 </p>
                 <p>
-                  <strong>Tax:</strong> ${order.totalTax.toFixed(2)}
+                  <strong>Tax:</strong>{" "}
+                  <span>${order.totalTax.toFixed(2)}</span>
                 </p>
                 <p className="text-2xl font-semibold text-gray-800">
-                  <strong>Total Price:</strong> ${order.totalPrice.toFixed(2)}
+                  <strong>Total Price:</strong>{" "}
+                  <span>${order.totalPrice.toFixed(2)}</span>
                 </p>
               </div>
             </div>

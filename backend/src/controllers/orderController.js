@@ -121,6 +121,52 @@ const getAllOrders = async (req, res) => {
   }
 };
 
+// Route to get all orders (with optional filtering by status)
+const getOrders = async (req, res) => {
+  try {
+    const { status, page = 1, limit = 10 } = req.query;
+
+    // console.log("Query Params:", req.query); // Debugging line
+    // console.log("Page:", page); // Debugging line
+
+    const filter = status && status !== "all" ? { status } : {}; // Handle status filter
+    const skip = (page - 1) * limit; // Pagination logic
+
+    // Count total orders matching the filter
+    const totalOrders = await Order.countDocuments(filter);
+    const totalPages = Math.ceil(totalOrders / limit);
+
+    // Fetch orders with pagination and filters
+    const orders = await Order.find(filter)
+      .skip(skip)
+      .limit(Number(limit))
+      .sort({ createdAt: -1 })
+      .populate("user", "name email")
+      .populate("products.productId", "name image");
+
+    res.status(200).json({ orders, totalPages });
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching orders", error: err.message });
+  }
+};
+
+// Route to get order details by ID (Admin only)
+const getOrderDetails = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id)
+      .populate("user", "name email")
+      .populate("products.productId", "name image");
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json(order);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching order details", error: err.message });
+  }
+};
+
 // Update order status (Admin only)
 const updateOrderStatus = async (req, res) => {
   const { orderId } = req.params;
@@ -155,4 +201,4 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
-module.exports = { placeOrder, getAllOrders, updateOrderStatus };
+module.exports = { placeOrder, getAllOrders, updateOrderStatus, getOrders, getOrderDetails };

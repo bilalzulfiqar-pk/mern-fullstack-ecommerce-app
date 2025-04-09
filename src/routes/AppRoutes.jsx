@@ -16,6 +16,7 @@ import EditProduct from "../pages/EditProduct";
 import BottomSection from "../components/BottomSection";
 import CheckoutPage from "../pages/CheckoutPage";
 import AdminOrders from "../pages/AdminOrders";
+import OrderDetails from "../pages/OrderDetails";
 
 const ProtectedRoute = ({ element, adminOnly }) => {
   const { user, loading } = useContext(AuthContext);
@@ -68,6 +69,10 @@ const AppRoutes = () => {
         <Route
           path="/admin/orders"
           element={<ProtectedRoute element={<AdminOrders />} adminOnly />}
+        />
+        <Route
+          path="/admin/orders/:id" 
+          element={<ProtectedRoute element={<OrderDetails />} adminOnly />}
         />
         <Route
           path="/admin/add-product"

@@ -1,11 +1,7 @@
 const express = require("express");
-const { placeOrder } = require("../controllers/orderController");
+const { placeOrder, getOrders, updateOrderStatus, getAllOrders, getOrderDetails } = require("../controllers/orderController");
 const authMiddleware = require("../middleware/authMiddleware");
 const adminMiddleware = require("../middleware/adminMiddleware");
-const {
-  getAllOrders,
-  updateOrderStatus,
-} = require("../controllers/orderController");
 
 const router = express.Router();
 
@@ -13,7 +9,10 @@ const router = express.Router();
 router.post("/place-order", authMiddleware, placeOrder);
 
 // Fetch all orders (Admin only)
-router.get("/", authMiddleware, adminMiddleware, getAllOrders);
+// router.get("/", authMiddleware, adminMiddleware, getAllOrders);
+
+// Route to get all orders (with optional status filter and pagination)
+router.get("/", authMiddleware, adminMiddleware, getOrders);
 
 // Update order status (Admin only)
 router.patch(
@@ -22,5 +21,8 @@ router.patch(
   adminMiddleware,
   updateOrderStatus
 );
+
+// Route to get order details by ID (Admin only)
+router.get("/:id", authMiddleware, adminMiddleware, getOrderDetails);
 
 module.exports = router;

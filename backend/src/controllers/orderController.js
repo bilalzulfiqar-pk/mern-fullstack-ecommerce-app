@@ -99,4 +99,60 @@ const placeOrder = async (req, res) => {
   }
 };
 
-module.exports = { placeOrder };
+// Get all orders (Admin only)
+const getAllOrders = async (req, res) => {
+  try {
+    // // Check if the user is admin
+    // const user = await User.findById(req.user.id);
+    // if (!user || !user.isAdmin) {
+    //   return res.status(403).json({ message: "Access denied. Admins only." });
+    // }
+
+    const orders = await Order.find()
+      .sort({ createdAt: -1 })
+      .populate("user", "name email") // Populate user name/email
+      .populate("products.productId", "name image"); // Populate product info
+
+    res.status(200).json(orders);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error fetching orders", error: err.message });
+  }
+};
+
+// Update order status (Admin only)
+const updateOrderStatus = async (req, res) => {
+  const { orderId } = req.params;
+  const { status } = req.body;
+
+  try {
+    // // Check admin
+    // const user = await User.findById(req.user.id);
+    // if (!user || !user.isAdmin) {
+    //   return res.status(403).json({ message: "Access denied. Admins only." });
+    // }
+
+    const validStatuses = ["pending", "approved", "cancelled"];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // order.status = status.toLowerCase(); // Ensure status is always stored as lowercase
+    order.status = status;
+    await order.save();
+
+    res.status(200).json({ message: "Order status updated", order });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error updating order", error: err.message });
+  }
+};
+
+module.exports = { placeOrder, getAllOrders, updateOrderStatus };

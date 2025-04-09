@@ -76,12 +76,20 @@ const AdminPanel = () => {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100 p-6">
       <h2 className="text-3xl font-bold mb-4">Admin Panel</h2>
-      <Link
-        to="/admin/add-product"
-        className="mb-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
-      >
-        Add New Product
-      </Link>
+      <div className="flex justify-center items-center gap-3 w-full flex-wrap h-fit">
+        <Link
+          to="/admin/add-product"
+          className="mb-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-300 ease-in-out"
+        >
+          Add New Product
+        </Link>
+        <Link
+          to="/admin/orders"
+          className="mb-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 ease-in-out"
+        >
+          Manage Orders
+        </Link>
+      </div>
 
       {/* Table Design to display products */}
       {/* <table className="w-full max-w-4xl bg-white shadow-lg">
@@ -169,13 +177,13 @@ const AdminPanel = () => {
               <div className="flex gap-2 mt-auto pt-1">
                 <Link
                   to={`/admin/edit-product/${product._id}`}
-                  className="px-3 py-1 font-semibold bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+                  className="px-3 py-1 font-semibold bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-300 ease-in-out"
                 >
                   Edit
                 </Link>
                 <button
                   onClick={() => deleteProduct(product._id)}
-                  className="px-3 py-1 font-semibold cursor-pointer bg-red-600 text-white rounded-md hover:bg-red-700"
+                  className="px-3 py-1 font-semibold cursor-pointer bg-red-600 text-white rounded-md hover:bg-red-700 transition duration-300 ease-in-out"
                 >
                   Delete
                 </button>

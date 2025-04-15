@@ -8,6 +8,7 @@ import { CartProvider } from "./context/CartContext.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { FavoritesProvider } from "./context/FavoritesContext.jsx";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY); // from .env file
 
@@ -16,11 +17,13 @@ createRoot(document.getElementById("root")).render(
     <AuthProvider>
       <ProductProvider>
         <CartProvider>
-          <BrowserRouter>
-            <Elements stripe={stripePromise}>
-              <App />
-            </Elements>
-          </BrowserRouter>
+          <FavoritesProvider>
+            <BrowserRouter>
+              <Elements stripe={stripePromise}>
+                <App />
+              </Elements>
+            </BrowserRouter>
+          </FavoritesProvider>
         </CartProvider>
       </ProductProvider>
     </AuthProvider>

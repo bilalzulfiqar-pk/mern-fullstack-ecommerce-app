@@ -127,11 +127,11 @@ const Navbar = () => {
           </div>
           <div className="max-[840px]:hidden">
             <Link
-              to="#"
+              to="/favorites"
               className="flex justify-center items-center flex-col text-gray-400 hover:text-black"
             >
               <FaHeart className="text-xl" />
-              <p>Orders</p>
+              <p>Favorites</p>
             </Link>
           </div>
           <div className="relative">

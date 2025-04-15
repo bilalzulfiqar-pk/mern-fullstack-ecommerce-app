@@ -111,7 +111,10 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           </li>
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
             <FiHeart size={20} />{" "}
+            <Link to={"/favorites"} onClick={() => setIsOpen(false)}>
+
             <span className="text-black hover:text-blue-500">Favorites</span>
+            </Link>
           </li>
           <li className="flex relative items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
             <FiBox size={20} />{" "}

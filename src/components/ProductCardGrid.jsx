@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import FavoriteButton from "./FavoritesButton.jsx";
 
 const ProductCardGrid = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -41,7 +42,7 @@ const ProductCardGrid = ({ product }) => {
           )}
 
           {/* Favorite Button */}
-          <button
+          {/* <button
             className="absolute cursor-pointer right-4 max-[840px]:-top-12 p-2 bg-white shadow-sm border border-[#E0E0E0] rounded-lg"
             onClick={(e) => {
               e.stopPropagation(); // Prevents event from bubbling up to the Link
@@ -53,7 +54,10 @@ const ProductCardGrid = ({ product }) => {
             ) : (
               <BsHeart className="text-blue-500 text-lg translate-y-[1px]" />
             )}
-          </button>
+          </button> */}
+          <div className="absolute right-4 top-4 z-10">
+          <FavoriteButton productId={product._id} />
+          </div>
         </div>
 
         {/* Rating */}

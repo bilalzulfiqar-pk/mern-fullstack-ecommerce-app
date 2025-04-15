@@ -12,14 +12,19 @@ import AuthContext from "../context/AuthContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useCart } from "../context/CartContext";
+import { useFavorites } from "../context/FavoritesContext";
+import Swal from "sweetalert2";
+
 
 const ProductPageCard = ({ product }) => {
-  const [isFavorite, setIsFavorite] = useState(false);
   const [selectedImage, setSelectedImage] = useState(product.image);
   const [isAdding, setIsAdding] = useState(false);
 
   const { user } = useContext(AuthContext);
   const { fetchCartItems, addToCart } = useCart();
+
+    const { favorites, toggleFavorite } = useFavorites();
+    const isFavorite = favorites.some((item) => item._id === product._id);
 
   const userId = user ? user._id : null;
   // console.log("userid:",userId);
@@ -29,6 +34,23 @@ const ProductPageCard = ({ product }) => {
   useEffect(() => {
     setSelectedImage(product.image);
   }, [product]);
+
+    const handleClick = (e) => {
+      e.stopPropagation();
+  
+      if (!user) {
+        Swal.fire({
+          icon: "info",
+          title: "Login Required",
+          text: "Please login to add products to favorites.",
+          showConfirmButton: true,
+          confirmButtonColor: "#2563EB",
+        });
+        return;
+      }
+  
+      toggleFavorite(product._id);
+    };
 
   const handleAddToCart = async () => {
     if (!userId) {
@@ -324,7 +346,7 @@ const ProductPageCard = ({ product }) => {
             <div className="flex justify-center items-center w-full">
               <button
                 className="cursor-pointer p-2 flex justify-center gap-2 items-center w-fit bg-white"
-                onClick={() => setIsFavorite(!isFavorite)}
+                onClick={handleClick}
               >
                 {isFavorite ? (
                   <BsHeartFill className="text-red-500 text-xl font-semibold translate-y-[1px]" />

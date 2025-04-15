@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaRegHeart, FaStar } from "react-icons/fa";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import FavoriteButton from "./FavoritesButton";
 
 const ProductCard = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -65,7 +66,10 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Wishlist Button */}
-      <button
+      <div className="cursor-pointer max-[680px]:absolute max-[680px]:top-4 max-[680px]:right-4 p-2">
+          <FavoriteButton productId={product._id}/>
+      </div>
+      {/* <button
         className="cursor-pointer max-[680px]:absolute max-[680px]:top-4 max-[680px]:right-4 p-2 bg-white shadow-sm border border-[#E0E0E0] rounded-lg"
         onClick={(e) => {
           e.stopPropagation(); // Prevents event from bubbling up to the Link
@@ -77,7 +81,7 @@ const ProductCard = ({ product }) => {
         ) : (
           <BsHeart className="text-blue-500 text-lg translate-y-[1px]" />
         )}
-      </button>
+      </button> */}
     </div>
   );
 };

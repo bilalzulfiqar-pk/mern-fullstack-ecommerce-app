@@ -19,17 +19,21 @@ app.use(express.json()); // Middleware to parse JSON
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/auth");
 const cartRoutes = require("./routes/cartRoutes");
-const orderRoutes = require('./routes/orderRoutes');
+const orderRoutes = require("./routes/orderRoutes");
+const favoriteRoutes = require("./routes/favoriteRoutes");
 
-const paymentRoutes = require('./routes/paymentRoutes');
+const paymentRoutes = require("./routes/paymentRoutes");
 
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes); // Authentication routes
 app.use("/api/cart", cartRoutes);
-app.use('/api/orders', orderRoutes);
+app.use("/api/orders", orderRoutes);
 
 // Payment routes
-app.use('/api/payments', paymentRoutes);
+app.use("/api/payments", paymentRoutes);
+
+// Favorite routes
+app.use("/api/favorites", favoriteRoutes);
 
 // Start server
 app.listen(PORT, () => {

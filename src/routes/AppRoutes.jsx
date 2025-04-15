@@ -17,6 +17,7 @@ import BottomSection from "../components/BottomSection";
 import CheckoutPage from "../pages/CheckoutPage";
 import AdminOrders from "../pages/AdminOrders";
 import OrderDetails from "../pages/OrderDetails";
+import FavoritesPage from "../pages/FavoritesPage";
 
 const ProtectedRoute = ({ element, adminOnly }) => {
   const { user, loading } = useContext(AuthContext);
@@ -51,6 +52,10 @@ const AppRoutes = () => {
         <Route path="/" element={<Mainpage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/product/:id" element={<ProductPage />} />
+        <Route
+          path="/favorites"
+          element={<ProtectedRoute element={<FavoritesPage />} />}
+        />
         <Route
           path="/cart"
           element={<ProtectedRoute element={<CartPage />} />}

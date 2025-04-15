@@ -42,7 +42,7 @@ const FavoritesPage = () => {
 
   if (localFavorites.length === 0) {
     return (
-      <div className="mx-5 min-[1080px]:mx-32 text-xl py-10 text-gray-500">
+      <div className="mx-5 min-[1080px]:mx-32 text-xl py-10 text-gray-500 min-h-[75vh]">
         You haven’t added anything to favorites yet.
       </div>
     );

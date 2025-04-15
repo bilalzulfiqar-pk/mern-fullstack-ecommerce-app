@@ -6,6 +6,10 @@ import { ProductProvider } from "./context/ProductContext.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { CartProvider } from "./context/CartContext.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY); // from .env file
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -13,7 +17,9 @@ createRoot(document.getElementById("root")).render(
       <ProductProvider>
         <CartProvider>
           <BrowserRouter>
-            <App />
+            <Elements stripe={stripePromise}>
+              <App />
+            </Elements>
           </BrowserRouter>
         </CartProvider>
       </ProductProvider>

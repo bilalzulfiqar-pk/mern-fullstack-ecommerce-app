@@ -21,11 +21,15 @@ const authRoutes = require("./routes/auth");
 const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require('./routes/orderRoutes');
 
+const paymentRoutes = require('./routes/paymentRoutes');
 
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes); // Authentication routes
 app.use("/api/cart", cartRoutes);
 app.use('/api/orders', orderRoutes);
+
+// Payment routes
+app.use('/api/payments', paymentRoutes);
 
 // Start server
 app.listen(PORT, () => {

@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 import { useCart } from "../context/CartContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import StripeCheckoutForm from "./StripeCheckoutForm";
+import TestCardInfoButton from "./TestCardInfoButton";
 
 const CartCheckout = () => {
   const { cartItems, loading, user, clearCart } = useCart();
@@ -13,6 +15,7 @@ const CartCheckout = () => {
     import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
   const navigate = useNavigate();
   const token = localStorage.getItem("token"); // Get the token from local storage
+  const [showStripeCheckout, setShowStripeCheckout] = useState(false);
 
   const [shippingDetails, setShippingDetails] = useState({
     name: user?.name || "", // Pre-fill with user's name if available
@@ -60,7 +63,7 @@ const CartCheckout = () => {
     [subtotal, totalDiscount, totalTax]
   );
 
-  const handlePlaceOrder = async () => {
+  const handleClick = () => {
     if (
       !shippingDetails.name ||
       !shippingDetails.address ||
@@ -77,6 +80,10 @@ const CartCheckout = () => {
       return;
     }
 
+    setShowStripeCheckout(true); // Trigger Stripe Checkout modal or form
+  };
+
+  const handlePlaceOrder = async () => {
     try {
       const response = await axios.post(
         `${API_BASE_URL}/api/orders/place-order`,
@@ -335,12 +342,31 @@ const CartCheckout = () => {
 
           {/* Checkout Button */}
           <button
-            onClick={handlePlaceOrder}
+            onClick={() => {
+              // Check if the cart is not empty before proceeding
+              if (cartItems.length > 0) {
+                handleClick();
+              }
+            }}
             className={`w-full bg-[#00B517] text-white py-4 text-lg mt-4 rounded-lg hover:bg-[#009814] duration-300 cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed`}
             disabled={cartItems.length < 1} // Disable button if cart is empty
           >
-            Place Order
+            Make Payment
           </button>
+
+          {showStripeCheckout && (
+            <div className="stripe-checkout-form mt-4">
+              <StripeCheckoutForm
+                total={total}
+                shippingDetails={shippingDetails}
+                onSuccess={() => {
+                  handlePlaceOrder(); // Call handlePlaceOrder after successful payment
+                  setShowStripeCheckout(false); // Close the Stripe form
+                }}
+              />
+              <TestCardInfoButton />
+            </div>
+          )}
 
           {/* Payment Methods */}
           {/* <div className="flex justify-center space-x-2 mt-4">

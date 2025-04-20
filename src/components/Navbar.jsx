@@ -83,14 +83,20 @@ const Navbar = () => {
                     {user?.isAdmin && (
                       <button
                         onClick={() => handleNavigation("/admin")}
-                        className="block text-center cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full"
+                        className="block text-left pl-3 cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full"
                       >
                         Admin
                       </button>
                     )}
                     <button
+                      onClick={() => handleNavigation("/orders")}
+                      className="block text-left pl-3 cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full"
+                    >
+                      My Orders
+                    </button>
+                    <button
                       onClick={() => handleNavigation("/#")}
-                      className="block text-center cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full"
+                      className="block text-left pl-3 cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full"
                     >
                       Settings
                     </button>
@@ -99,7 +105,7 @@ const Navbar = () => {
                         setIsOpen(false); // Close before logout action
                         logout();
                       }}
-                      className="cursor-pointer block text-center w-full hover:bg-red-50 bg-white text-red-500 rounded-lg py-2 text-sm mt-1"
+                      className="cursor-pointer block text-left pl-3 w-full hover:bg-red-50 bg-white text-red-500 rounded-lg py-2 text-sm mt-1"
                     >
                       Log Out
                     </button>

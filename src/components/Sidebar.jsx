@@ -8,7 +8,7 @@ import {
   FaUser,
 } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
-import { FiHeart, FiBox, FiList } from "react-icons/fi";
+import { FiHeart, FiBox, FiList, FiShoppingCart,FiPackage } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
@@ -112,12 +112,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
             <FiHeart size={20} />{" "}
             <Link to={"/favorites"} onClick={() => setIsOpen(false)}>
-
-            <span className="text-black hover:text-blue-500">Favorites</span>
+              <span className="text-black hover:text-blue-500">Favorites</span>
             </Link>
           </li>
           <li className="flex relative items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
-            <FiBox size={20} />{" "}
+            <FiShoppingCart size={20} />{" "}
             <Link
               to={"/cart"}
               onClick={() => setIsOpen(false)}
@@ -132,17 +131,29 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               )}
             </Link>
           </li>
-          {user?.isAdmin && (
-            <li className="flex relative items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
-            <FaUser size={20} />{" "}
+          <li className="flex relative items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
+            <FiPackage size={20} />{" "}
             <Link
-              to={"/admin"}
+              to={"/orders"}
               onClick={() => setIsOpen(false)}
               className="relative"
             >
-              <span className="text-black hover:text-blue-500">Admin Panel</span>
+              <span className="text-black hover:text-blue-500">My Orders</span>
             </Link>
           </li>
+          {user?.isAdmin && (
+            <li className="flex relative items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
+              <FaUser size={20} />{" "}
+              <Link
+                to={"/admin"}
+                onClick={() => setIsOpen(false)}
+                className="relative"
+              >
+                <span className="text-black hover:text-blue-500">
+                  Admin Panel
+                </span>
+              </Link>
+            </li>
           )}
 
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2 border-t border-[#8B96A5] pt-3">

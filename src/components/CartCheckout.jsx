@@ -116,9 +116,13 @@ const CartCheckout = () => {
       // or use react-router's useHistory() to navigate
       // history.push("/order-confirmation"); // Example using react-router
     } catch (error) {
+      const message =
+        error?.response?.data?.message ||
+        "Something went wrong while placing the order.";
+
       Swal.fire({
         title: "Error!",
-        text: "Something went wrong while placing the order.",
+        text: message,
         icon: "error",
         confirmButtonText: "OK",
       });

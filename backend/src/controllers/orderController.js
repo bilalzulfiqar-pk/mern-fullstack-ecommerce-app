@@ -1,28 +1,50 @@
 const Order = require("../models/order");
 const Product = require("../models/product"); // To check if the product exists
 const User = require("../models/user"); // To find the user who placed the order
+const mongoose = require("mongoose");
 
-// Place Order Controller
+// Place Order Controller with transaction, stock check, and stock decrement
 const placeOrder = async (req, res) => {
-  const userId = req.user.id; // Extracted from token
-  const { cartItems, shippingDetails } = req.body; // Get data from the request body
+  const userId = req.user.id;
+  const { cartItems, shippingDetails } = req.body;
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   try {
-    // Ensure that user exists
-    const user = await User.findById(userId);
+    // 1. Ensure that the user exists
+    const user = await User.findById(userId).session(session);
     if (!user) {
-      return res.status(400).json({ message: "User not found" });
+      throw new Error("User not found");
     }
 
-    // Prepare the products in the order
+    // 2. Verify products, check stock, and prepare order items
     const orderProducts = await Promise.all(
       cartItems.map(async (item) => {
-        const product = await Product.findById(item.productId);
+        const product = await Product.findById(item.productId).session(session);
         if (!product) {
-          throw new Error(`Product ${item.productId} not found`);
+          throw new Error(`Product with ID ${item.productId} not found`);
         }
 
-        // Safely default tax to 0 if undefined
+        // Handle stock-related cases
+        if (product.stock === 0) {
+          throw { code: "OUT_OF_STOCK", productName: product.name };
+        }
+        if (item.qty > product.stock) {
+          throw {
+            code: "INSUFFICIENT_STOCK",
+            productName: product.name,
+            available: product.stock,
+            requested: item.qty,
+          };
+        }
+
+        // if (item.qty > product.stock) {
+        //   throw new Error(
+        //     `Insufficient stock for ${product.name}. Available: ${product.stock}, Requested: ${item.qty}`
+        //   );
+        // }
+
         const tax = product.tax || 0;
 
         return {
@@ -38,7 +60,7 @@ const placeOrder = async (req, res) => {
       })
     );
 
-    // Calculate subtotal using previousPrice if it exists, else currentPrice
+    // 3. Calculate subtotal
     const subtotal = parseFloat(
       orderProducts
         .reduce((acc, item) => {
@@ -49,7 +71,7 @@ const placeOrder = async (req, res) => {
         .toFixed(2)
     );
 
-    // Calculate total discount
+    // 4. Calculate total discount
     const totalDiscount = parseFloat(
       orderProducts
         .reduce((acc, item) => {
@@ -62,7 +84,7 @@ const placeOrder = async (req, res) => {
         .toFixed(2)
     );
 
-    // Calculate total tax
+    // 5. Calculate total tax
     const totalTax = parseFloat(
       orderProducts
         .reduce((acc, item) => {
@@ -71,12 +93,12 @@ const placeOrder = async (req, res) => {
         .toFixed(2)
     );
 
-    // Final total price
+    // 6. Calculate total price
     const totalPrice = parseFloat(
       (subtotal - totalDiscount + totalTax).toFixed(2)
     );
 
-    // Create the order
+    // 7. Create order
     const order = new Order({
       user: user._id,
       products: orderProducts,
@@ -87,17 +109,159 @@ const placeOrder = async (req, res) => {
       totalPrice,
     });
 
-    // Save the order in the database
-    await order.save();
+    await order.save({ session });
+
+    // 8. Decrement stock and increment order count for each product
+    await Promise.all(
+      cartItems.map(async (item) => {
+        await Product.findByIdAndUpdate(
+          item.productId,
+          {
+            $inc: {
+              stock: -item.qty,
+              orders: item.qty,
+            },
+          },
+          { session }
+        );
+      })
+    );
+
+    // 9. Commit transaction
+    await session.commitTransaction();
+    session.endSession();
 
     res.status(201).json({ message: "Order placed successfully", order });
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ message: "Error placing order", error: error.message });
+  } catch (err) {
+    // Rollback on error
+    await session.abortTransaction();
+    session.endSession();
+    
+    if (err.code === "OUT_OF_STOCK") {
+      return res.status(400).json({
+        message: `Sorry, "${err.productName}" is currently out of stock.`,
+      });
+    }
+    if (err.code === "INSUFFICIENT_STOCK") {
+      return res.status(400).json({
+        message: `Not enough stock available for "${err.productName}". Requested: ${err.requested}, Available: ${err.available}.`,
+      });
+    }
+
+    console.error(err); // Log the error for debugging
+    return res.status(500).json({
+      message: "Something went wrong. Please try again later.",
+    });
+
   }
 };
+
+// const placeOrder = async (req, res) => {
+//   const userId = req.user.id; // Extracted from token
+//   const { cartItems, shippingDetails } = req.body; // Get data from the request body
+
+//   try {
+//     // Ensure that user exists
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return res.status(400).json({ message: "User not found" });
+//     }
+
+//     // Prepare the products in the order
+//     const orderProducts = await Promise.all(
+//       cartItems.map(async (item) => {
+//         const product = await Product.findById(item.productId);
+//         if (!product) {
+//           throw new Error(`Product ${item.productId} not found`);
+//         }
+
+//         // Safely default tax to 0 if undefined
+//         const tax = product.tax || 0;
+
+//         return {
+//           productId: product._id,
+//           name: product.name,
+//           qty: item.qty,
+//           price: product.currentPrice,
+//           previousPrice: product.previousPrice || null,
+//           tax,
+//           image: product.image,
+//           supplier: product.supplier?.name || "",
+//         };
+//       })
+//     );
+
+//     // Calculate subtotal using previousPrice if it exists, else currentPrice
+//     const subtotal = parseFloat(
+//       orderProducts
+//         .reduce((acc, item) => {
+//           const priceToUse =
+//             item.previousPrice > 0 ? item.previousPrice : item.price;
+//           return acc + priceToUse * item.qty;
+//         }, 0)
+//         .toFixed(2)
+//     );
+
+//     // Calculate total discount
+//     const totalDiscount = parseFloat(
+//       orderProducts
+//         .reduce((acc, item) => {
+//           const hasDiscount = item.previousPrice > 0 && item.price;
+//           const discount = hasDiscount
+//             ? (item.previousPrice - item.price) * item.qty
+//             : 0;
+//           return acc + discount;
+//         }, 0)
+//         .toFixed(2)
+//     );
+
+//     // Calculate total tax
+//     const totalTax = parseFloat(
+//       orderProducts
+//         .reduce((acc, item) => {
+//           return acc + (item.tax || 0) * item.qty;
+//         }, 0)
+//         .toFixed(2)
+//     );
+
+//     // Final total price
+//     const totalPrice = parseFloat(
+//       (subtotal - totalDiscount + totalTax).toFixed(2)
+//     );
+
+//     // Create the order
+//     const order = new Order({
+//       user: user._id,
+//       products: orderProducts,
+//       shippingDetails,
+//       subtotal,
+//       totalDiscount,
+//       totalTax,
+//       totalPrice,
+//     });
+
+//     // Save the order in the database
+//     await order.save();
+
+//     // Update product order counts based on cart quantities
+//     await Promise.all(
+//       cartItems.map(async (item) => {
+//         await Product.findByIdAndUpdate(
+//           item.productId,
+//           { $inc: { orders: item.qty } }, // secure increment
+//           { new: true }
+//         );
+//       })
+//     );
+
+//     res.status(201).json({ message: "Order placed successfully", order });
+//   } catch (error) {
+//     console.error(error);
+//     res
+//       .status(500)
+//       .json({ message: "Error placing order", error: error.message });
+//   }
+// };
 
 // Get all orders (Admin only)
 const getAllOrders = async (req, res) => {
@@ -163,8 +327,6 @@ const getAllOrders = async (req, res) => {
 //       .json({ message: "Error fetching orders", error: err.message });
 //   }
 // };
-
-const mongoose = require("mongoose");
 
 const getOrders = async (req, res) => {
   try {
@@ -333,7 +495,12 @@ const updateOrderStatus = async (req, res) => {
 const getMyOrders = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { status = "all", searchQuery = "", page = 1, limit = 10 } = req.query;
+    const {
+      status = "all",
+      searchQuery = "",
+      page = 1,
+      limit = 10,
+    } = req.query;
 
     const matchStage = { user: new mongoose.Types.ObjectId(userId) };
 
@@ -444,7 +611,9 @@ const getMyOrderDetails = async (req, res) => {
 
     res.status(200).json(order);
   } catch (err) {
-    res.status(500).json({ message: "Error fetching order", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching order", error: err.message });
   }
 };
 

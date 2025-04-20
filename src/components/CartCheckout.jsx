@@ -233,7 +233,7 @@ const CartCheckout = () => {
           <p className="text-black mb-2">Shipping Details</p>
           <div className="flex flex-col px-1 overflow-hidden">
             <label htmlFor="fullName" className="text-sm text-gray-600">
-              Full Name
+              Recipient Name
             </label>
             <input
               id="fullName"

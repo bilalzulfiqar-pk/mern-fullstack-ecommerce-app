@@ -121,32 +121,157 @@ const getAllOrders = async (req, res) => {
   }
 };
 
-// Route to get all orders (with optional filtering by status)
+// const getOrders = async (req, res) => {
+//   try {
+//     const { status, searchQuery, page = 1, limit = 10 } = req.query;
+
+//     // Building the filter object for the status
+//     const filter = status && status !== "all" ? { status } : {};
+
+//     console.log(searchQuery, page, limit);
+//     console.log(filter);
+
+//     // If a search query exists, add it to the filter
+//     if (searchQuery) {
+//       const searchRegex = new RegExp(searchQuery, "i"); // Case-insensitive search
+//       filter.$or = [
+//         { _id: searchRegex }, // Match Order ID
+//         { "user.name": searchRegex }, // Match User Name
+//       ];
+//     }
+
+//     console.log("2",filter);
+
+//     const skip = (page - 1) * limit;
+
+//     // Count the total orders matching the filter
+//     const totalOrders = await Order.countDocuments(filter);
+//     const totalPages = Math.ceil(totalOrders / limit);
+
+//     // Fetch orders with pagination and filters
+//     const orders = await Order.find(filter)
+//       .skip(skip)
+//       .limit(Number(limit))
+//       .sort({ createdAt: -1 })
+//       .populate("user", "name email")
+//       .populate("products.productId", "name image");
+
+//     res.status(200).json({ orders, totalPages });
+//   } catch (err) {
+//     res
+//       .status(500)
+//       .json({ message: "Error fetching orders", error: err.message });
+//   }
+// };
+
+const mongoose = require("mongoose");
+
 const getOrders = async (req, res) => {
   try {
-    const { status, page = 1, limit = 10 } = req.query;
+    const { status, searchQuery, page = 1, limit = 10 } = req.query;
 
-    // console.log("Query Params:", req.query); // Debugging line
-    // console.log("Page:", page); // Debugging line
+    const matchStage = {};
+    if (status && status !== "all") {
+      matchStage.status = status;
+    }
 
-    const filter = status && status !== "all" ? { status } : {}; // Handle status filter
-    const skip = (page - 1) * limit; // Pagination logic
+    const skip = (page - 1) * limit;
 
-    // Count total orders matching the filter
-    const totalOrders = await Order.countDocuments(filter);
+    // Aggregation pipeline
+    const pipeline = [
+      { $match: matchStage },
+
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      { $unwind: "$user" },
+
+      {
+        $lookup: {
+          from: "products",
+          localField: "products.productId",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+
+      {
+        $addFields: {
+          products: {
+            $map: {
+              input: "$products",
+              as: "p",
+              in: {
+                $mergeObjects: [
+                  "$$p",
+                  {
+                    productDetail: {
+                      $arrayElemAt: [
+                        {
+                          $filter: {
+                            input: "$productDetails",
+                            as: "d",
+                            cond: { $eq: ["$$d._id", "$$p.productId"] },
+                          },
+                        },
+                        0,
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+
+      {
+        $project: {
+          productDetails: 0, // remove extra field
+        },
+      },
+    ];
+
+    // Add search filter if query exists
+    if (searchQuery) {
+      const regex = new RegExp(searchQuery, "i");
+      pipeline.push({
+        $match: {
+          $or: [
+            {
+              _id: mongoose.Types.ObjectId.isValid(searchQuery)
+                ? new mongoose.Types.ObjectId(searchQuery)
+                : null,
+            },
+            { "user.name": { $regex: regex } },
+          ],
+        },
+      });
+    }
+
+    // Clone pipeline to count documents before applying skip/limit
+    const countPipeline = [...pipeline, { $count: "total" }];
+    const countResult = await Order.aggregate(countPipeline);
+    const totalOrders = countResult[0]?.total || 0;
     const totalPages = Math.ceil(totalOrders / limit);
 
-    // Fetch orders with pagination and filters
-    const orders = await Order.find(filter)
-      .skip(skip)
-      .limit(Number(limit))
-      .sort({ createdAt: -1 })
-      .populate("user", "name email")
-      .populate("products.productId", "name image");
+    // Apply sorting, pagination
+    pipeline.push({ $sort: { createdAt: -1 } });
+    pipeline.push({ $skip: skip });
+    pipeline.push({ $limit: Number(limit) });
+
+    const orders = await Order.aggregate(pipeline);
 
     res.status(200).json({ orders, totalPages });
   } catch (err) {
-    res.status(500).json({ message: "Error fetching orders", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching orders", error: err.message });
   }
 };
 
@@ -163,7 +288,9 @@ const getOrderDetails = async (req, res) => {
 
     res.status(200).json(order);
   } catch (err) {
-    res.status(500).json({ message: "Error fetching order details", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching order details", error: err.message });
   }
 };
 
@@ -179,7 +306,9 @@ const updateOrderStatus = async (req, res) => {
     //   return res.status(403).json({ message: "Access denied. Admins only." });
     // }
 
+    // const validStatuses = Order.schema.path("status").enumValues; // Get valid statuses from the schema
     const validStatuses = ["pending", "approved", "cancelled"];
+
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ message: "Invalid status" });
     }
@@ -201,4 +330,130 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
-module.exports = { placeOrder, getAllOrders, updateOrderStatus, getOrders, getOrderDetails };
+const getMyOrders = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { status = "all", searchQuery = "", page = 1, limit = 10 } = req.query;
+
+    const matchStage = { user: new mongoose.Types.ObjectId(userId) };
+
+    if (status !== "all") {
+      matchStage.status = status;
+    }
+
+    const skip = (page - 1) * limit;
+
+    const pipeline = [
+      { $match: matchStage },
+
+      {
+        $lookup: {
+          from: "products",
+          localField: "products.productId",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+
+      {
+        $addFields: {
+          products: {
+            $map: {
+              input: "$products",
+              as: "p",
+              in: {
+                $mergeObjects: [
+                  "$$p",
+                  {
+                    productDetail: {
+                      $arrayElemAt: [
+                        {
+                          $filter: {
+                            input: "$productDetails",
+                            as: "d",
+                            cond: { $eq: ["$$d._id", "$$p.productId"] },
+                          },
+                        },
+                        0,
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+
+      {
+        $project: {
+          productDetails: 0, // remove extra field
+        },
+      },
+    ];
+
+    // Add searchQuery filter
+    if (searchQuery) {
+      const regex = new RegExp(searchQuery, "i");
+
+      pipeline.push({
+        $match: {
+          $or: [
+            {
+              _id: mongoose.Types.ObjectId.isValid(searchQuery)
+                ? new mongoose.Types.ObjectId(searchQuery)
+                : null,
+            },
+          ],
+        },
+      });
+    }
+
+    // Count pipeline
+    const countPipeline = [...pipeline, { $count: "total" }];
+    const countResult = await Order.aggregate(countPipeline);
+    const totalOrders = countResult[0]?.total || 0;
+    const totalPages = Math.ceil(totalOrders / limit);
+
+    // Add sorting, pagination
+    pipeline.push({ $sort: { createdAt: -1 } });
+    pipeline.push({ $skip: skip });
+    pipeline.push({ $limit: Number(limit) });
+
+    const orders = await Order.aggregate(pipeline);
+
+    res.status(200).json({ orders, totalPages });
+  } catch (err) {
+    res.status(500).json({
+      message: "Error fetching your orders",
+      error: err.message,
+    });
+  }
+};
+
+const getMyOrderDetails = async (req, res) => {
+  try {
+    const order = await Order.findOne({
+      _id: req.params.id,
+      user: req.user.id, // restrict to their own orders
+    }).populate("products.productId", "name image");
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json(order);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching order", error: err.message });
+  }
+};
+
+module.exports = {
+  placeOrder,
+  getAllOrders,
+  updateOrderStatus,
+  getOrders,
+  getOrderDetails,
+  getMyOrders,
+  getMyOrderDetails,
+};

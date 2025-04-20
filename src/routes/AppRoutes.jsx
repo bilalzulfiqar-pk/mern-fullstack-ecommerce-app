@@ -15,9 +15,11 @@ import AddProduct from "../pages/AddProduct";
 import EditProduct from "../pages/EditProduct";
 import BottomSection from "../components/BottomSection";
 import CheckoutPage from "../pages/CheckoutPage";
-import AdminOrders from "../pages/AdminOrders";
-import OrderDetails from "../pages/OrderDetails";
+import AdminOrdersPage from "../pages/AdminOrdersPage";
+import AdminOrderDetails from "../pages/AdminOrderDetails";
 import FavoritesPage from "../pages/FavoritesPage";
+import MyOrdersPage from "../pages/MyOrdersPage";
+import UserOrderDetails from "../pages/UserOrderDetails";
 
 const ProtectedRoute = ({ element, adminOnly }) => {
   const { user, loading } = useContext(AuthContext);
@@ -64,6 +66,15 @@ const AppRoutes = () => {
           path="/checkout"
           element={<ProtectedRoute element={<CheckoutPage />} />}
         />
+        <Route
+          path="/orders"
+          element={<ProtectedRoute element={<MyOrdersPage />} />}
+        />
+        <Route
+          path="/orders/:id"
+          element={<ProtectedRoute element={<UserOrderDetails />} />}
+        />
+
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         {/* Admin Routes */}
@@ -73,11 +84,11 @@ const AppRoutes = () => {
         />
         <Route
           path="/admin/orders"
-          element={<ProtectedRoute element={<AdminOrders />} adminOnly />}
+          element={<ProtectedRoute element={<AdminOrdersPage />} adminOnly />}
         />
         <Route
-          path="/admin/orders/:id" 
-          element={<ProtectedRoute element={<OrderDetails />} adminOnly />}
+          path="/admin/orders/:id"
+          element={<ProtectedRoute element={<AdminOrderDetails />} adminOnly />}
         />
         <Route
           path="/admin/add-product"

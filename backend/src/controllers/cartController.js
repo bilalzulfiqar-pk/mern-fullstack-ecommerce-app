@@ -13,7 +13,7 @@ const getCart = async (req, res) => {
 
     const cart = await Cart.findOne({ userId }).populate(
       "items.productId",
-      "_id name sizes material supplier previousPrice currentPrice tax image"
+      "_id name sizes material supplier previousPrice currentPrice tax image stock"
     );
 
     if (!cart) return res.json({ items: [] });

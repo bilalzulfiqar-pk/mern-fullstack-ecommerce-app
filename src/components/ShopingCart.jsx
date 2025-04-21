@@ -6,8 +6,11 @@ import { useCart } from "../context/CartContext";
 
 const ShoppingCart = () => {
   const { cartItems, loading, updateQty, removeItem, clearCart } = useCart();
+  const maxQty = 500; // Maximum quantity allowed
+  const maxQtyMessage = `You can only add up to ${maxQty} items one time.`;
 
   const handleRemoveItem = (productId) => {
+    console.log(cartItems);
     Swal.fire({
       title: "Are you sure?",
       text: "This item will be removed from your cart.",
@@ -118,7 +121,7 @@ const ShoppingCart = () => {
 
   return (
     <div className="flex flex-col min-[900px]:flex-row gap-4">
-      <div className="w-full flex flex-col min-[900px]:w-3/4 bg-white border border-[#E0E0E0] rounded-md p-4 max-[500px]:p-2">
+      <div className="w-full flex flex-col min-[900px]:w-3/4 bg-white border border-[#E0E0E0] rounded-md p-4 max-[500px]:p-2 max-[500px]:pt-0">
         {cartItems.length < 1 ? (
           <div className="h-full flex items-center justify-center p-4 flex-col gap-1">
             <img
@@ -133,14 +136,21 @@ const ShoppingCart = () => {
           cartItems.map((item) => (
             <div
               key={item.productId._id}
-              className="flex max-[500px]:flex-col max-[500px]:justify-center max-[500px]:items-center border-b border-[#E0E0E0] py-4"
+              className="flex max-[500px]:flex-col max-[500px]:justify-center max-[500px]:items-center border-b border-[#E0E0E0] min-[500px]:py-4 max-[500px]:px-2 py-3"
             >
-              <img
-                src={item.productId.image}
-                alt={item.productId.name}
-                className="w-20 border border-[#E0E0E0] max-[500px]:w-40 max-[500px]:h-40 rounded-md h-20 object-cover"
-              />
-              <div className="ml-4 max-[500px]:mx-1 max-[500px]:w-full flex flex-col max-[500px]:items-center flex-1">
+              <div className="min-[500px]:pt-4 max-[500px]:pb-1">
+                <Link
+                  to={`/product/${item.productId._id}`}
+                  className="flex-shrink-0"
+                >
+                  <img
+                    src={item.productId.image}
+                    alt={item.productId.name}
+                    className="w-20 border border-[#E0E0E0] max-[500px]:w-40 max-[500px]:h-40 rounded-md h-20 object-cover"
+                  />
+                </Link>
+              </div>
+              <div className="ml-4 mr-2 max-[500px]:mx-1 max-[500px]:w-full flex flex-col max-[500px]:items-center flex-1">
                 <h2 className="text-lg font-semibold max-[500px]:text-center">
                   {item.productId.name}
                 </h2>
@@ -152,16 +162,16 @@ const ShoppingCart = () => {
                 <div className="mt-2 flex gap-2 w-full max-w-[300px] max-[500px]:items-center max-[500px]:justify-center">
                   <button
                     onClick={() => handleRemoveItem(item.productId._id)}
-                    className="text-red-500 border border-[#E0E0E0] transition duration-300 cursor-pointer hover:bg-gray-100 px-2 max-[500px]:w-1/2 py-1 rounded-md"
+                    className="text-red-500 max-[500px]:bg-red-50 hover:bg-red-100 border border-[#E0E0E0] transition duration-300 cursor-pointer px-2 max-[500px]:w-1/2 py-1 rounded-md"
                   >
                     Remove
                   </button>
-                  <button className="text-blue-500 border border-[#E0E0E0] transition duration-300 cursor-pointer hover:bg-gray-100 max-[500px]:w-1/2 px-2 py-1 rounded-md">
+                  <button className="text-blue-500 max-[500px]:bg-blue-50 hover:bg-blue-100 border border-[#E0E0E0] transition duration-300 cursor-pointer max-[500px]:w-1/2 px-2 py-1 rounded-md">
                     Save for later
                   </button>
                 </div>
               </div>
-              <div className="text-right flex flex-col max-[500px]:flex-row max-[500px]:justify-end max-[500px]:items-center max-[500px]:gap-3 max-[375px]:flex-col max-[500px]:mt-2">
+              <div className="text-right flex flex-col max-[500px]:flex-col max-[500px]:justify-end max-[500px]:items-center max-[500px]:gap-0 max-[375px]:flex-col max-[500px]:mt-2">
                 <div className="flex flex-col max-[500px]:flex-row max-[500px]:gap-3 max-[500px]:justify-center max-[500px]:items-center">
                   <p className="text-lg ">
                     $
@@ -185,7 +195,7 @@ const ShoppingCart = () => {
                       : "0"}
                   </p>
                 </div>
-                <div className="relative">
+                <div className="relative flex flex-col items-center justify-center max-[500px]:gap-2">
                   {/* <select
                     className="min-[500px]:mt-2 cursor-pointer hover:bg-gray-100 focus:bg-gray-100 border border-[#E0E0E0] appearance-none shadow-2xs rounded-md px-2 pr-10 py-1"
                     onChange={(e) =>
@@ -200,10 +210,24 @@ const ShoppingCart = () => {
                     ))}
                   </select> */}
 
-                  <div className="flex items-center space-x-2 min-[500px]:mt-2">
+                  <div className="relative w-full">
+                    {item.productId.stock - item.qty <= 5 && (
+                      <p className="text-sm text-center min-[500px]:text-right text-red-500 ">
+                        Only {item.productId.stock} items available{" "}
+                      </p>
+                    )}
+                    {item.qty >= maxQty && (
+                      <p className="text-sm text-center min-[500px]:text-right text-red-500 ">
+                        {maxQtyMessage}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex items-center space-x-2 min-[500px]:mt-2 min-[500px]:self-end">
                     {/* Decrease Button */}
                     <button
-                      className="px-3 relative cursor-pointer py-1 bg-gray-200 hover:bg-gray-300 rounded"
+                      disabled={item.qty <= 1}
+                      className="px-3 relative cursor-pointer py-1 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed transition duration-300"
                       onClick={() =>
                         updateQty(item.productId._id, Math.max(1, item.qty - 1))
                       }
@@ -212,15 +236,48 @@ const ShoppingCart = () => {
                     </button>
 
                     {/* Quantity Display */}
-                    <span className="px-4 py-1 border border-gray-300 rounded">
+                    {/* <span className="px-4 py-1 border border-gray-300 rounded">
                       {item.qty}
-                    </span>
+                    </span> */}
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      min="1"
+                      max={Math.min(item.productId.stock, maxQty)}
+                      value={item.qty}
+                      onChange={(e) => {
+                        let newQty = parseInt(e.target.value);
+                        if (isNaN(newQty)) return;
+
+                        newQty = Math.max(
+                          1,
+                          Math.min(
+                            newQty,
+                            Math.min(item.productId.stock, maxQty)
+                          )
+                        );
+
+                        if (newQty !== item.qty) {
+                          updateQty(item.productId._id, newQty);
+                        }
+                      }}
+                      className="w-12 text-center p-1 focus:outline-1 border border-gray-300 rounded appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    />
 
                     {/* Increase Button */}
                     <button
-                      className="px-3 relative cursor-pointer py-1 bg-gray-200 hover:bg-gray-300 rounded"
+                      disabled={
+                        item.qty >= Math.min(maxQty, item.productId.stock)
+                      }
+                      className="px-3 relative cursor-pointer py-1 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed rounded transition duration-300"
                       onClick={() =>
-                        updateQty(item.productId._id, item.qty + 1)
+                        updateQty(
+                          item.productId._id,
+                          Math.min(
+                            item.qty + 1,
+                            Math.min(maxQty, item.productId.stock)
+                          )
+                        )
                       }
                     >
                       <span className="relative bottom-[1px]">+</span>

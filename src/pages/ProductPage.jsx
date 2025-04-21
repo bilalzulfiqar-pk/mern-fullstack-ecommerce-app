@@ -4,6 +4,7 @@ import ProductPageCard from "../components/ProductPageCard";
 import DiscountBanner from "../components/DiscountBanner";
 import { ProductContext } from "../context/ProductContext";
 import RelatedProducts from "../components/RelatedProducts";
+import ReviewsSection from "../components/ReviewsSection";
 
 const ProductPage = () => {
   const { products, loading } = useContext(ProductContext);
@@ -97,6 +98,14 @@ const ProductPage = () => {
             {/* Product */}
 
             <ProductPageCard product={product} />
+
+            {/* Reviews and you may like */}
+            <div className="mt-5 w-full max-[390px]:px-3">
+              {/* Reviews */}
+              <div className="w-full">
+                <ReviewsSection />
+              </div>
+            </div>
 
             {/* Related Products  */}
             <div className="mt-5 max-[390px]:px-3">

@@ -334,7 +334,7 @@ const AdminOrdersPage = () => {
                           ? "bg-yellow-100 text-yellow-700"
                           : order.status === "cancelled"
                           ? "bg-red-100 text-red-700"
-                          : "bg-gray-100 text-gray-700"
+                          : "bg-indigo-100 text-indigo-700"
                       }`}
                     >
                       {order.status.charAt(0).toUpperCase() +
@@ -347,26 +347,39 @@ const AdminOrdersPage = () => {
                 <div className="flex flex-wrap gap-2 self-center md:self-auto">
                   <button
                     className={`px-4 py-1.5 rounded-md text-white text-sm transition cursor-pointer disabled:cursor-not-allowed ${
-                      order.status === "approved"
+                      order.status === "approved" || order.status === "delivered"
                         ? "bg-green-300"
                         : "bg-green-500 hover:bg-green-600"
                     }`}
                     onClick={() => updateStatus(order._id, "approved")}
-                    disabled={order.status === "approved"}
+                    disabled={order.status === "approved" || order.status === "delivered"}
                   >
                     Approve
                   </button>
 
                   <button
                     className={`px-4 py-1.5 rounded-md text-white text-sm transition cursor-pointer disabled:cursor-not-allowed ${
-                      order.status === "cancelled"
+                      order.status === "cancelled" || order.status === "delivered"
                         ? "bg-red-300"
                         : "bg-red-500 hover:bg-red-600"
                     }`}
                     onClick={() => updateStatus(order._id, "cancelled")}
-                    disabled={order.status === "cancelled"}
+                    disabled={order.status === "cancelled" || order.status === "delivered"}
                   >
                     Cancel
+                  </button>
+
+                  {/* ✅ Delivered Button */}
+                  <button
+                    className={`px-4 py-1.5 rounded-md text-white text-sm cursor-pointer transition duration-300 disabled:cursor-not-allowed ${
+                      order.status !== "approved"
+                        ? "bg-indigo-300 cursor-not-allowed"
+                        : "bg-indigo-600 hover:bg-indigo-700"
+                    }`}
+                    onClick={() => updateStatus(order._id, "delivered")}
+                    disabled={order.status !== "approved"}
+                  >
+                    Delivered
                   </button>
 
                   <Link to={`/admin/orders/${order._id}`}>

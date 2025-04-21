@@ -468,8 +468,8 @@ const updateOrderStatus = async (req, res) => {
     //   return res.status(403).json({ message: "Access denied. Admins only." });
     // }
 
-    // const validStatuses = Order.schema.path("status").enumValues; // Get valid statuses from the schema
-    const validStatuses = ["pending", "approved", "cancelled"];
+    const validStatuses = Order.schema.path("status").enumValues; // Get valid statuses from the schema
+    // const validStatuses = ["pending", "approved", "cancelled"];
 
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ message: "Invalid status" });

@@ -5,6 +5,8 @@ const OrderDetails = ({ order }) => {
     const location = useLocation();
     const navigate = useNavigate();
 
+    // console.log("Order Details:", order);
+
     const handleGoBack = () => {
         if (location.pathname.startsWith("/admin/orders")) {
           navigate("/admin/orders");
@@ -67,13 +69,13 @@ const OrderDetails = ({ order }) => {
                       <strong>Price:</strong> $
                       {item?.previousPrice
                         ? item?.previousPrice.toFixed(2)
-                        : item.Price.toFixed(2)}
+                        : item.price.toFixed(2)}
                     </p>
                     {/* <p className="text-gray-600">
                         <strong>Total Price:</strong> $
                         {item?.previousPrice
                         ? item?.previousPrice.toFixed(2) * item.qty
-                        : item.Price.toFixed(2) * item.qty}
+                        : item.price.toFixed(2) * item.qty}
                         </p> */}
                   </div>
                 </li>

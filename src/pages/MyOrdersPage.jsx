@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import ReviewModal from "../components/ReviewModal";
+import Swal from "sweetalert2";
 
 const UserOrders = () => {
   const { user, authLoading } = useContext(AuthContext);
@@ -23,9 +24,58 @@ const UserOrders = () => {
   const topRef = useRef();
 
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedOrderId, setSelectedOrderId] = useState(null); // Store selected order ID
   const [showReviewModal, setShowReviewModal] = useState(false);
 
-  const handleOpenReview = (product) => {
+  const handleSubmitReview = async (reviewData) => {
+    // console.log("Review Data:", reviewData);
+    // console.log("Selected Product:", selectedProduct);
+    // console.log("Selected Order ID:", selectedOrderId); // Log the selected order ID
+
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/api/reviews/`,
+        {
+          productId: selectedProduct.productId, // Product ID from the selected product
+          orderId: selectedOrderId, // Order ID related to this review, get it from your state/context
+          rating: reviewData.rating,
+          comment: reviewData.comment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the headers
+          },
+        }
+      );
+
+      // Show success message with SweetAlert2
+      Swal.fire({
+        icon: "success",
+        title: "Review Submitted Successfully",
+        text: "Thank you for your feedback!",
+      });
+
+      // Close the review modal
+      setShowReviewModal(false);
+    } catch (error) {
+      console.error(
+        "Error submitting review:",
+        error.response?.data || error.message
+      );
+
+      // Show error message with SweetAlert2
+      Swal.fire({
+        icon: "error",
+        title: "Error Submitting Review",
+        text:
+          error.response?.data?.message ||
+          "Something went wrong, please try again later.",
+      });
+    }
+  };
+
+  const handleOpenReview = (product, orderId) => {
+    setSelectedOrderId(orderId); // Set the selected order ID
     setSelectedProduct(product);
     setShowReviewModal(true);
   };
@@ -35,11 +85,11 @@ const UserOrders = () => {
       const res = await axios.get(
         `${API_BASE_URL}/api/orders/my-orders?status=${statusFilter}&searchQuery=${searchQuery}&page=${currentPage}&limit=${limit}`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token}` }, // Send JWT token in header
         }
       );
-      setOrders(res.data.orders);
-      setTotalPages(res.data.totalPages);
+      setOrders(res.data.orders); // Set orders data from backend response
+      setTotalPages(res.data.totalPages); // Handle pagination data
     } catch (err) {
       setError(err.response?.data?.message || "Failed to fetch your orders");
     } finally {
@@ -229,12 +279,12 @@ const UserOrders = () => {
                           {/* Product Image */}
                           <div className="flex-shrink-0">
                             <Link to={`/product/${product.productId}`}>
-                            <img
-                              src={product.image}
-                              alt={product.name}
-                              className="w-12 h-12 object-cover rounded-md border border-[#E0E0E0]"
+                              <img
+                                src={product.image}
+                                alt={product.name}
+                                className="w-12 h-12 object-cover rounded-md border border-[#E0E0E0]"
                               />
-                              </Link>
+                            </Link>
                           </div>
 
                           {/* Product Name & Button */}
@@ -243,7 +293,9 @@ const UserOrders = () => {
                               {product.name}
                             </p>
                             <button
-                              onClick={() => handleOpenReview(product)}
+                              onClick={() =>
+                                handleOpenReview(product, order._id)
+                              }
                               className="mt-1 cursor-pointer inline-flex justify-center items-center gap-1 px-3 py-1 rounded bg-green-600 hover:bg-green-700 text-white text-sm font-medium shadow-sm transition"
                             >
                               Write Review
@@ -272,9 +324,7 @@ const UserOrders = () => {
             isOpen={showReviewModal}
             onClose={() => setShowReviewModal(false)}
             product={selectedProduct}
-            onSubmit={(reviewData) => {
-              console.log("Review Submitted:", reviewData); // handle saving here later
-            }}
+            onSubmit={handleSubmitReview}
           />
         </div>
 

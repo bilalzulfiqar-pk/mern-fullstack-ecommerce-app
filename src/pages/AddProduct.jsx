@@ -14,8 +14,8 @@ const AddProduct = () => {
     currentPrice: "",
     previousPrice: "",
     tax: "",
-    rating: "",
-    reviews: "10",
+    rating: "0",
+    reviews: "0",
     orders: "15",
     stock: "",
     shipping: "Free Shipping",
@@ -303,7 +303,7 @@ const AddProduct = () => {
             />
           </div>
 
-          <div>
+          {/* <div>
             <label className="block font-semibold" htmlFor="rating">
               Rating:
             </label>
@@ -318,7 +318,7 @@ const AddProduct = () => {
               max={5}
               step={0.1}
             />
-          </div>
+          </div> */}
 
           {/* <input
             type="text"

@@ -15,8 +15,14 @@ const productSchema = new mongoose.Schema({
   ],
   previousPrice: Number,
   tax: Number,
-  rating: Number,
-  reviews: Number,
+  rating: {
+    type: Number,
+    default: 0,
+  },
+  reviews: {
+    type: Number,
+    default: 0,
+  },
   orders: Number,
   stock: Number,
   shipping: String,

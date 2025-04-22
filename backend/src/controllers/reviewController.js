@@ -1,6 +1,7 @@
 const Review = require("../models/review.js");
 const Order = require("../models/order.js");
 const Product = require("../models/product.js");
+const updateProductRating = require("../utils/updateProductRating");
 
 // POST: Create a review for a product
 const createReview = async (req, res) => {
@@ -45,6 +46,10 @@ const createReview = async (req, res) => {
     });
 
     await newReview.save();
+
+    // 5. Update the product's rating and review count
+    await updateProductRating(productId);
+
     res.status(201).json({ message: "Review added", review: newReview });
   } catch (err) {
     res.status(500).json({
@@ -63,6 +68,7 @@ const getProductReviews = async (req, res) => {
       .populate("user", "name") // show user's name
       .sort({ createdAt: -1 });
 
+    // console.log(reviews);
     res.status(200).json(reviews);
   } catch (err) {
     res.status(500).json({ message: err.message });

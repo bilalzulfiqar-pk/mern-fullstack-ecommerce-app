@@ -1,7 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import StarRating from "./StarRating";
 import { formatDistanceToNow } from "date-fns";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 // Sample reviews
 const sampleReviews = [
@@ -83,13 +86,61 @@ const ReviewsSection = () => {
   const [fade, setFade] = useState(true);
   const [containerHeight, setContainerHeight] = useState("auto");
   const contentRef = useRef(null);
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
-  const totalPages = Math.ceil(sampleReviews.length / REVIEWS_PER_PAGE);
-  const startIndex = (currentPage - 1) * REVIEWS_PER_PAGE;
-  const currentReviews = sampleReviews.slice(
-    startIndex,
-    startIndex + REVIEWS_PER_PAGE
-  );
+  // const totalPages = Math.ceil(sampleReviews.length / REVIEWS_PER_PAGE);
+  // const startIndex = (currentPage - 1) * REVIEWS_PER_PAGE;
+  // const currentReviews = sampleReviews.slice(
+  //   startIndex,
+  //   startIndex + REVIEWS_PER_PAGE
+  // );
+
+  const { id } = useParams(); // from URL
+  const productId = id;
+  // console.log("Product ID:", productId);
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const totalPages = Math.ceil(reviews.length / REVIEWS_PER_PAGE);
+  // const startIndex = (currentPage - 1) * REVIEWS_PER_PAGE;
+  // const currentReviews = reviews.slice(
+  //   startIndex,
+  //   startIndex + REVIEWS_PER_PAGE
+  // );
+
+  const currentReviews = useMemo(() => {
+    const startIndex = (currentPage - 1) * REVIEWS_PER_PAGE;
+    return reviews.slice(startIndex, startIndex + REVIEWS_PER_PAGE);
+  }, [reviews, currentPage]);
+
+  // console.log("test");
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const res = await axios.get(
+          `${API_BASE_URL}/api/reviews/product/${productId}`
+        );
+        const formatted = res.data.map((r) => ({
+          id: r._id,
+          // name: r.user.name,
+          // for Sample or Fake reviews check if name is present
+          name: r?.name || r.user?.name || "Anonymous",
+          rating: r.rating,
+          comment: r.comment,
+          createdAt: new Date(r.createdAt),
+        }));
+        setReviews(formatted);
+      } catch (err) {
+        console.error("Error fetching reviews", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [productId]);
 
   const handlePageChange = (newPage) => {
     if (newPage === currentPage) return;
@@ -131,7 +182,9 @@ const ReviewsSection = () => {
         <h2 className="text-2xl font-bold text-gray-800">Customer Reviews</h2>
       </div>
 
-      {currentReviews.length === 0 ? (
+      {loading ? (
+        <p className="text-gray-500">Loading reviews...</p>
+      ) : currentReviews.length === 0 ? (
         <p className="text-gray-500">No reviews yet.</p>
       ) : (
         <>

@@ -9,6 +9,7 @@ import ReviewsSection from "../components/ReviewsSection";
 const ProductPage = () => {
   const { products, loading } = useContext(ProductContext);
   const { id } = useParams();
+  // console.log("test main");
 
   if (loading)
     return (

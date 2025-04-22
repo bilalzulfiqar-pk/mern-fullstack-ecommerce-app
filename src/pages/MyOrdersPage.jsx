@@ -191,8 +191,11 @@ const UserOrders = () => {
 
   if (authLoading || loading) {
     return (
-      <div className="flex w-full justify-center items-center h-[90vh]">
-        <div className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"></div>
+      <div className="flex w-full justify-center flex-col gap-3 items-center h-[90vh] -translate-y-16">
+        <div
+          className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
+          style={{ animationDuration: "0.5s" }}
+        ></div>
       </div>
     );
   }

@@ -57,8 +57,8 @@ const ReviewModal = ({ isOpen, onClose, product, onSubmit }) => {
         >
           <div
             className="absolute left-0 top-0 w-1/2 h-full z-10"
-            onMouseEnter={() => setHoverRating(i - 0.5)}
-            onClick={() => handleRating(i - 0.5)}
+            onMouseEnter={() => setHoverRating(i === 1 ? i : i - 0.5)}
+            onClick={() => handleRating(i === 1 ? i : i - 0.5)}
           />
           <div
             className="absolute right-0 top-0 w-1/2 h-full z-10"

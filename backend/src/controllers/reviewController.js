@@ -75,12 +75,16 @@ const checkReviewStatus = async (req, res) => {
     const { productId, orderId } = req.params;
     const userId = req.user.id; // Get user ID from the request
 
+    // console.log(productId, orderId, userId);
+
     // Find if a review exists for this combination of product, user, and order
     const review = await Review.findOne({
       product: productId,
       user: userId,
       order: orderId,
     });
+
+    // console.log(review);
 
     if (review) {
       return res.status(200).json({ reviewed: true });

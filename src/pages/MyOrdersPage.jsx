@@ -27,6 +27,69 @@ const UserOrders = () => {
   const [selectedOrderId, setSelectedOrderId] = useState(null); // Store selected order ID
   const [showReviewModal, setShowReviewModal] = useState(false);
 
+  const [reviewStatus, setReviewStatus] = useState({});
+  const [reviewLoading, setReviewLoading] = useState(true);
+
+  // Function to check review status for a product in a specific order
+  const checkReviewStatus = async (productId, orderId) => {
+    try {
+      const res = await axios.get(
+        `${API_BASE_URL}/api/reviews/check-review/${productId}/${orderId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // console.log("Check Review Status URL:", `/api/reviews/check-review/${productId}/${orderId}`);
+      // console.log("Check Review Status Response:", res.data);
+
+      return res.data.reviewed;
+    } catch (err) {
+      console.error("Error checking review:", err);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    const fetchReviewStatuses = async () => {
+      setReviewLoading(true); // Start loading
+      const statusMap = {}; // A map to store review statuses for each order-product pair
+
+      // console.log("Orders to check review status:", orders); // Log orders to check if they are available
+
+      // Loop through orders and check review status for each product in delivered orders
+      for (const order of orders) {
+        if (order.status === "delivered") {
+          for (const item of order.products) {
+            const key = `${order._id}_${item.productId}`;
+            // console.log(`Checking review status for key: ${key}`);  // Log each product-order combo
+
+            // If the review status for this order-product pair is already fetched, skip
+            if (statusMap[key] !== undefined) continue;
+
+            // Fetch review status from the backend
+            const reviewed = await checkReviewStatus(item.productId, order._id);
+            // console.log(`Review status for ${key}: ${reviewed}`);  // Log the fetched status
+
+            // Store the review status in the statusMap
+            statusMap[key] = reviewed;
+          }
+        }
+      }
+
+      // Set the state with the updated review statuses
+      setReviewStatus(statusMap);
+      // console.log("Review Statuses:", statusMap);  // Log the final statusMap
+      setReviewLoading(false); // Done loading
+    };
+
+    // Run the review status fetch function if there are orders
+    if (orders.length > 0) {
+      fetchReviewStatuses();
+    }
+  }, [orders]); // Re-run the effect if orders change
+
   const handleSubmitReview = async (reviewData) => {
     // console.log("Review Data:", reviewData);
     // console.log("Selected Product:", selectedProduct);
@@ -47,6 +110,13 @@ const UserOrders = () => {
           },
         }
       );
+
+      // Update the reviewStatus state to reflect the newly submitted review
+      const key = `${selectedOrderId}_${selectedProduct.productId}`;
+      setReviewStatus((prevStatus) => ({
+        ...prevStatus,
+        [key]: true, // Mark this product as reviewed for this order
+      }));
 
       // Show success message with SweetAlert2
       Swal.fire({
@@ -271,38 +341,59 @@ const UserOrders = () => {
                     </p>
                     <div className="grid gap-3 grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))]">
                       {/* Map through products in the order */}
-                      {order.products.map((product) => (
-                        <div
-                          key={product._id}
-                          className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg shadow-sm border border-[#E0E0E0]"
-                        >
-                          {/* Product Image */}
-                          <div className="flex-shrink-0">
-                            <Link to={`/product/${product.productId}`}>
-                              <img
-                                src={product.image}
-                                alt={product.name}
-                                className="w-12 h-12 object-cover rounded-md border border-[#E0E0E0]"
-                              />
-                            </Link>
-                          </div>
+                      {order.products.map((product) => {
+                        const key = `${order._id}_${product.productId}`;
+                        const isReviewed = reviewStatus[key];
 
-                          {/* Product Name & Button */}
-                          <div className="flex flex-col grow">
-                            <p className="text-sm font-medium text-gray-800 line-clamp-1">
-                              {product.name}
-                            </p>
-                            <button
-                              onClick={() =>
-                                handleOpenReview(product, order._id)
-                              }
-                              className="mt-1 cursor-pointer inline-flex justify-center items-center gap-1 px-3 py-1 rounded bg-green-600 hover:bg-green-700 text-white text-sm font-medium shadow-sm transition"
-                            >
-                              Write Review
-                            </button>
+                        return (
+                          <div
+                            key={product._id}
+                            className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg shadow-sm border border-[#E0E0E0]"
+                          >
+                            {/* Product Image */}
+                            <div className="flex-shrink-0">
+                              <Link to={`/product/${product.productId}`}>
+                                <img
+                                  src={product.image}
+                                  alt={product.name}
+                                  className="w-12 h-12 object-cover rounded-md border border-[#E0E0E0]"
+                                />
+                              </Link>
+                            </div>
+
+                            {/* Product Name & Button */}
+                            <div className="flex flex-col grow">
+                              <p className="text-sm font-medium text-gray-800 line-clamp-1">
+                                {product.name}
+                              </p>
+                              {reviewLoading ? (
+                                <button
+                                  disabled
+                                  className="mt-1 inline-flex justify-center items-center gap-1 px-3 py-1 rounded bg-gray-200 text-gray-500 text-sm font-medium shadow-sm cursor-not-allowed"
+                                >
+                                  Checking...
+                                </button>
+                              ) : isReviewed ? (
+                                <button
+                                  disabled
+                                  className="mt-1 inline-flex justify-center items-center gap-1 px-3 py-1 rounded bg-gray-300 text-gray-700 text-sm font-medium shadow-sm cursor-not-allowed"
+                                >
+                                  Reviewed
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() =>
+                                    handleOpenReview(product, order._id)
+                                  }
+                                  className="mt-1 cursor-pointer inline-flex justify-center items-center gap-1 px-3 py-1 rounded bg-green-600 hover:bg-green-700 text-white text-sm font-medium shadow-sm transition"
+                                >
+                                  Write Review
+                                </button>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 )}

@@ -50,7 +50,7 @@ const FavoritesPage = () => {
 
   return (
     <div className="max-w-6xl mx-5 min-[1080px]:mx-32 p-4 min-h-[100vh]">
-      <h1 className="text-2xl font-semibold mb-6">Your Favorites</h1>
+      <h1 className="text-2xl font-semibold mb-6">Your Favorites ({localFavorites.length})</h1>
       <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
         {localFavorites.map((product) => (
           <div

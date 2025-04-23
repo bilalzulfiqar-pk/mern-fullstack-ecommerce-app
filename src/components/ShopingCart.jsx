@@ -1,13 +1,16 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useCart } from "../context/CartContext";
+import { min } from "date-fns";
+import MiniLoading from "./MiniLoading";
 
 const ShoppingCart = () => {
   const { cartItems, loading, updateQty, removeItem, clearCart } = useCart();
   const maxQty = 500; // Maximum quantity allowed
   const maxQtyMessage = `You can only add up to ${maxQty} items one time.`;
+  const [miniLoading, setminiLoading] = useState(false);
 
   const handleRemoveItem = (productId) => {
     console.log(cartItems);
@@ -121,6 +124,7 @@ const ShoppingCart = () => {
 
   return (
     <div className="flex flex-col min-[900px]:flex-row gap-4">
+      {miniLoading && <MiniLoading />}
       <div className="w-full flex flex-col min-[900px]:w-3/4 bg-white border border-[#E0E0E0] rounded-md p-4 max-[500px]:p-2 max-[500px]:pt-0">
         {cartItems.length < 1 ? (
           <div className="h-full flex items-center justify-center p-4 flex-col gap-1">
@@ -213,7 +217,9 @@ const ShoppingCart = () => {
                   <div className="relative w-full">
                     {item.productId.stock - item.qty <= 5 && (
                       <p className="text-sm text-center min-[500px]:text-right text-red-500 ">
-                        Only {item.productId.stock} items available{" "}
+                        {item.productId.stock === 1
+                          ? "Only 1 item left in stock"
+                          : `Only ${item.productId.stock} items available`}
                       </p>
                     )}
                     {item.qty >= maxQty && (
@@ -228,9 +234,14 @@ const ShoppingCart = () => {
                     <button
                       disabled={item.qty <= 1}
                       className="px-3 relative cursor-pointer py-1 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed transition duration-300"
-                      onClick={() =>
-                        updateQty(item.productId._id, Math.max(1, item.qty - 1))
-                      }
+                      onClick={async () => {
+                        setminiLoading(true);
+                        await updateQty(
+                          item.productId._id,
+                          Math.max(1, item.qty - 1)
+                        );
+                        setminiLoading(false);
+                      }}
                     >
                       <span className="relative bottom-[1px]">-</span>
                     </button>
@@ -270,15 +281,18 @@ const ShoppingCart = () => {
                         item.qty >= Math.min(maxQty, item.productId.stock)
                       }
                       className="px-3 relative cursor-pointer py-1 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed rounded transition duration-300"
-                      onClick={() =>
-                        updateQty(
+                      onClick={async () => {
+                        setminiLoading(true);
+
+                        await updateQty(
                           item.productId._id,
                           Math.min(
                             item.qty + 1,
                             Math.min(maxQty, item.productId.stock)
                           )
-                        )
-                      }
+                        );
+                        setminiLoading(false);
+                      }}
                     >
                       <span className="relative bottom-[1px]">+</span>
                     </button>

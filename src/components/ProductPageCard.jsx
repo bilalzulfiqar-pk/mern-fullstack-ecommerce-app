@@ -15,16 +15,15 @@ import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
 import Swal from "sweetalert2";
 
-
 const ProductPageCard = ({ product }) => {
   const [selectedImage, setSelectedImage] = useState(product.image);
   const [isAdding, setIsAdding] = useState(false);
 
   const { user } = useContext(AuthContext);
-  const { fetchCartItems, addToCart } = useCart();
+  const { fetchCartItems, addToCart, cartItems } = useCart();
 
-    const { favorites, toggleFavorite } = useFavorites();
-    const isFavorite = favorites.some((item) => item._id === product._id);
+  const { favorites, toggleFavorite } = useFavorites();
+  const isFavorite = favorites.some((item) => item._id === product._id);
 
   const userId = user ? user._id : null;
   // console.log("userid:",userId);
@@ -35,22 +34,22 @@ const ProductPageCard = ({ product }) => {
     setSelectedImage(product.image);
   }, [product]);
 
-    const handleClick = (e) => {
-      e.stopPropagation();
-  
-      if (!user) {
-        Swal.fire({
-          icon: "info",
-          title: "Login Required",
-          text: "Please login to add products to favorites.",
-          showConfirmButton: true,
-          confirmButtonColor: "#2563EB",
-        });
-        return;
-      }
-  
-      toggleFavorite(product._id);
-    };
+  const handleClick = (e) => {
+    e.stopPropagation();
+
+    if (!user) {
+      Swal.fire({
+        icon: "info",
+        title: "Login Required",
+        text: "Please login to add products to favorites.",
+        showConfirmButton: true,
+        confirmButtonColor: "#2563EB",
+      });
+      return;
+    }
+
+    toggleFavorite(product._id);
+  };
 
   const handleAddToCart = async () => {
     if (!userId) {
@@ -69,6 +68,26 @@ const ProductPageCard = ({ product }) => {
     if (product.stock <= 0) return; // Prevent adding out-of-stock items
 
     setIsAdding(true);
+
+    // console.log(cartItems);
+
+    // Check if the product is already in the cart
+    const cartItem = cartItems.find(
+      (item) => item.productId._id === product._id
+    );
+
+    // Get current quantity in cart or 0 if not present
+    const currentQty = cartItem ? cartItem.qty : 0;
+
+    // Check if current quantity has reached stock
+    if (currentQty >= product.stock) {
+      toast.error(`Cannot add more. Only ${product.stock} item(s) available in stock.`, {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      setIsAdding(false);
+      return;
+    }
 
     try {
       const success = await addToCart(product._id, userId);
@@ -260,7 +279,9 @@ const ProductPageCard = ({ product }) => {
                   ${product.currentPrice.toFixed(2)}
                 </span>
                 <span className="text-gray-400 line-through">
-                {product?.previousPrice ? `$${product.previousPrice.toFixed(2)}` : ""}
+                  {product?.previousPrice
+                    ? `$${product.previousPrice.toFixed(2)}`
+                    : ""}
                 </span>
               </span>
 

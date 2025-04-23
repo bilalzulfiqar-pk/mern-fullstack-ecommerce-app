@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "axios";
 import AuthContext from "./AuthContext";
+import { toast } from "react-toastify";
 
 const FavoritesContext = createContext();
 
@@ -66,8 +67,16 @@ export const FavoritesProvider = ({ children }) => {
     const isFav = favorites.some((item) => item._id === productId);
     if (isFav) {
       await removeFavorite(productId);
+      toast.success("Removed from favorites", {
+        position: "top-right",
+        autoClose: 2000,
+      });
     } else {
       await addFavorite(productId);
+      toast.success("Added to favorites", {
+        position: "top-right",
+        autoClose: 2000,
+      });
     }
   };
 

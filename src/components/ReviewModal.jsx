@@ -96,7 +96,7 @@ const ReviewModal = ({ isOpen, onClose, product, onSubmit }) => {
             </h2>
 
             {/* Stars */}
-            <div className="flex gap-1 mb-4">{renderStars()}</div>
+            <div className="flex gap-1 mb-2">{renderStars()}</div>
 
             {/* Selected rating */}
             <p className="text-gray-700 mb-4">
@@ -105,14 +105,23 @@ const ReviewModal = ({ isOpen, onClose, product, onSubmit }) => {
                 : "Please select a rating"}
             </p>
 
-            {/* Comment */}
-            <textarea
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-              rows={4}
-              placeholder="Write your review..."
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
+            <div className="relative">
+              {/* Comment */}
+              <textarea
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                rows={4}
+                placeholder="Write your review..."
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                maxLength={200}
+              />
+              {/* Character counter (only shows after 100 characters) */}
+              {comment.length > 100 && (
+                <p className="text-sm text-right text-gray-500 mt-1 absolute right-1 -top-7">
+                  {comment.length} / 200 characters
+                </p>
+              )}
+            </div>
 
             {/* Buttons */}
             <div className="flex justify-end gap-3 mt-4">

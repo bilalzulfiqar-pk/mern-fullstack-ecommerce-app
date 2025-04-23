@@ -256,7 +256,7 @@ const ShoppingCart = () => {
                       min="1"
                       max={Math.min(item.productId.stock, maxQty)}
                       value={item.qty}
-                      onChange={(e) => {
+                      onChange={async (e) => {
                         let newQty = parseInt(e.target.value);
                         if (isNaN(newQty)) return;
 
@@ -269,7 +269,9 @@ const ShoppingCart = () => {
                         );
 
                         if (newQty !== item.qty) {
-                          updateQty(item.productId._id, newQty);
+                          setminiLoading(true);
+                          await updateQty(item.productId._id, newQty);
+                          setminiLoading(false);
                         }
                       }}
                       className="w-12 text-center p-1 focus:outline-1 border border-gray-300 rounded appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"

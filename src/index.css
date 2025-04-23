@@ -4,42 +4,103 @@
 /* blank Magic  */
 /* Custom Modern Scrollbar */
 .custom-scrollbar2::-webkit-scrollbar {
-    height: 6px; 
-  }
-  
-  .custom-scrollbar2::-webkit-scrollbar-track {
-    /* background: #f1f1f1;  */
-    border-radius: 10px;
-  }
-  
-  .custom-scrollbar2::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #4a90e2, #007bff); 
-    border-radius: 10px;
-  }
-  
-  .custom-scrollbar2::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #007bff, #0056b3); 
-    cursor: pointer;
-  }
+  height: 6px;
+}
 
+.custom-scrollbar2::-webkit-scrollbar-track {
+  /* background: #f1f1f1;  */
+  border-radius: 10px;
+}
+
+.custom-scrollbar2::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #4a90e2, #007bff);
+  border-radius: 10px;
+}
+
+.custom-scrollbar2::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  cursor: pointer;
+}
 
 /* Custom Modern Scrollbar 2*/
 .custom-scrollbar::-webkit-scrollbar {
-    height: 6px; 
-  }
-  
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: #f9f9f9; 
-    border-radius: 10px;
-  }
-  
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #D1D1D1; 
-    border-radius: 10px;
-  }
-  
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #b5b5b5; 
-    cursor: pointer;
-  }
-  
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f9f9f9;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #d1d1d1;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #b5b5b5;
+  cursor: pointer;
+}
+
+/* From first prompt of chatgpt*/
+
+/* Hide Google Translate Elements */
+/* .goog-te-banner-frame.skiptranslate,
+.goog-logo-link,
+.goog-te-gadget {
+  display: none !important;
+} */
+
+/* body {
+  top: 0px !important;
+} */
+
+
+/* From Hamza Code */
+
+/* .goog-te-banner-frame.skiptranslate,
+.goog-te-gadget-icon,
+.goog-te-combo,
+.VIpgJd-ZVi9od-ORHb-OEVmcd,
+.VIpgJd-ZVi9od-aZ2wEe,
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf-ti6hGc,
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf {
+    display: none !important;
+} */
+
+/* Hides the top frame/banner Google injects */
+/* .goog-te-banner-frame.skiptranslate {
+  display: none !important;
+  } */
+
+/* Pushes body content up (removes the banner height space) */
+body {
+    top: 0px !important;
+    }
+
+/* Hides the overlay div that dims content */
+/* .goog-te-overlay {
+      display: none !important;
+      } */
+
+.VIpgJd-ZVi9od-ORHb-OEVmcd,
+#goog-gt-tt {
+  display: none !important;
+}
+
+[class*="VIpgJd-yAWNEb-VIpgJd-fmcmS-sn54Q"] {
+  all: unset !important;
+  direction: inherit !important;
+  unicode-bidi: inherit !important;
+  background: none !important;
+  color: inherit !important;
+  font: inherit !important;
+  text-decoration: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Hides the Google Translate Logo */
+/* .VIpgJd-ZVi9od-aZ2wEe-wOHMyf{
+  display: none !important;
+} */

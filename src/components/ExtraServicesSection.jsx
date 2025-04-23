@@ -3,6 +3,7 @@ import { BiSearch } from "react-icons/bi";
 import { FaStoreAlt } from "react-icons/fa";
 import { GiCheckedShield } from "react-icons/gi";
 import { IoAirplaneSharp } from "react-icons/io5";
+import ResponsiveText from "./ResponsiveText";
 
 const ExtraServicesSection = () => {
   const cards = [
@@ -56,7 +57,9 @@ const ExtraServicesSection = () => {
               {/* Text Section */}
               <div className="p-3">
                 <p className="text-lg font-semibold w-[70%] max-[450px]:text-base">
-                  {card.text}
+                  <ResponsiveText fontmin="text-base" fontmax="text-lg">
+                    {card.text}
+                  </ResponsiveText>
                 </p>
               </div>
             </div>

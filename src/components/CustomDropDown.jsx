@@ -24,10 +24,78 @@ const CustomDropDown = ({ heading, items, className }) => {
     };
   }, []);
 
+  // Handle language change for Google Translate
+  const languageMap = {
+    English: "en",
+    Urdu: "ur",
+    French: "fr",
+    Spanish: "es",
+  };
+
   // Handle selection only if the item is not a link
   const handleSelect = (item) => {
-    if (typeof item !== "object") {
+    // if (languageMap[item]) {
+    //   const lang = languageMap[item];
+    //   const selectEl = document.querySelector(".goog-te-combo");
+    //   if (selectEl) {
+    //     selectEl.value = lang;
+    //     selectEl.dispatchEvent(new Event("change"));
+    //   }
+    // }
+
+    if (languageMap[item]) {
+      const lang = languageMap[item];
+
+      const tryChangeLang = () => {
+        const selectEl = document.querySelector(".goog-te-combo");
+
+        if (selectEl) {
+          // Delay to ensure Translate widget is fully initialized
+          setTimeout(() => {
+            selectEl.value = lang;
+            selectEl.dispatchEvent(new Event("change"));
+
+            // Start verifying after dispatch
+            let attempts = 0;
+            const maxRetries = 5;
+            const interval = 1000;
+
+            const verifyChange = () => {
+              if (selectEl.value === lang) {
+                // console.log("✅ Language changed to:", lang);
+                setSelectedItem(item);
+                setIsOpen(false);
+                return;
+              } else if (attempts < maxRetries) {
+                selectEl.value = lang;
+
+                selectEl.dispatchEvent(new Event("change"));
+
+                // console.warn(
+                //   `❌ Language change attempt ${attempts} failed. Retrying...`
+                // );
+                attempts++;
+                setTimeout(verifyChange, interval);
+              } else {
+                // console.warn("❌ Language change not detected after retries.");
+                alert(
+                  "Language change Failed. Please try again or refresh the page."
+                );
+              }
+            };
+
+            verifyChange();
+          }, 150); // Can adjust delay if needed
+        } else {
+          // Retry if element not available yet
+          setTimeout(tryChangeLang, 500);
+        }
+      };
+
+      tryChangeLang();
+    } else if (typeof item !== "object") {
       setSelectedItem(item);
+      // console.log("Selected item:", item);
       setIsOpen(false);
     }
   };

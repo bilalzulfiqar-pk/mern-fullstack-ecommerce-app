@@ -8,6 +8,7 @@ import SupplierByRegionSection from "../components/SupplierByRegionSection";
 import NewsletterSection from "../components/NewsletterSection";
 import { ProductContext } from "../context/ProductContext";
 import AuthContext from "../context/AuthContext";
+import ResponsiveText from "../components/ResponsiveText";
 const Mainpage = () => {
   const { products, loading } = useContext(ProductContext);
   const { user, logout } = useContext(AuthContext);
@@ -279,7 +280,9 @@ const Mainpage = () => {
           <div className="w-[55%] bg-[url('/main-tech.png')] max-[840px]:-mt-[1px] bg-cover bg-center max-[840px]:w-full">
             <div className="mt-16 ml-10 max-[600px]:mt-5 max-[600px]:ml-5">
               <h1 className="text-4xl max-[600px]:text-2xl">Latest Trends</h1>
-              <h2 className="text-4xl max-[600px]:text-2xl font-semibold">Electronics items</h2>
+              <h2 className="text-4xl max-[600px]:text-2xl font-semibold">
+                Electronics items
+              </h2>
               <Link to={"/search?category=Electronics"}>
                 <button className="mt-4 text-xl max-[600px]:text-base font-semibold bg-white py-2 pb-3 px-4 max-[600px]:px-3 max-[600px]:py-2 rounded-lg cursor-pointer hover:bg-slate-100 transition duration-300">
                   Learn more
@@ -338,13 +341,17 @@ const Mainpage = () => {
               )}
             </div>
             <div className="grow rounded-xl bg-[#F38332] p-4 max-[1300px]:p-3 flex items-center justify-center">
-              <p className="text-lg text-white">
-                Get US 10$ off with a new supplier
+              <p className="text-white">
+                <ResponsiveText fontmax="text-lg" fontmin="text-base">
+                  Get US 10$ off with a new supplier
+                </ResponsiveText>
               </p>
             </div>
             <div className="grow rounded-xl bg-[#55BDC3] p-4 max-[1300px]:p-3 flex items-center justify-center">
-              <p className="text-lg text-white">
+              <p className="text-white">
+                <ResponsiveText fontmax="text-lg" fontmin="text-base">
                 Send quotes with supplier preferences
+                </ResponsiveText>
               </p>
             </div>
           </div>

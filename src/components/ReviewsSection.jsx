@@ -142,6 +142,45 @@ const ReviewsSection = () => {
     fetchReviews();
   }, [productId]);
 
+  // useEffect(() => {
+  //   setCurrentPage(1);
+  // }, [productId]);
+
+  useEffect(() => {
+    const contentEl = contentRef.current;
+    if (contentEl) {
+      setContainerHeight(`${contentEl.offsetHeight}px`); // Lock height before transition
+    }
+
+    setFade(false); // Start fade out
+
+    const timeout = setTimeout(() => {
+      setCurrentPage(1); // Reset to first page
+      setFade(true); // Fade in after update
+    }, 200); // Match fade duration
+
+    return () => clearTimeout(timeout);
+  }, [productId]);
+
+  // useEffect(() => {
+  //   // Only run after productId changes AND loading completes
+  //   if (loading) return;
+
+  //   const contentEl = contentRef.current;
+  //   if (contentEl) {
+  //     setContainerHeight(`${contentEl.offsetHeight}px`);
+  //   }
+
+  //   setFade(false); // fade out
+
+  //   const timeout = setTimeout(() => {
+  //     setCurrentPage(1); // reset
+  //     setFade(true); // fade in
+  //   }, 200);
+
+  //   return () => clearTimeout(timeout);
+  // }, [productId, loading]);
+
   const handlePageChange = (newPage) => {
     if (newPage === currentPage) return;
     setFade(false); // start fade out

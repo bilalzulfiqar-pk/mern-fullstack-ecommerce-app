@@ -56,11 +56,11 @@ const ExtraServicesSection = () => {
 
               {/* Text Section */}
               <div className="p-3">
-                <p className="text-lg font-semibold w-[70%] max-[450px]:text-base">
+                <div className="text-lg font-semibold w-[70%] max-[450px]:text-base">
                   <ResponsiveText fontmin="text-base" fontmax="text-lg">
                     {card.text}
                   </ResponsiveText>
-                </p>
+                </div>
               </div>
             </div>
           ))}

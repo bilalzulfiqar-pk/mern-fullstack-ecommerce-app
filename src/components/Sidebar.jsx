@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   FaUserCircle,
   FaGlobe,
@@ -8,7 +8,14 @@ import {
   FaUser,
 } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
-import { FiHeart, FiBox, FiList, FiShoppingCart,FiPackage } from "react-icons/fi";
+import {
+  FiHeart,
+  FiBox,
+  FiList,
+  FiShoppingCart,
+  FiPackage,
+} from "react-icons/fi";
+import { FaChevronDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
@@ -23,6 +30,102 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     logout();
     setIsOpen(false);
   };
+
+  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+
+  const toggleLanguageDropdown = () => {
+    setIsLanguageDropdownOpen((prev) => !prev);
+  };
+
+  const changeLanguage = (language) => {
+    // Implement language change logic here
+    const lang = language;
+
+    // console.log(`Language changed to: ${lang}`);
+    // new window.google.translate.TranslateElement({ pageLanguage: lang }, "google_translate_element");
+
+    const tryChangeLang = () => {
+      const selectEl = document.querySelector(".goog-te-combo");
+
+      if (selectEl) {
+        // Delay to ensure Translate widget is fully initialized
+        setTimeout(() => {
+          selectEl.value = lang;
+          selectEl.dispatchEvent(new Event("change"));
+
+          // Start verifying after dispatch
+          let attempts = 0;
+          const maxRetries = 5;
+          const interval = 1000;
+
+          const verifyChange = () => {
+            if (selectEl.value === lang) {
+              // console.log("✅ Language changed to:", lang);
+              setIsLanguageDropdownOpen(false);
+              return;
+            } else if (attempts < maxRetries) {
+              selectEl.value = lang;
+
+              selectEl.dispatchEvent(new Event("change"));
+
+              // console.warn(
+              //   `❌ Language change attempt ${attempts} failed. Retrying...`
+              // );
+              attempts++;
+              setTimeout(verifyChange, interval);
+            } else {
+              // console.warn("❌ Language change not detected after retries.");
+              alert(
+                "Language change Failed. Please try again or refresh the page."
+              );
+            }
+          };
+
+          verifyChange();
+        }, 150); // Can adjust delay if needed
+      } else {
+        // Retry if element not available yet
+        setTimeout(tryChangeLang, 500);
+      }
+    };
+
+    tryChangeLang();
+  };
+
+  const languageMap = {
+    English: "en",
+    العربية: "ar", // Arabic
+    اردو: "ur", // Urdu
+    हिन्दी: "hi", // Hindi
+    বাংলা: "bn", // Bengali
+    Français: "fr", // French
+    Español: "es", // Spanish
+  };
+
+  // Create a ref for the language dropdown to detect outside clicks
+  const languageDropdownRef = useRef(null);
+
+  // Handle click outside to close the language dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        languageDropdownRef.current &&
+        !languageDropdownRef.current.contains(event.target)
+      ) {
+        setIsLanguageDropdownOpen(false);
+      }
+    };
+
+    // Add event listeners for click and touch events
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+
+    return () => {
+      // Cleanup event listeners on component unmount
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, []);
 
   // Close sidebar when clicking outside
   useEffect(() => {
@@ -156,11 +259,31 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             </li>
           )}
 
-          <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2 border-t border-[#8B96A5] pt-3">
-            <FaGlobe size={20} />{" "}
-            <span className="text-black hover:text-blue-500">
-              English | USD
+          <li className="flex relative items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2 border-t border-[#8B96A5] pt-3">
+            <FaGlobe size={20} onClick={toggleLanguageDropdown} />{" "}
+            <span
+              className="text-black flex gap-1 justify-center items-center relative hover:text-blue-500"
+              onClick={toggleLanguageDropdown}
+            >
+              Language <FaChevronDown size={12} className="translate-y-0.5" />
             </span>
+            {/* Language Dropdown */}
+            <div ref={languageDropdownRef} className="relative">
+              {isLanguageDropdownOpen && (
+                <ul className="absolute -left-10 top-1.5 bg-white shadow-md border rounded-md w-40 mt-2 overflow-hidden">
+                  {Object.entries(languageMap).map(([language, code]) => (
+                    <li
+                      key={code}
+                      className="p-2 hover:bg-gray-200 cursor-pointer notranslate"
+                      translate="no"
+                      onClick={() => changeLanguage(code)}
+                    >
+                      {language} - {code.toUpperCase()}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </li>
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
             <FaHeadphones size={20} />{" "}

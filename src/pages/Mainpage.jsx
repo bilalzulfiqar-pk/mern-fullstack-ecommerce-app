@@ -341,18 +341,18 @@ const Mainpage = () => {
               )}
             </div>
             <div className="grow rounded-xl bg-[#F38332] p-4 max-[1300px]:p-3 flex items-center justify-center">
-              <p className="text-white">
+              <div className="text-white">
                 <ResponsiveText fontmax="text-lg" fontmin="text-base">
                   Get US 10$ off with a new supplier
                 </ResponsiveText>
-              </p>
+              </div>
             </div>
             <div className="grow rounded-xl bg-[#55BDC3] p-4 max-[1300px]:p-3 flex items-center justify-center">
-              <p className="text-white">
+              <div className="text-white">
                 <ResponsiveText fontmax="text-lg" fontmin="text-base">
                 Send quotes with supplier preferences
                 </ResponsiveText>
-              </p>
+              </div>
             </div>
           </div>
         </div>

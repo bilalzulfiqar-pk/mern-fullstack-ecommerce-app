@@ -63,7 +63,18 @@ const helpList = [
 ];
 
 const currencyList = ["USD", "PKR", "EUR", "GBP"];
-const languageList = ["English", "Urdu", "French", "Spanish"];
+// const languageList = ["English", "Urdu", "French", "Spanish"];
+
+const languageList = [
+  "English - ENG",
+  "العربية - AR",
+  "اردو - UR",
+  "हिन्दी - HI",
+  "বাংলা - BN",
+  "Français - FR",
+  "Español - ES",
+];
+
 const countries = [
   { name: "USA", flag: "🇺🇸" },
   { name: "UK", flag: "🇬🇧" },
@@ -108,7 +119,7 @@ const Menubar = () => {
             className="max-[1200px]:hidden"
           />
           <CustomDropDown
-            heading="English"
+            heading="Language"
             items={languageList}
             className="max-[870px]:hidden"
           />

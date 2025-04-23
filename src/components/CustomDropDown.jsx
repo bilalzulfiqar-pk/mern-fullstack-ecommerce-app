@@ -25,12 +25,23 @@ const CustomDropDown = ({ heading, items, className }) => {
   }, []);
 
   // Handle language change for Google Translate
+  // const languageMap = {
+  //   English: "en",
+  //   Urdu: "ur",
+  //   French: "fr",
+  //   Spanish: "es",
+  // };
+
   const languageMap = {
-    English: "en",
-    Urdu: "ur",
-    French: "fr",
-    Spanish: "es",
+    "English": "en",
+    "العربية": "ar",  // Arabic
+    "اردو": "ur",      // Urdu
+    "हिन्दी": "hi",    // Hindi
+    "বাংলা": "bn",     // Bengali
+    "Français": "fr",  // French
+    "Español": "es",   // Spanish
   };
+  
 
   // Handle selection only if the item is not a link
   const handleSelect = (item) => {
@@ -43,8 +54,11 @@ const CustomDropDown = ({ heading, items, className }) => {
     //   }
     // }
 
-    if (languageMap[item]) {
-      const lang = languageMap[item];
+   // Split the item string to extract the language name and code
+  const [name, code] = item.split(" - ");
+
+  if (languageMap[name]) {
+    const lang = languageMap[name];  // Retrieve the Google Translate language code
 
       const tryChangeLang = () => {
         const selectEl = document.querySelector(".goog-te-combo");
@@ -106,7 +120,8 @@ const CustomDropDown = ({ heading, items, className }) => {
       <div
         className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-4 flex justify-center items-center rounded-lg ${
           isOpen && "bg-[#E6F0FF]"
-        }`}
+        } notranslate`}
+        translate="no"
         onClick={toggleDropdown}
       >
         {heading === "All Category" && (
@@ -148,7 +163,7 @@ const CustomDropDown = ({ heading, items, className }) => {
               ) : (
                 <li
                   key={index}
-                  className="hover:bg-[#E6F0FF] cursor-pointer py-2 px-3 rounded-lg w-full whitespace-nowrap"
+                  className="hover:bg-[#E6F0FF] cursor-pointer py-2 px-3 rounded-lg w-full whitespace-nowrap notranslate" translate="no"
                   onClick={() => handleSelect(item)}
                 >
                   {content}

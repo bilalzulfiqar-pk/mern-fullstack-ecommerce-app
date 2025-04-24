@@ -115,17 +115,21 @@ npm install
 ```
 
 ### 3️⃣ Set Up Environment Variables  
-Create a `.env` file in the `main` directory and add the necessary environment variables. Example:
-```
-VITE_STRIPE_PUBLISHABLE_KEY==your_stripe_key
-```
+You need to create two `.env` files: one for the **frontend** and one for the **backend**.
 
-Create a `.env` file in the `backend` directory and add the necessary environment variables. Example:
-```
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-STRIPE_SECRET_KEY=your_stripe_secret
-```
+1. **Frontend (`main` directory):**  
+   Create a `.env` file in the `main` directory and add the following environment variable. Example:
+   ````bash
+   VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_key
+   ````
+
+2. **Backend (`backend` directory):**  
+   Create a `.env` file in the `backend` directory and add the following environment variables. Example:
+   ````bash
+   MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   STRIPE_SECRET_KEY=your_stripe_secret
+   ````
 
 ### 4️⃣ Run the Project  
 **Start Backend:**

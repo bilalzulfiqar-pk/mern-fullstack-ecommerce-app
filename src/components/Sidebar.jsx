@@ -176,12 +176,22 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               <span className="text-gray-800 font-medium line-clamp-2">
                 {user.name}
               </span>
-              <button
-                onClick={handleLogout}
-                className="hover:underline cursor-pointer"
-              >
-                Sign out
-              </button>
+              <div>
+                <Link to={"/settings"} onClick={() => setIsOpen(false)}>
+                  <button
+                    className="hover:underline cursor-pointer"
+                  >
+                    Settings
+                  </button>
+                </Link>{" "}
+                |{" "}
+                <button
+                  onClick={handleLogout}
+                  className="hover:underline cursor-pointer"
+                >
+                  Sign out
+                </button>
+              </div>
             </span>
           ) : (
             <span className="text-gray-800 font-medium">
@@ -209,7 +219,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
             <FiList size={20} />{" "}
             <Link to={"/search"} onClick={() => setIsOpen(false)}>
-              <span className="text-black hover:text-blue-500">Categories</span>
+              <span className="text-black hover:text-blue-500">All Products</span>
             </Link>
           </li>
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">

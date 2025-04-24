@@ -1,7 +1,10 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const AuthContext = createContext();
+const MySwal = withReactContent(Swal);
 
 // const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/auth";
 const API_BASE_URL =
@@ -77,6 +80,29 @@ export const AuthProvider = ({ children }) => {
       setUser(res.data.user);
     } catch (error) {
       console.error("Registration failed", error);
+
+      const validationErrors = error.response?.data?.errors;
+      const message = error.response?.data?.msg;
+
+      if (validationErrors && validationErrors.length > 0) {
+        // Multiple validation errors
+        const errorList = validationErrors
+          .map((err) => `• ${err.msg}`)
+          .join("<br>");
+        await MySwal.fire({
+          title: "Validation Error",
+          html: errorList,
+          icon: "error",
+        });
+      } else {
+        // Generic error message
+        await MySwal.fire({
+          title: "Error",
+          text: message || "Registration failed.",
+          icon: "error",
+        });
+      }
+
       throw error;
     }
   };
@@ -92,7 +118,15 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, register, logout, loading, authLoading: loading }}
+      value={{
+        user,
+        login,
+        register,
+        logout,
+        loading,
+        authLoading: loading,
+        fetchUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -8,17 +8,30 @@ const { body, validationResult } = require("express-validator");
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET; // Replace with an env variable
 
-// @route   POST /api/auth/register
-// @desc    Register a new user
+// @route   POST /api/users/register
+// @desc    Register new user
 // @access  Public
 router.post(
   "/register",
   [
-    body("name", "Name is required").not().isEmpty(),
+    // Name validations
+    body("name", "Name is required").notEmpty(),
+    body("name", "Name must be at least 3 characters").isLength({ min: 3 }),
+    body("name", "Name must contain only letters and spaces").matches(
+      /^[A-Za-z\s]+$/
+    ),
+
+    // Email validation
     body("email", "Please enter a valid email").isEmail(),
+
+    // Password validations
     body("password", "Password must be at least 6 characters").isLength({
       min: 6,
     }),
+    body("password", "Password must contain at least one number").matches(/\d/),
+    body("password", "Password must contain at least one letter").matches(
+      /[a-zA-Z]/
+    ),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -37,11 +50,16 @@ router.post(
       const hashedPassword = await bcrypt.hash(password, salt);
 
       // Create new user
-      user = new User({ name, email, password: hashedPassword,  isAdmin: isAdmin || false  });
+      user = new User({
+        name,
+        email,
+        password: hashedPassword,
+        isAdmin: isAdmin || false,
+      });
       await user.save();
 
       // Generate JWT Token
-      const payload = { user: { id: user.id,  isAdmin: user.isAdmin } };
+      const payload = { user: { id: user.id, isAdmin: user.isAdmin } };
       const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1d" });
 
       res.json({ token });

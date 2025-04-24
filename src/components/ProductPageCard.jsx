@@ -94,7 +94,7 @@ const ProductPageCard = ({ product }) => {
       if (success) {
         toast.success(
           <div className="flex justify-center items-center">
-            <span>Product added to cart! 🛒</span>
+            <span>Product added to cart!</span>
             <Link to="/cart">
               <button className="ml-3 mr-5 cursor-pointer px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-700">
                 View Cart

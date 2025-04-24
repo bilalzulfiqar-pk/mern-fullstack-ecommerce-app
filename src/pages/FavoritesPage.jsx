@@ -49,14 +49,14 @@ const FavoritesPage = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-5 min-[1080px]:mx-32 p-4 min-h-[100vh]">
+    <div className="px-5 mx-auto max-w-[1580px] min-[1080px]:px-32 bg-[#F7FAFC] p-4 min-h-[100vh]">
       <h1 className="text-2xl font-semibold mb-6">Your Favorites ({localFavorites.length})</h1>
-      <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
+      <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))] justify-items-center">
         {localFavorites.map((product) => (
           <div
             key={product._id}
             onClick={() => navigate(`/product/${product._id}`)}
-            className={`border p-4 group h-full rounded-lg border-[#E0E0E0] cursor-pointer flex flex-col bg-white transition-all overflow-hidden duration-300 ${
+            className={` w-full shadow p-4 max-w-[350px] group h-full rounded-lg cursor-pointer flex flex-col bg-white transition-all overflow-hidden duration-300 ${
               loadedItems[product._id]
                 ? "opacity-100 scale-100"
                 : "opacity-0 scale-95 min-h-[400px]"
@@ -83,7 +83,7 @@ const FavoritesPage = () => {
             </div>
             <button
               onClick={(e) => handleRemove(e, product)}
-              className="mt-auto bg-red-500 hover:bg-red-600 text-white py-2 px-4 cursor-pointer transition rounded"
+              className="mt-auto bg-red-500 hover:bg-red-600 shadow-sm text-white py-2 px-4 cursor-pointer transition rounded"
             >
               Remove from Favorites
             </button>

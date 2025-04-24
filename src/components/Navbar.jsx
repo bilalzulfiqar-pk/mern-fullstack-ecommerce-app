@@ -95,7 +95,7 @@ const Navbar = () => {
                       My Orders
                     </button>
                     <button
-                      onClick={() => handleNavigation("/#")}
+                      onClick={() => handleNavigation("/settings")}
                       className="block text-left pl-3 cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full"
                     >
                       Settings

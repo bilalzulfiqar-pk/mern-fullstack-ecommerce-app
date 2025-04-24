@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { useCart } from "../context/CartContext";
 import { min } from "date-fns";
 import MiniLoading from "./MiniLoading";
+import { toast } from "react-toastify";
 
 const ShoppingCart = () => {
   const { cartItems, loading, updateQty, removeItem, clearCart } = useCart();
@@ -33,6 +34,18 @@ const ShoppingCart = () => {
         //   showConfirmButton: false,
         // });
       }
+    });
+  };
+
+  const handleApplyCoupon = () => {
+    toast.error("Invalid coupon code. Please try again.", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
     });
   };
 
@@ -354,7 +367,10 @@ const ShoppingCart = () => {
               placeholder="Add coupon"
               className="w-full px-3 py-2 text-gray-500 border-none outline-none"
             />
-            <button className="px-4 py-2 border-l border-[#E0E0E0] text-blue-500 font-medium hover:bg-gray-100 duration-300 cursor-pointer transition">
+            <button
+              onClick={handleApplyCoupon}
+              className="px-4 py-2 border-l border-[#E0E0E0] text-blue-500 font-medium hover:bg-gray-100 duration-300 cursor-pointer transition"
+            >
               Apply
             </button>
           </div>

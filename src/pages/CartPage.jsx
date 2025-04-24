@@ -3,6 +3,7 @@ import ShoppingCart from "../components/ShopingCart";
 import { FaLock, FaCommentDots, FaTruck } from "react-icons/fa";
 import DiscountBanner from "../components/DiscountBanner";
 import { useCart } from "../context/CartContext";
+import SavedForLater from "../components/SavedForLater";
 
 const CartPage = () => {
   const { cartItems } = useCart();
@@ -35,12 +36,13 @@ const CartPage = () => {
           <div className="text-2xl font-semibold py-6">
             My cart {cartCount ? `(${cartCount})` : ""}
           </div>
+
+          {/* Shopping Cart */}
           <div>
             <ShoppingCart />
           </div>
 
           {/* Features  */}
-
           <div className="flex justify-start max-[620px]:flex-col gap-15 py-6 items-center">
             {features.map((feature, index) => (
               <div key={index} className="flex items-center space-x-3">
@@ -56,6 +58,9 @@ const CartPage = () => {
               </div>
             ))}
           </div>
+
+          {/* Favorite Items */}
+          <SavedForLater/>
 
           {/* Discounted Banner */}
 

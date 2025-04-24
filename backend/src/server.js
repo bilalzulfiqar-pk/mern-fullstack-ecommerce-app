@@ -22,8 +22,11 @@ const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const favoriteRoutes = require("./routes/favoriteRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 const paymentRoutes = require("./routes/paymentRoutes");
+
+app.use("/api/users", userRoutes);
 
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes); // Authentication routes

@@ -1,63 +1,92 @@
-# E-Commerce Web Application
+# 🛒 E-Commerce Web Application
 
 ## 🚀 Overview
-This is a **MERN stack-based** full-stack e-commerce web application. It provides a smooth online shopping experience with dynamic product listings, cart management, user authentication, and an admin panel for product management.
+A full-featured **MERN stack** e-commerce platform offering an intuitive shopping experience, secure user authentication, advanced filtering, dynamic admin management, and a fully responsive design.  
+
+Built for **performance**, **scalability**, and **real-world eCommerce** scenarios.
 
 ## 🌐 Live Demo  
-[Check it Out](https://ecommerce-fullstack-website.vercel.app/)
+🔗 [Check it Out](https://ecommerce-fullstack-website.vercel.app/)
+
+---
 
 ## ✨ Features
 
-### 🔹 Home Page
+### 🏠 Home Page
 - Displays **featured products** and **trending categories**.
-- **Dynamic banner images** for promotions.
-- **Search bar** with instant filtering.
+- **Promotional banners**.
+- **Live search** functionality with instant suggestions.
 
-### 🔹 Product Listing Page
-- **Filters:** Sort by category, price range, verified sellers, and rating.
-- **Sorting:** Price (low-high, high-low), discount percentage.
-- **Pagination:** Load more products efficiently.
-- **Grid/List Toggle:** View products in different layouts.
+### 📦 Product Listing
+- **Advanced filters**: Category, price range, ratings, and more.
+- **Sorting options**: Price, discount, and popularity.
+- **Pagination & Grid/List toggle**.
+- **Verified sellers** badge display.
 
-### 🔹 Product Details Page
-- **High-quality images** fetched from **Cloudinary**.
-- **Bulk pricing options** for wholesale purchases.
-- **Supplier details** with verification status.
-- **Ratings & reviews** section.
-- **Stock availability & shipping details.**
+### 🛍️ Product Details
+- **Cloudinary-hosted images** with zoom feature.
+- **Bulk pricing** for wholesale buyers.
+- **Supplier & shipping details**.
+- **Customer reviews & ratings**.
+- **Live stock status**.
 
-### 🔹 User Authentication
-- **Register & Login** functionality.
-- **JWT-based authentication** for security.
-- **Role-based access** for users and admins.
-- **Protected Routes:** Only authenticated users can access cart and checkout pages.
-- **Admin Access:** Only admins can manage products.
+### 👤 User Authentication
+- **Register / Login** with form validation.
+- **JWT-based secure auth**.
+- **Role-based access** (User/Admin).
+- **Protected routes**: Cart, checkout, order history.
 
-### 🔹 Cart Management
-- **Add to cart** and **remove items** dynamically.
-- **Quantity selection** for each product.
-- **Automatic price updates** based on quantity.
-- **Persists cart data** for logged-in users.
+### 🛒 Cart & Checkout
+- Add/remove/update cart items.
+- Auto-price updates by quantity.
+- Save cart data for logged-in users.
+- **Shipping details form**.
+- **Stripe payment integration (Test mode)**.
 
-### 🔹 Admin Panel
-- **Create new products** with images, pricing, and categories.
-- **Edit existing products** with real-time updates.
-- **Delete products** with confirmation dialogs.
-- **Protected routes** ensuring only admins can access.
+### 🧾 Orders System
+- Place orders with Stripe payment.
+- View **order history**, status, and details.
+- Admin can **view, update, approve, or cancel** orders.
+
+### ⭐ Review System
+- Users can leave **star ratings and comments** on products they've received.
+- **Average rating** auto-calculated and updated.
+
+### ❤️ Favorites
+- Users can **add or remove products to favorites**.
+- Favorites persist for logged-in users.
+
+### ⚙️ Profile Settings
+- Users can update their **name**, **email**, and **password**.
+- Re-authentication required for sensitive updates.
+
+### 🛠️ Admin Panel
+- Add/edit/delete products.
+- View/manage orders.
+- Protected with **admin-only routes**.
+
+---
 
 ## 📱 Responsive Design
-- Fully optimized for **mobile, tablet, and desktop**.
-- Uses **Tailwind CSS** for a flexible layout.
+- Optimized for **mobile, tablet, and desktop**.
+- Built with **Tailwind CSS** for flexibility and responsiveness.
 
-## 🛠️ Tech Stack
-- **Frontend:** React, Vite, Tailwind CSS
-- **Backend:** Node.js, Express.js, MongoDB
-- **Database:** MongoDB with Mongoose ORM
-- **Storage:** Cloudinary for image hosting
-- **Authentication:** JWT (JSON Web Token)
+---
+
+## 🧰 Tech Stack
+
+| Frontend       | Backend         | Other         |
+|----------------|------------------|----------------|
+| React + Vite   | Node.js + Express | MongoDB (Mongoose) |
+| Tailwind CSS   | JWT Auth          | Cloudinary (Images) |
+| React Router   | Stripe API (Test) | SweetAlert2 (UI Alerts) |
+
+---
 
 ## 🔧 Development Status
 The application is actively being developed. Future updates may include **order processing** and **payment integration**.
+
+---
 
 ## 🛠 How to Run the Project
 
@@ -82,10 +111,16 @@ npm install
 ```
 
 ### 3️⃣ Set Up Environment Variables  
+Create a `.env` file in the `main` directory and add the necessary environment variables. Example:
+```
+VITE_STRIPE_PUBLISHABLE_KEY==your_stripe_key
+```
+
 Create a `.env` file in the `backend` directory and add the necessary environment variables. Example:
 ```
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
+STRIPE_SECRET_KEY=your_stripe_secret
 ```
 
 ### 4️⃣ Run the Project  

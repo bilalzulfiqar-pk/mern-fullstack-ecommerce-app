@@ -56,6 +56,11 @@ Built for **performance**, **scalability**, and **real-world eCommerce** scenari
 - Users can **add or remove products to favorites**.
 - Favorites persist for logged-in users.
 
+### 🌍 Multi-Language Support
+- Built-in **translation system** using the **Google Translate widget**.
+- Supports multiple languages including **English**, **Urdu**, **French**, **Spanish**, etc.
+- **Language switcher** available in both the **navbar dropdown** and **drawer (off-canvas sidebar)**.
+
 ### ⚙️ Profile Settings
 - Users can update their **name**, and **password**.
 

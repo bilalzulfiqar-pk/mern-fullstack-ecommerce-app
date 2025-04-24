@@ -15,7 +15,7 @@ Built for **performance**, **scalability**, and **real-world eCommerce** scenari
 ### 🏠 Home Page
 - Displays **featured products** and **trending categories**.
 - **Promotional banners**.
-- **Live search** functionality with instant suggestions.
+- **Live search**.
 
 ### 📦 Product Listing
 - **Advanced filters**: Category, price range, ratings, and more.
@@ -24,7 +24,7 @@ Built for **performance**, **scalability**, and **real-world eCommerce** scenari
 - **Verified sellers** badge display.
 
 ### 🛍️ Product Details
-- **Cloudinary-hosted images** with zoom feature.
+- **Cloudinary-hosted images**.
 - **Bulk pricing** for wholesale buyers.
 - **Supplier & shipping details**.
 - **Customer reviews & ratings**.
@@ -57,8 +57,7 @@ Built for **performance**, **scalability**, and **real-world eCommerce** scenari
 - Favorites persist for logged-in users.
 
 ### ⚙️ Profile Settings
-- Users can update their **name**, **email**, and **password**.
-- Re-authentication required for sensitive updates.
+- Users can update their **name**, and **password**.
 
 ### 🛠️ Admin Panel
 - Add/edit/delete products.
@@ -84,7 +83,7 @@ Built for **performance**, **scalability**, and **real-world eCommerce** scenari
 ---
 
 ## 🔧 Development Status
-The application is actively being developed. Future updates may include **order processing** and **payment integration**.
+The application is actively being developed. Future updates may include **contact support with chat** and **suppliers profile**.
 
 ---
 

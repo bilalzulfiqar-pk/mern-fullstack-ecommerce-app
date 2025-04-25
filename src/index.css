@@ -55,7 +55,6 @@
   top: 0px !important;
 } */
 
-
 /* From Hamza Code */
 
 /* .goog-te-banner-frame.skiptranslate,
@@ -73,15 +72,15 @@
   display: none !important;
   } */
 
-/* Pushes body content up (removes the banner height space) */
-body {
-    top: 0px !important;
-    }
-
 /* Hides the overlay div that dims content */
 /* .goog-te-overlay {
-      display: none !important;
-      } */
+    display: none !important;
+  } */
+
+/* Pushes body content up (removes the banner height space) */
+body {
+  top: 0px !important;
+}
 
 .VIpgJd-ZVi9od-ORHb-OEVmcd,
 #goog-gt-tt {
@@ -101,6 +100,6 @@ body {
 }
 
 /* Hides the Google Translate Logo */
-/* .VIpgJd-ZVi9od-aZ2wEe-wOHMyf{
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf {
   display: none !important;
-} */
+}

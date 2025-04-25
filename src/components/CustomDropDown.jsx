@@ -33,15 +33,20 @@ const CustomDropDown = ({ heading, items, className }) => {
   // };
 
   const languageMap = {
-    "English": "en",
-    "العربية": "ar",  // Arabic
-    "اردو": "ur",      // Urdu
-    "हिन्दी": "hi",    // Hindi
-    "বাংলা": "bn",     // Bengali
-    "Français": "fr",  // French
-    "Español": "es",   // Spanish
+    English: "en",
+    العربية: "ar", // Arabic
+    اردو: "ur", // Urdu
+    हिन्दी: "hi", // Hindi
+    বাংলা: "bn", // Bengali
+    Français: "fr", // French
+    Español: "es", // Spanish
   };
-  
+
+  let checker = false; // Initialize checker variable
+  if (typeof items[0] === "string") {
+    checker = !!languageMap[items[0].split(" - ")[0]];
+    // console.log(checker);
+  }
 
   // Handle selection only if the item is not a link
   const handleSelect = (item) => {
@@ -54,11 +59,11 @@ const CustomDropDown = ({ heading, items, className }) => {
     //   }
     // }
 
-   // Split the item string to extract the language name and code
-  const [name, code] = item.split(" - ");
+    // Split the item string to extract the language name and code
+    const [name, code] = item.split(" - ");
 
-  if (languageMap[name]) {
-    const lang = languageMap[name];  // Retrieve the Google Translate language code
+    if (languageMap[name]) {
+      const lang = languageMap[name]; // Retrieve the Google Translate language code
 
       const tryChangeLang = () => {
         const selectEl = document.querySelector(".goog-te-combo");
@@ -119,9 +124,9 @@ const CustomDropDown = ({ heading, items, className }) => {
       {/* Dropdown Button */}
       <div
         className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-4 flex justify-center items-center rounded-lg ${
-          isOpen && "bg-[#E6F0FF]"
-        } notranslate`}
-        translate="no"
+          isOpen ? "bg-[#E6F0FF]" : ""
+        } ${checker ? "notranslate" : ""}`}
+        translate={checker ? "no" : undefined}
         onClick={toggleDropdown}
       >
         {heading === "All Category" && (
@@ -163,7 +168,10 @@ const CustomDropDown = ({ heading, items, className }) => {
               ) : (
                 <li
                   key={index}
-                  className="hover:bg-[#E6F0FF] cursor-pointer py-2 px-3 rounded-lg w-full whitespace-nowrap notranslate" translate="no"
+                  className={`hover:bg-[#E6F0FF] cursor-pointer py-2 px-3 rounded-lg w-full whitespace-nowrap ${
+                    checker ? "notranslate" : ""
+                  }`}
+                  translate={checker ? "no" : undefined}
                   onClick={() => handleSelect(item)}
                 >
                   {content}

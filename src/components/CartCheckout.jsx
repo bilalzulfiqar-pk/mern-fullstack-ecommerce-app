@@ -109,7 +109,7 @@ const CartCheckout = () => {
       });
 
       clearCart(); // Clear the cart after placing the order
-      navigate("/cart"); // Make sure you create this route/page
+      navigate("/cart"); // Redirect to the cart page
 
       // Optionally, redirect to the order confirmation page or another page
       // window.location.href = "/order-confirmation"; // Example redirect

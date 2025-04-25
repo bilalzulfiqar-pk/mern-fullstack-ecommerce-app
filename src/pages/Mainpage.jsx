@@ -19,20 +19,8 @@ const Mainpage = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/login"); // Redirect to login after logout
+    // navigate("/login"); // Redirect to login after logout
   };
-
-  // const categoryList = [
-  //   { text: "Automobiles", link: "/category/automobiles" },
-  //   { text: "Clothes and wears", link: "/category/clothes-and-wears" },
-  //   { text: "Home interiors", link: "/category/home-interiors" },
-  //   { text: "Computer and tech", link: "/category/computer-and-tech" },
-  //   { text: "Tools, equipments", link: "/category/tools-equipments" },
-  //   { text: "Sports and outdoor", link: "/category/sports-and-outdoor" },
-  //   { text: "Animal and pets", link: "/category/animal-and-pets" },
-  //   { text: "Machinery tools", link: "/category/machinery-tools" },
-  //   { text: "More category", link: "/category/more" },
-  // ];
 
   const categoryList = [
     { text: "Home Interiors", link: "/search?category=Interiors" }, // 9 occurrences
@@ -49,34 +37,6 @@ const Mainpage = () => {
     { text: "Smartphones", link: "/search?category=Smartphones" }, // New
     { text: "More Categories", link: "/search" }, // Additional category
   ];
-
-  // const deals = [
-  //   {
-  //     img: "/tech/smart-watch.jpg",
-  //     name: "Smart Watches",
-  //     discount: "-25%",
-  //   },
-  //   {
-  //     img: "/tech/laptop.jpg",
-  //     name: "Laptops",
-  //     discount: "-15%",
-  //   },
-  //   {
-  //     img: "/tech/camera.jpg",
-  //     name: "GoPro Cameras",
-  //     discount: "-35%",
-  //   },
-  //   {
-  //     img: "/tech/headphone.jpg",
-  //     name: "Headphones",
-  //     discount: "-25%",
-  //   },
-  //   {
-  //     img: "/tech/smart-phone.jpg",
-  //     name: "Canon Cameras",
-  //     discount: "-25%",
-  //   },
-  // ];
 
   const deals = products
     .filter((product) => product.previousPrice !== null) // Exclude products with null previous price
@@ -180,59 +140,6 @@ const Mainpage = () => {
       price: 25,
     },
   ];
-
-  // const recommendedProducts = [
-  //   {
-  //     img: "/cloth/1.jpg",
-  //     price: "$24.00",
-  //     description: "T-shirts with multiple colors, for men",
-  //   },
-  //   {
-  //     img: "/cloth/2.jpg",
-  //     price: "$29.90",
-  //     description: "T-shirts with blue color, unisex model",
-  //   },
-  //   {
-  //     img: "/cloth/3.jpg",
-  //     price: "$790.50",
-  //     description: "Casual Winter Jacket, Brown Color",
-  //   },
-  //   {
-  //     img: "/cloth/4.jpg",
-  //     price: "$12.00",
-  //     description: "Jeans shorts for men darkblue color",
-  //   },
-  //   {
-  //     img: "/cloth/5.jpg",
-  //     price: "$192.50",
-  //     description: "Lightweight Jeans bag for travel, Unisex model",
-  //   },
-  //   {
-  //     img: "/tech/6.jpg",
-  //     price: "$790.50",
-  //     description: "GoPro HERO6 4K Action Camera - Black",
-  //   },
-  //   {
-  //     img: "/interior/3.jpg",
-  //     price: "$790.50",
-  //     description: "Ceramic Jug for Kitchen, Medium size",
-  //   },
-  //   {
-  //     img: "/interior/2.jpg",
-  //     price: "$790.50",
-  //     description: "Armchair for Home and Office, Yellow color",
-  //   },
-  //   {
-  //     img: "/interior/5.jpg",
-  //     price: "$790.50",
-  //     description: "Airbed Blue Soft Material With Pump",
-  //   },
-  //   {
-  //     img: "/tech/5.jpg",
-  //     price: "$19.50",
-  //     description: "Modern Product Name Goes Here",
-  //   },
-  // ];
 
   const recommendedProducts = products
     .sort(() => Math.random() - 0.5)

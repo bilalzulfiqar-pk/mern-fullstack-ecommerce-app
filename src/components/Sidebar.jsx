@@ -172,9 +172,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             alt="User Avatar"
           />
           {user ? (
-            <span>
+            <div>
               <span className="text-gray-800 font-medium line-clamp-2">
-                {user.name}
+                {user?.name}
               </span>
               <div>
                 <Link to={"/settings"} onClick={() => setIsOpen(false)}>
@@ -192,7 +192,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                   Sign out
                 </button>
               </div>
-            </span>
+            </div>
           ) : (
             <span className="text-gray-800 font-medium">
               <Link

@@ -28,8 +28,7 @@ const Timer = () => {
             <motion.span
               key={item.value} // re-renders the span on value change
               className="block text-lg font-bold"
-              // initial={{ opacity: 0, y: -10 }}
-              initial={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
               transition={{ duration: 0.2 }}

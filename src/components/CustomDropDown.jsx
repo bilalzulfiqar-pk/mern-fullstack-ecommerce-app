@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { IoMdMenu } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const CustomDropDown = ({ heading, items, className }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -143,44 +144,57 @@ const CustomDropDown = ({ heading, items, className }) => {
       </div>
 
       {/* Dropdown Menu */}
-      {isOpen && (
-        <div className="absolute top-full w-max mt-1 left-0 h-fit border rounded-lg bg-white border-gray-400 shadow-lg z-10">
-          <ul
-            className={`m-2 ${
-              heading === "All Category"
-                ? "grid grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-1.5"
-                : ""
-            }`}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -5 }}
+            transition={{ duration: 0.2 }}
+            // initial={{ opacity: 0, scale: 0.95 }}
+            // animate={{ opacity: 1, scale: 1 }}
+            // exit={{ opacity: 0, scale: 0.95 }}
+            // transition={{ duration: 0.2 }}
+
+            className="absolute top-full w-max mt-1 left-0 h-fit border rounded-lg bg-white border-gray-400 shadow-lg z-10"
           >
-            {items.map((item, index) => {
-              const content = typeof item === "object" ? item.text : item;
-              return typeof item === "object" ? (
-                <Link
-                  to={item.link}
-                  key={index}
-                  className="block"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <li className="hover:bg-[#E6F0FF] cursor-pointer py-2 px-3 rounded-lg w-full whitespace-nowrap transition-all duration-200 ease-in-out">
+            <ul
+              className={`m-2 ${
+                heading === "All Category"
+                  ? "grid grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-1.5"
+                  : ""
+              }`}
+            >
+              {items.map((item, index) => {
+                const content = typeof item === "object" ? item.text : item;
+                return typeof item === "object" ? (
+                  <Link
+                    to={item.link}
+                    key={index}
+                    className="block"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <li className="hover:bg-[#E6F0FF] cursor-pointer py-2 px-3 rounded-lg w-full whitespace-nowrap transition-all duration-200 ease-in-out">
+                      {content}
+                    </li>
+                  </Link>
+                ) : (
+                  <li
+                    key={index}
+                    className={`hover:bg-[#E6F0FF] cursor-pointer py-2 px-3 rounded-lg w-full whitespace-nowrap transition-all duration-200 ease-in-out ${
+                      checker ? "notranslate" : ""
+                    }`}
+                    translate={checker ? "no" : undefined}
+                    onClick={() => handleSelect(item)}
+                  >
                     {content}
                   </li>
-                </Link>
-              ) : (
-                <li
-                  key={index}
-                  className={`hover:bg-[#E6F0FF] cursor-pointer py-2 px-3 rounded-lg w-full whitespace-nowrap transition-all duration-200 ease-in-out ${
-                    checker ? "notranslate" : ""
-                  }`}
-                  translate={checker ? "no" : undefined}
-                  onClick={() => handleSelect(item)}
-                >
-                  {content}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
+                );
+              })}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

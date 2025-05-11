@@ -118,18 +118,20 @@ npm install
 You need to create two `.env` files: one for the **frontend** and one for the **backend**.
 
 1. **Frontend (`main` directory):**  
-   Create a `.env` file in the `main` directory and add the following environment variable. Example:
-   ````bash
+   Create a `.env` file in the `main` directory and add the following environment variables:
+   ```bash
+   VITE_API_BASE_URL=http://localhost:5000
    VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_key
-   ````
+   ```
+   *If `VITE_API_BASE_URL` is not set, it defaults to `http://localhost:5000`.*
 
 2. **Backend (`backend` directory):**  
-   Create a `.env` file in the `backend` directory and add the following environment variables. Example:
-   ````bash
+   Create a `.env` file in the `backend` directory and add the following environment variables:
+   ```bash
    MONGO_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret
    STRIPE_SECRET_KEY=your_stripe_secret
-   ````
+   ```
 
 ### 4️⃣ Run the Project  
 **Start Backend:**

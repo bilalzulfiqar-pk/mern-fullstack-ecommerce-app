@@ -299,7 +299,7 @@ const Mainpage = () => {
         {/* Deals Section */}
         <div className="deals mt-6 mx-5 min-[1080px]:mx-32 h-70 max-[1325px]:h-full grid grid-cols-[0.6fr_2fr] max-[1325px]:grid-cols-1 overflow-hidden rounded-lg border border-[#E0E0E0] bg-white">
           {/* Deals Info Section */}
-          <div className="mt-6 xl:ml-5 pb-6 flex flex-col max-[1325px]:justify-center max-[1325px]:w-full max-[1325px]:items-center">
+          <div className="mt-6 xl:ml-5 pb-6 flex flex-col max-[1325px]:justify-center max-[1325px]:w-full max-[1325px]:items-center min-[1325px]:mr-5">
             <header>
               <h3 className="text-2xl font-bold">Deals and offers</h3>
               <p className="text-gray-500">Hygiene equipments</p>

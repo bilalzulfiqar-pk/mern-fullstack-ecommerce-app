@@ -111,7 +111,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     const handleClickOutside = (event) => {
       if (
         languageDropdownRef.current &&
-        !languageDropdownRef.current.contains(event.target)
+        !languageDropdownRef.current.contains(event.target) &&
+        !event.target.closest(".language-dropdown-button") // Ensure the button itself doesn't close it
       ) {
         setIsLanguageDropdownOpen(false);
       }
@@ -270,10 +271,14 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             </li>
           )}
 
-          <li className="flex relative items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2 border-t border-[#8B96A5] pt-3">
-            <FaGlobe size={20} onClick={toggleLanguageDropdown} />{" "}
+          <li className="flex relative items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2 border-t border-[#8B96A5] pt-3 language-dropdown-button">
+            <FaGlobe
+              size={20}
+              onClick={toggleLanguageDropdown}
+              className="cursor-pointer"
+            />{" "}
             <span
-              className="text-black flex gap-1 justify-center items-center relative hover:text-blue-500"
+              className="text-black flex gap-1 justify-center items-center relative hover:text-blue-500 cursor-pointer"
               onClick={toggleLanguageDropdown}
             >
               Language <FaChevronDown size={12} className="translate-y-0.5" />

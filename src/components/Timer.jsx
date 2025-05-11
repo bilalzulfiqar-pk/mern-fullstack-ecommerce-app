@@ -1,8 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Timer = () => {
   const [timeLeft, setTimeLeft] = useState(getTimeUntilSunday());
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setHasMounted(true);
+    }, 0); // wait 1 tick after mount
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -22,13 +31,17 @@ const Timer = () => {
       ].map((item, index) => (
         <div
           key={index}
-          className="text-center bg-[#606060] rounded text-white p-2 px-3"
+          className="text-center bg-[#606060] rounded text-white py-1.5 px-2 w-[55px]"
         >
           <AnimatePresence mode="wait">
             <motion.span
               key={item.value} // re-renders the span on value change
               className="block text-lg font-bold"
-              initial={{ opacity: 0, y: -10 }}
+              // initial={{ opacity: 0, y: -10 }}
+              // animate={{ opacity: 1, y: 0 }}
+              // exit={{ opacity: 0, y: 10 }}
+              // transition={{ duration: 0.2 }}
+              initial={hasMounted ? { opacity: 0, y: -10 } : false}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
               transition={{ duration: 0.2 }}

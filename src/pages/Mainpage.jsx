@@ -359,7 +359,7 @@ const Mainpage = () => {
         <SupplierByRegionSection />
 
         {/* {Newsletter Section} */}
-        <NewsletterSection />
+        {/* <NewsletterSection /> */}
       </div>
     </div>
   );

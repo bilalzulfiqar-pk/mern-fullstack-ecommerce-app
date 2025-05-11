@@ -123,7 +123,7 @@ const CustomDropDown = ({ heading, items, className }) => {
     <div className={`relative ${className || ""}`} ref={dropdownRef}>
       {/* Dropdown Button */}
       <div
-        className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-4 flex justify-center items-center rounded-lg ${
+        className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-4 flex justify-center items-center rounded-lg transition-all duration-200 ease-in-out${
           isOpen ? "bg-[#E6F0FF]" : ""
         } ${checker ? "notranslate" : ""}`}
         translate={checker ? "no" : undefined}
@@ -161,14 +161,14 @@ const CustomDropDown = ({ heading, items, className }) => {
                   className="block"
                   onClick={() => setIsOpen(false)}
                 >
-                  <li className="hover:bg-[#E6F0FF] cursor-pointer py-2 px-3 rounded-lg w-full whitespace-nowrap">
+                  <li className="hover:bg-[#E6F0FF] cursor-pointer py-2 px-3 rounded-lg w-full whitespace-nowrap transition-all duration-200 ease-in-out">
                     {content}
                   </li>
                 </Link>
               ) : (
                 <li
                   key={index}
-                  className={`hover:bg-[#E6F0FF] cursor-pointer py-2 px-3 rounded-lg w-full whitespace-nowrap ${
+                  className={`hover:bg-[#E6F0FF] cursor-pointer py-2 px-3 rounded-lg w-full whitespace-nowrap transition-all duration-200 ease-in-out ${
                     checker ? "notranslate" : ""
                   }`}
                   translate={checker ? "no" : undefined}

@@ -51,8 +51,11 @@ const Navbar = () => {
           <IoMenu
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             className="text-4xl translate-y-1 hidden max-[840px]:block cursor-pointer max-[680px]:absolute max-[680px]:left-0"
-          /> 
-          <Link to={"/"} className="flex justify-center items-center gap-1 max-[680px]:pt-3">
+          />
+          <Link
+            to={"/"}
+            className="flex justify-center items-center gap-1 max-[680px]:pt-3"
+          >
             <img src="/logo.png" alt="" className="w-10 h-10" />
             <div className="logo text-3xl text-[#8cb7f5] -tracking-wider font-bold">
               Brand
@@ -70,7 +73,9 @@ const Navbar = () => {
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="flex cursor-pointer justify-center items-center flex-col text-gray-400 hover:text-black focus:outline-none"
+              className={`flex cursor-pointer justify-center items-center flex-col hover:text-black focus:outline-none transition-all duration-200 ${
+                isOpen ? "text-black" : "text-gray-400"
+              }`}
             >
               <FaUser className="text-xl" />
               <p className="max-[840px]:hidden">Profile</p>
@@ -83,20 +88,20 @@ const Navbar = () => {
                     {user?.isAdmin && (
                       <button
                         onClick={() => handleNavigation("/admin")}
-                        className="block text-left pl-3 cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full"
+                        className="block text-left pl-3 cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full transition-all duration-200"
                       >
                         Admin
                       </button>
                     )}
                     <button
                       onClick={() => handleNavigation("/orders")}
-                      className="block text-left pl-3 cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full"
+                      className="block text-left pl-3 cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full transition-all duration-200"
                     >
                       My Orders
                     </button>
                     <button
                       onClick={() => handleNavigation("/settings")}
-                      className="block text-left pl-3 cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full"
+                      className="block text-left pl-3 cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full transition-all duration-200"
                     >
                       Settings
                     </button>
@@ -105,7 +110,7 @@ const Navbar = () => {
                         setIsOpen(false); // Close before logout action
                         logout();
                       }}
-                      className="cursor-pointer block text-left pl-3 w-full hover:bg-red-50 bg-white text-red-500 rounded-lg py-2 text-sm mt-1"
+                      className="cursor-pointer block text-left pl-3 w-full hover:bg-red-50 bg-white text-red-500 rounded-lg py-2 text-sm mt-1 transition-all duration-200"
                     >
                       Log Out
                     </button>
@@ -113,7 +118,7 @@ const Navbar = () => {
                 ) : (
                   <button
                     onClick={() => handleNavigation("/login")}
-                    className="block cursor-pointer text-center text-blue-500 hover:bg-blue-50 rounded-lg py-2 text-sm w-full"
+                    className="block cursor-pointer text-center text-blue-500 hover:bg-blue-50 rounded-lg py-2 text-sm w-full transition-all duration-200"
                   >
                     Log In
                   </button>
@@ -125,7 +130,7 @@ const Navbar = () => {
           <div className="max-[840px]:hidden">
             <Link
               to="#"
-              className="flex justify-center items-center flex-col text-gray-400 hover:text-black"
+              className="flex justify-center items-center flex-col text-gray-400 hover:text-black transition-all duration-200"
             >
               <MdMessage className="text-xl" />
               <p>Message</p>
@@ -134,7 +139,7 @@ const Navbar = () => {
           <div className="max-[840px]:hidden">
             <Link
               to="/favorites"
-              className="flex justify-center items-center flex-col text-gray-400 hover:text-black"
+              className="flex justify-center items-center flex-col text-gray-400 hover:text-black transition-all duration-200"
             >
               <FaHeart className="text-xl" />
               <p>Favorites</p>
@@ -143,7 +148,7 @@ const Navbar = () => {
           <div className="relative">
             <Link
               to="/cart"
-              className="flex justify-center max-[680px]:hidden items-center flex-col text-gray-400 hover:text-black"
+              className="flex justify-center max-[680px]:hidden items-center flex-col text-gray-400 hover:text-black transition-all duration-200"
             >
               <MdShoppingCart className="text-xl" />
               <p className="max-[840px]:hidden">My Cart</p>

@@ -91,21 +91,21 @@ const Menubar = () => {
           <CustomDropDown heading="All Category" items={categoryList} />
           <Link to="/search">
             <div
-              className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-2.5 flex justify-center items-center rounded-lg`}
+              className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-2.5 flex justify-center items-center rounded-lg transition-all duration-200 ease-in-out`}
             >
               All Products
             </div>
           </Link>
           <Link to="/search?sort=discount_high">
             <div
-              className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-2.5 flex justify-center items-center rounded-lg`}
+              className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-2.5 flex justify-center items-center rounded-lg transition-all duration-200 ease-in-out`}
             >
               Highly Discounted Items
             </div>
           </Link>
           <Link to="/search?sort=rating_high">
             <div
-              className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-2.5 flex justify-center items-center rounded-lg`}
+              className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-2.5 flex justify-center items-center rounded-lg transition-all duration-200 ease-in-out`}
             >
               Highly Rated Items
             </div>

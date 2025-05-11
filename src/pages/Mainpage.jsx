@@ -1,21 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ProductsStartPriceSection from "../components/ProductsStartPriceSection";
 import InquirySection from "../components/InquirySection";
 import RecommededItems from "../components/RecommededItems";
 import ExtraServicesSection from "../components/ExtraServicesSection";
 import SupplierByRegionSection from "../components/SupplierByRegionSection";
-import NewsletterSection from "../components/NewsletterSection";
+// import NewsletterSection from "../components/NewsletterSection";
 import { ProductContext } from "../context/ProductContext";
 import AuthContext from "../context/AuthContext";
 import ResponsiveText from "../components/ResponsiveText";
+import Timer from "../components/Timer";
 const Mainpage = () => {
   const { products, loading } = useContext(ProductContext);
   const { user, logout } = useContext(AuthContext);
+  const [deals, setDeals] = useState([]);
+  const [recommendedProducts, setRecommendedProducts] = useState([]);
 
   // console.log(user);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
@@ -38,22 +41,52 @@ const Mainpage = () => {
     { text: "More Categories", link: "/search" }, // Additional category
   ];
 
-  const deals = products
-    .filter((product) => product.previousPrice !== null) // Exclude products with null previous price
-    .map((product) => ({
-      type: product.type, // 1. Product Type
-      discount: Math.round(
-        ((product.previousPrice - product.currentPrice) /
-          product.previousPrice) *
-          100
-      ), // 2. Discount Percentage
-      image: product.image, // 3. Image URL
-      id: product._id, // 4. Product ID
-    }))
-    .sort(() => Math.random() - 0.5) // Shuffle products
-    .slice(0, 5); // Keep only 5 products
+  // const deals = products
+  //   .filter((product) => product.previousPrice !== null) // Exclude products with null previous price
+  //   .map((product) => ({
+  //     type: product.type, // 1. Product Type
+  //     discount: Math.round(
+  //       ((product.previousPrice - product.currentPrice) /
+  //         product.previousPrice) *
+  //         100
+  //     ), // 2. Discount Percentage
+  //     image: product.image, // 3. Image URL
+  //     id: product._id, // 4. Product ID
+  //   }))
+  //   .sort(() => Math.random() - 0.5) // Shuffle products
+  //   .slice(0, 5); // Keep only 5 products
 
   // console.log(deals)
+
+  useEffect(() => {
+    if (!loading && products.length > 0) {
+      const selectedDeals = products
+        .reduce((acc, product) => {
+          const { previousPrice, currentPrice, type, image, _id } = product;
+
+          if (previousPrice && currentPrice && previousPrice > currentPrice) {
+            const discount = Math.round(
+              ((previousPrice - currentPrice) / previousPrice) * 100
+            );
+
+            acc.push({ type, discount, image, id: _id });
+          }
+
+          return acc;
+        }, [])
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 5);
+
+      setDeals(selectedDeals);
+      // console.log(deals);
+
+      const selectedRecommendedProducts = products
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 10);
+
+      setRecommendedProducts(selectedRecommendedProducts);
+    }
+  }, [loading, products]);
 
   const homeAndOutdoor = [
     {
@@ -141,9 +174,9 @@ const Mainpage = () => {
     },
   ];
 
-  const recommendedProducts = products
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 10);
+  // const recommendedProducts = products
+  //   .sort(() => Math.random() - 0.5)
+  //   .slice(0, 10);
 
   // const homeAndOutdoor = products.filter((product) =>
   //   product.categories.includes("Interiors")
@@ -176,7 +209,7 @@ const Mainpage = () => {
             <ul className="">
               {categoryList.map((item, index) => (
                 <Link key={index} to={item.link} className="block w-full">
-                  <li className="hover:bg-[#E6F0FF] cursor-pointer py-2 px-4 rounded-lg whitespace-nowrap text-[#505050] hover:text-black text-lg">
+                  <li className="hover:bg-[#E6F0FF] cursor-pointer py-2 px-4 rounded-lg whitespace-nowrap text-[#505050] hover:text-black text-lg transition-all duration-200 ease-in-out">
                     {item.text}
                   </li>
                 </Link>
@@ -257,7 +290,7 @@ const Mainpage = () => {
             <div className="grow rounded-xl bg-[#55BDC3] p-4 max-[1300px]:p-3 flex items-center justify-center">
               <div className="text-white">
                 <ResponsiveText fontmax="text-lg" fontmin="text-base">
-                Send quotes with supplier preferences
+                  Send quotes with supplier preferences
                 </ResponsiveText>
               </div>
             </div>
@@ -273,7 +306,9 @@ const Mainpage = () => {
             </header>
 
             {/* Timer Section */}
-            <div className="flex space-x-1 mt-4 max-[1325px]:ml-4">
+            <Timer />
+
+            {/* <div className="flex space-x-1 mt-4 max-[1325px]:ml-4">
               {["04 Days", "13 Hours", "38 Min", "29 Sec"].map(
                 (item, index) => {
                   const [num, text] = item.split(" ");
@@ -288,7 +323,7 @@ const Mainpage = () => {
                   );
                 }
               )}
-            </div>
+            </div> */}
           </div>
 
           {/* Product Grid with Borders */}
@@ -321,7 +356,6 @@ const Mainpage = () => {
         </div>
 
         {/* {Home Outdoor Section} */}
-
         {
           <ProductsStartPriceSection
             products={homeAndOutdoor}
@@ -332,7 +366,6 @@ const Mainpage = () => {
         }
 
         {/* {Electronics and Gadgets Section} */}
-
         {
           <ProductsStartPriceSection
             products={electronics}
@@ -343,23 +376,16 @@ const Mainpage = () => {
         }
 
         {/* {Inquiry Section} */}
-
         <InquirySection />
 
         {/* {Recommeded items Section} */}
-
         <RecommededItems products={recommendedProducts} />
 
         {/* {Extra Services Section} */}
-
         <ExtraServicesSection />
 
         {/* {Supplier by region Section} */}
-
         <SupplierByRegionSection />
-
-        {/* {Newsletter Section} */}
-        {/* <NewsletterSection /> */}
       </div>
     </div>
   );

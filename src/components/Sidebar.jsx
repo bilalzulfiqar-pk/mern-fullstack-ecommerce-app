@@ -19,6 +19,7 @@ import { FaChevronDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const sidebarRef = useRef(null);
@@ -178,9 +179,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               </span>
               <div>
                 <Link to={"/settings"} onClick={() => setIsOpen(false)}>
-                  <button
-                    className="hover:underline cursor-pointer"
-                  >
+                  <button className="hover:underline cursor-pointer">
                     Settings
                   </button>
                 </Link>{" "}
@@ -219,7 +218,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
             <FiList size={20} />{" "}
             <Link to={"/search"} onClick={() => setIsOpen(false)}>
-              <span className="text-black hover:text-blue-500">All Products</span>
+              <span className="text-black hover:text-blue-500">
+                All Products
+              </span>
             </Link>
           </li>
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">
@@ -279,20 +280,28 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             </span>
             {/* Language Dropdown */}
             <div ref={languageDropdownRef} className="relative">
-              {isLanguageDropdownOpen && (
-                <ul className="absolute -left-10 top-1.5 bg-white shadow-md border rounded-md w-40 mt-2 overflow-hidden">
-                  {Object.entries(languageMap).map(([language, code]) => (
-                    <li
-                      key={code}
-                      className="p-2 hover:bg-gray-200 cursor-pointer notranslate"
-                      translate="no"
-                      onClick={() => changeLanguage(code)}
-                    >
-                      {language} - {code.toUpperCase()}
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <AnimatePresence>
+                {isLanguageDropdownOpen && (
+                  <motion.ul
+                    className="absolute -left-10 top-1.5 bg-white shadow-md border rounded-md w-40 mt-2 overflow-hidden"
+                    initial={{ opacity: 0, y: 0 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {Object.entries(languageMap).map(([language, code]) => (
+                      <li
+                        key={code}
+                        className="p-2 hover:bg-gray-200 cursor-pointer notranslate"
+                        translate="no"
+                        onClick={() => changeLanguage(code)}
+                      >
+                        {language} - {code.toUpperCase()}
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
             </div>
           </li>
           <li className="flex items-center space-x-3 text-[#8B96A5] hover:text-blue-500 cursor-pointer p-2">

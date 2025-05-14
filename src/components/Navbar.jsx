@@ -7,6 +7,7 @@ import { IoMenu } from "react-icons/io5";
 import Sidebar from "./Sidebar";
 import { useCart } from "../context/CartContext";
 import AuthContext from "../context/AuthContext";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -81,7 +82,61 @@ const Navbar = () => {
               <p className="max-[840px]:hidden">Profile</p>
             </button>
 
-            {isOpen && (
+            <AnimatePresence>
+              {isOpen && (
+                <motion.div
+                  key="user-menu" // helps AnimatePresence track it
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute border z-10 w-28 border-[#E0E0E0] rounded-md bg-white p-2 mt-0.5 max-[840px]:right-0 max-[840px]:left-auto left-0 shadow-md"
+                >
+                  {user ? (
+                    <>
+                      {user.isAdmin && (
+                        <button
+                          onClick={() => handleNavigation("/admin")}
+                          className="block text-left pl-3 cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full transition-all duration-200"
+                        >
+                          Admin
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleNavigation("/orders")}
+                        className="block text-left pl-3 cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full transition-all duration-200"
+                      >
+                        My Orders
+                      </button>
+                      <button
+                        onClick={() => handleNavigation("/settings")}
+                        className="block text-left pl-3 cursor-pointer text-gray-700 hover:bg-gray-100 rounded-lg py-2 text-sm w-full transition-all duration-200"
+                      >
+                        Settings
+                      </button>
+                      <button
+                        onClick={() => {
+                          setIsOpen(false);
+                          logout();
+                        }}
+                        className="cursor-pointer block text-left pl-3 w-full hover:bg-red-50 bg-white text-red-500 rounded-lg py-2 text-sm mt-1 transition-all duration-200"
+                      >
+                        Log Out
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => handleNavigation("/login")}
+                      className="block cursor-pointer text-center text-blue-500 hover:bg-blue-50 rounded-lg py-2 text-sm w-full transition-all duration-200"
+                    >
+                      Log In
+                    </button>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* {isOpen && (
               <div className="absolute border z-10 w-28 border-[#E0E0E0] rounded-md bg-white p-2 mt-2 max-[840px]:right-0 max-[840px]:left-auto left-0 shadow-md">
                 {user ? (
                   <>
@@ -124,7 +179,7 @@ const Navbar = () => {
                   </button>
                 )}
               </div>
-            )}
+            )} */}
           </div>
 
           <div className="max-[840px]:hidden">

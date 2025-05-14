@@ -9,6 +9,7 @@ import Pagination from "../components/Pagination";
 import ProductCard from "../components/ProductCard";
 import { ProductContext } from "../context/ProductContext";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
+import CustomDropdown from "../components/CustomDropDown";
 
 const SearchPage = () => {
   const [gridView, setGridView] = useState(true);
@@ -292,7 +293,7 @@ const SearchPage = () => {
                   <div className="flex justify-center items-center gap-2 max-[360px]:flex-col">
                     {/* Dropdown */}
                     <div className="relative">
-                      <select
+                      {/* <select
                         value={sortOption}
                         onChange={(e) => setSortOption(e.target.value)}
                         className="border cursor-pointer hover:bg-[#f5f5f5] focus:bg-[#f5f5f5] transition-all duration-300 appearance-none border-[#E0E0E0] px-3 w-51 py-1.5 rounded-md focus:outline-none focus:ring focus:border-blue-300"
@@ -319,7 +320,31 @@ const SearchPage = () => {
                       </select>
                       <div className="absolute top-1/2 right-2 transform -translate-y-1/2 pointer-events-none text-2xl text-gray-400">
                         <MdKeyboardArrowDown />
-                      </div>
+                      </div> */}
+                      <CustomDropdown
+                        // No label when not needed
+                        options={[
+                          "Featured",
+                          "Price: Low to High",
+                          "Price: High to Low",
+                          "Discount: High to Low",
+                          "Discount: Low to High",
+                          "Rating: High to Low",
+                          "Rating: Low to High",
+                        ]}
+                        value={sortOption}
+                        onChange={setSortOption}
+                        // Customize width only
+                        containerClassName="w-51"
+                        // Tweak button: more rounded or different padding
+                        buttonClassName="w-full bg-white border border-gray-300 rounded-md cursor-pointer flex justify-between items-center pl-3 py-1.5 pr-1.5"
+                        // List styling if needed
+                        listClassName="absolute left-0 w-full bg-white border border-gray-300 rounded-lg shadow mt-1 z-10"
+                        // Option hover color or typography tweak
+                        optionClassName="p-2 hover:bg-[#E6F0FF] cursor-pointer capitalize transition-colors"
+                        // Icon styling
+                        iconClassName="text-2xl text-gray-400"
+                      />
                     </div>
 
                     {/* View Toggle Buttons */}

@@ -12,7 +12,11 @@ connectDB();
 // CORS to allow frontend requests
 // app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
-app.use(cors());
+// app.use(cors());
+
+const corsOptions = require("./config/corsOptions");
+
+app.use(cors(corsOptions));
 
 app.use(express.json()); // Middleware to parse JSON
 

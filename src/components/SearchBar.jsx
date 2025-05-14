@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
+import CustomDropdown from "./CustomDropDown";
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
@@ -41,7 +42,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="flex items-center border-2 border-blue-500 rounded-lg overflow-hidden w-full min-w-[250px] max-w-[50%] max-[840px]:min-w-fit max-[680px]:min-w-full max-[680px]:my-3">
+    <div className="flex items-center border-2 border-blue-500 rounded-lg w-full min-w-[250px] max-w-[50%] max-[840px]:min-w-fit max-[680px]:min-w-full max-[680px]:my-3">
       {/* Search Input */}
       <input
         type="text"
@@ -54,7 +55,7 @@ const SearchBar = () => {
 
       {/* Select Dropdown Wrapper */}
       <div className="relative border-l border-blue-500 max-[680px]:hidden">
-        <select
+        {/* <select
           className="p-2 bg-white outline-none appearance-none pr-8 text-gray-700 cursor-pointer"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
@@ -63,11 +64,22 @@ const SearchBar = () => {
           <option value="Tech">Tech</option>
           <option value="Clothing">Clothing</option>
           <option value="Interiors">Interiors</option>
-        </select>
+        </select> */}
         {/* Custom Dropdown Arrow */}
-        <div className="absolute top-1/2 right-1 transform -translate-y-1/2 pointer-events-none text-2xl text-gray-400">
+        {/* <div className="absolute top-1/2 right-1 transform -translate-y-1/2 pointer-events-none text-2xl text-gray-400">
           <MdKeyboardArrowDown />
-        </div>
+        </div> */}
+        <CustomDropdown
+          options={["all", "Tech", "Clothing", "Interiors"]}
+          value={category}
+          onChange={setCategory}
+          containerClassName="w-25"
+          buttonClassName="rounded-none w-full p-2 pr-1 bg-white flex justify-between items-center cursor-pointer text-gray-700"
+          iconClassName="text-2xl text-gray-400"
+          listClassName="absolute left-0 w-full bg-white border border-gray-300 rounded shadow mt-1 z-10"
+          optionClassName="p-2 hover:bg-[#E6F0FF] cursor-pointer capitalize transition-colors"
+          tapAnimation={false} // Disable tap animation for dropdown
+        />
       </div>
 
       {/* Search Button */}

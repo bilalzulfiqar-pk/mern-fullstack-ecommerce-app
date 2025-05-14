@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import ReviewModal from "../components/ReviewModal";
 import Swal from "sweetalert2";
+import CustomDropdown from "../components/CustomDropDown";
 
 const UserOrders = () => {
   const { user, authLoading } = useContext(AuthContext);
@@ -15,7 +16,7 @@ const UserOrders = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(5);
 
   const API_BASE_URL =
     import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
@@ -223,7 +224,7 @@ const UserOrders = () => {
             />
             <button
               onClick={handleSearch}
-              className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700"
+              className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700 transition"
             >
               Search
             </button>
@@ -233,11 +234,11 @@ const UserOrders = () => {
           <div className="flex flex-wrap gap-4 mb-6 items-center self-start md:self-end">
             {/* Status Filter */}
             <div className="relative">
-              <label className="block text-sm font-semibold text-gray-700 mb-1">
+              {/* <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Filter by Status:
-              </label>
+              </label> */}
               <div className="relative">
-                <select
+                {/* <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
                   className="p-2 bg-white border border-gray-300 outline-none rounded w-40 cursor-pointer appearance-none"
@@ -247,21 +248,35 @@ const UserOrders = () => {
                   <option value="approved">Approved</option>
                   <option value="cancelled">Cancelled</option>
                   <option value="delivered">Delivered</option>
-                </select>
+                </select> */}
                 {/* Custom Dropdown Arrow */}
-                <div className="absolute top-1/2 right-1 transform -translate-y-1/2 pointer-events-none text-2xl text-gray-700">
+                {/* <div className="absolute top-1/2 right-1 transform -translate-y-1/2 pointer-events-none text-2xl text-gray-700">
                   <MdKeyboardArrowDown />
-                </div>
+                </div> */}
+
+                <CustomDropdown
+                  label="Filter by Status:"
+                  options={[
+                    "all",
+                    "pending",
+                    "approved",
+                    "cancelled",
+                    "delivered",
+                  ]}
+                  value={statusFilter}
+                  onChange={setStatusFilter}
+                  containerClassName="w-40"
+                />
               </div>
             </div>
 
             {/* Limit Selector */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">
+              {/* <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Results per page:
-              </label>
+              </label> */}
               <div className="relative">
-                <select
+                {/* <select
                   value={limit}
                   onChange={(e) => setLimit(Number(e.target.value))}
                   className="p-2 border border-gray-300 outline-none rounded w-32 cursor-pointer bg-white appearance-none"
@@ -272,11 +287,19 @@ const UserOrders = () => {
                   <option value={20}>20</option>
                   <option value={50}>50</option>
                   <option value={100}>100</option>
-                </select>
+                </select> */}
                 {/* Custom Dropdown Arrow */}
-                <div className="absolute top-1/2 right-1 transform -translate-y-1/2 pointer-events-none text-2xl text-gray-700">
+                {/* <div className="absolute top-1/2 right-1 transform -translate-y-1/2 pointer-events-none text-2xl text-gray-700">
                   <MdKeyboardArrowDown />
-                </div>
+                </div> */}
+
+                <CustomDropdown
+                  label="Results per page:"
+                  options={["5", "10", "15", "20", "50"]}
+                  value={String(limit)}
+                  onChange={(val) => setLimit(Number(val))}
+                  containerClassName="w-32"
+                />
               </div>
             </div>
           </div>

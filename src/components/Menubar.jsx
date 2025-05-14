@@ -1,6 +1,5 @@
-// Menubar.jsx
 import React from "react";
-import CustomDropDown from "./CustomDropDown";
+import CustomDropDownMenubar from "./CustomDropDownMenubar";
 import { Link } from "react-router-dom";
 
 // const categoryList = [
@@ -88,7 +87,7 @@ const Menubar = () => {
     <div className="w-full border-b border-[#E0E0E0] max-[840px]:hidden">
       <div className="max-w-[1580px] m-auto h-14 flex justify-between px-5 min-[1080px]:px-32 items-center">
         <div className="flex justify-center items-center gap-1">
-          <CustomDropDown heading="All Category" items={categoryList} />
+          <CustomDropDownMenubar heading="All Category" items={categoryList} />
           <Link to="/search">
             <div
               className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-2.5 flex justify-center items-center rounded-lg transition-all duration-200 ease-in-out`}
@@ -110,15 +109,15 @@ const Menubar = () => {
               Highly Rated Items
             </div>
           </Link>
-          <CustomDropDown heading="Help" items={helpList} />
+          <CustomDropDownMenubar heading="Help" items={helpList} />
         </div>
         <div className="flex justify-center items-center gap-1">
-          <CustomDropDown
+          <CustomDropDownMenubar
             heading="USD"
             items={currencyList}
             className="max-[1200px]:hidden"
           />
-          <CustomDropDown
+          <CustomDropDownMenubar
             heading="Language"
             items={languageList}
             className="max-[870px]:hidden"

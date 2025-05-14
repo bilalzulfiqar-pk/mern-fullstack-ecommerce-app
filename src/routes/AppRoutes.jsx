@@ -29,7 +29,7 @@ const ProtectedRoute = ({ element, adminOnly }) => {
     return (
       <div
         className={`text-xl ${
-          !adminOnly ? "h-[90vh]" : "h-[90dvh]"
+          !adminOnly ? "h-[90dvh]" : "h-[90dvh]"
         } flex justify-center bg-[#F7FAFC] items-center`}
       >
         <div className="-translate-y-17">Verifying User...</div>

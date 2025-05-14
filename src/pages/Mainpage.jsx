@@ -327,8 +327,8 @@ const Mainpage = () => {
           </div>
 
           {/* Product Grid with Borders */}
-          <div className="max-[870px]:overflow-x-auto">
-            <div className="grid h-full grid-cols-5 max-[1325px]:grid-cols-3 max-[870px]:grid-cols-[repeat(5,minmax(200px,1fr))] max-[870]:w-max">
+          <div className="max-[900px]:overflow-x-auto">
+            <div className="grid h-full grid-cols-5 max-[900px]:grid-cols-[repeat(5,minmax(200px,1fr))] max-[900]:w-max">
               {deals.map((product, index) => (
                 <Link to={`/product/${product.id}`} key={index}>
                   <div
@@ -343,7 +343,7 @@ const Mainpage = () => {
                       className="w-[162px] h-[162px] object-cover group-hover:scale-110 transition-transform duration-300 ease-in-out"
                     />
                     <div className="flex flex-col justify-center items-center gap-1">
-                      <h3 className="text-lg">{product.type}</h3>
+                      <h3 className="text-lg line-clamp-1">{product.type}</h3>
                       <div className="rounded-2xl bg-[#FFE3E3] text-[#EB001B] p-1 px-6 flex justify-center items-center w-16">
                         -{product.discount}%
                       </div>

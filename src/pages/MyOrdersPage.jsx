@@ -218,7 +218,7 @@ const UserOrders = () => {
                 placeholder="Search by Order ID"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="px-2 py-1 flex-grow bg-white focus:outline-none"
+                className="pl-2 py-1 flex-grow bg-white focus:outline-none min-w-20"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleSearch();
                 }}
@@ -232,28 +232,28 @@ const UserOrders = () => {
             </div>
 
             {/* Filters */}
-            <div className="flex flex-wrap gap-4 mb-6 items-center self-start md:self-end">
+            <div className="flex flex-wrap gap-4 mb-6 items-center self-start md:self-end max-[360px]:w-full">
               {/* Status Filter */}
-              <div className="relative">
+              <div className="relative max-[360px]:w-full">
                 {/* <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Filter by Status:
-              </label> */}
+                </label> */}
                 <div className="relative">
                   {/* <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
                   className="p-2 bg-white border border-gray-300 outline-none rounded w-40 cursor-pointer appearance-none"
-                >
+                  >
                   <option value="all">All</option>
                   <option value="pending">Pending</option>
                   <option value="approved">Approved</option>
                   <option value="cancelled">Cancelled</option>
                   <option value="delivered">Delivered</option>
-                </select> */}
+                  </select> */}
                   {/* Custom Dropdown Arrow */}
                   {/* <div className="absolute top-1/2 right-1 transform -translate-y-1/2 pointer-events-none text-2xl text-gray-700">
                   <MdKeyboardArrowDown />
-                </div> */}
+                  </div> */}
 
                   <CustomDropdown
                     label="Filter by Status:"
@@ -266,16 +266,16 @@ const UserOrders = () => {
                     ]}
                     value={statusFilter}
                     onChange={setStatusFilter}
-                    containerClassName="w-40"
+                    containerClassName="w-40 max-[360px]:w-full"
                   />
                 </div>
               </div>
 
               {/* Limit Selector */}
-              <div>
+              <div className="relative max-[360px]:w-full">
                 {/* <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Results per page:
-              </label> */}
+                </label> */}
                 <div className="relative">
                   {/* <select
                   value={limit}
@@ -299,7 +299,7 @@ const UserOrders = () => {
                     options={["5", "10", "15", "20", "50"]}
                     value={String(limit)}
                     onChange={(val) => setLimit(Number(val))}
-                    containerClassName="w-32"
+                    containerClassName="w-32 max-[360px]:w-full"
                   />
                 </div>
               </div>
@@ -370,7 +370,7 @@ const UserOrders = () => {
                       <p className="text-sm font-medium text-gray-800">
                         Review Products:
                       </p>
-                      <div className="grid gap-3 grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))]">
+                      <div className="grid gap-3 grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))] max-[350px]:grid-cols-1">
                         {/* Map through products in the order */}
                         {order.products.map((product) => {
                           const key = `${order._id}_${product.productId}`;
@@ -397,7 +397,7 @@ const UserOrders = () => {
                                 <p className="text-sm font-medium text-gray-800 line-clamp-1">
                                   {product.name}
                                 </p>
-                                {reviewLoading ? (
+                                {/* {reviewLoading ? (
                                   <button
                                     disabled
                                     className="mt-1 inline-flex justify-center items-center gap-1 px-3 py-1 rounded bg-gray-200 text-gray-500 text-sm font-medium shadow-sm cursor-not-allowed"
@@ -420,7 +420,32 @@ const UserOrders = () => {
                                   >
                                     Write Review
                                   </button>
-                                )}
+                                )} */}
+                                <button
+                                  disabled={reviewLoading || isReviewed}
+                                  onClick={
+                                    !reviewLoading && !isReviewed
+                                      ? () =>
+                                          handleOpenReview(product, order._id)
+                                      : undefined
+                                  }
+                                  className={`
+                                    mt-1 inline-flex items-center justify-center gap-1 px-3 py-1 rounded text-sm font-medium shadow-sm
+                                    ${
+                                      reviewLoading
+                                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                                        : isReviewed
+                                        ? "bg-gray-300 text-gray-700 cursor-not-allowed"
+                                        : "bg-green-600 hover:bg-green-700 text-white cursor-pointer transition"
+                                    }
+                                  `}
+                                >
+                                  {reviewLoading
+                                    ? "Checking…"
+                                    : isReviewed
+                                    ? "Reviewed"
+                                    : "Write Review"}
+                                </button>
                               </div>
                             </div>
                           );

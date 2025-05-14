@@ -61,7 +61,7 @@ const FavoritesPage = () => {
           <h1 className="text-2xl font-semibold mb-6">
             Your Favorites ({localFavorites.length})
           </h1>
-          <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))] justify-items-center">
+          <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(230px,1fr))] justify-items-center">
             {localFavorites.map((product) => (
               <div
                 key={product._id}
@@ -72,15 +72,20 @@ const FavoritesPage = () => {
                     : "opacity-0 scale-95 min-h-[400px]"
                 }`}
               >
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  onLoad={() =>
-                    setLoadedItems((prev) => ({ ...prev, [product._id]: true }))
-                  }
-                  className="aspect-square object-cover rounded-md group-hover:scale-103 transition-transform duration-300 ease-in-out"
-                />
-                <h2 className="text-lg font-medium mb-2">{product.name}</h2>
+                <div className="flex justify-center items-center">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    onLoad={() =>
+                      setLoadedItems((prev) => ({
+                        ...prev,
+                        [product._id]: true,
+                      }))
+                    }
+                    className="aspect-square object-cover rounded-md group-hover:scale-103 transition-transform duration-300 max-w-[220px] ease-in-out"
+                  />
+                </div>
+                <h2 className="text-lg font-medium mb-2 line-clamp-2">{product.name}</h2>
                 <div className="flex items-center space-x-2 mb-2">
                   <span className="text-lg font-bold text-gray-900">
                     ${product.currentPrice}

@@ -152,7 +152,7 @@ const AdminOrdersPage = () => {
                 placeholder="Search by User or Order ID"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="px-2 py-1 flex-grow bg-white focus:outline-none"
+                className="pl-2 py-1 flex-grow bg-white focus:outline-none min-w-20"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleSearch();
                 }}
@@ -166,9 +166,9 @@ const AdminOrdersPage = () => {
             </div>
 
             {/* Filters */}
-            <div className="flex flex-wrap gap-4 mb-6 items-center self-start md:self-end">
+            <div className="flex flex-wrap gap-4 mb-6 items-center self-start md:self-end max-[360px]:w-full">
               {/* Status Filter */}
-              <div className="relative">
+              <div className="relative max-[360px]:w-full">
                 {/* <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Filter by Status:
               </label> */}
@@ -200,13 +200,13 @@ const AdminOrdersPage = () => {
                     ]}
                     value={statusFilter}
                     onChange={setStatusFilter}
-                    containerClassName="w-40"
+                    containerClassName="w-40 max-[360px]:w-full"
                   />
                 </div>
               </div>
 
               {/* Limit Selector */}
-              <div>
+              <div className="relative max-[360px]:w-full">
                 {/* <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Results per page:
               </label> */}
@@ -233,7 +233,7 @@ const AdminOrdersPage = () => {
                     options={["5", "10", "15", "20", "50"]}
                     value={String(limit)}
                     onChange={(val) => setLimit(Number(val))}
-                    containerClassName="w-40"
+                    containerClassName="w-32 max-[360px]:w-full"
                   />
                 </div>
               </div>

@@ -13,7 +13,7 @@ const ProductPage = () => {
 
   if (loading)
     return (
-      <div className="w-full bg-[#F7FAFC] h-screen">
+      <div className="w-full bg-[#F7FAFC] h-[100dvh]">
         <div className="pt-6 max-w-[1404px]  m-auto h-full">
           <div className="mx-5 min-[1000px]:mx-10">
             <div className="flex justify-center items-center h-[85dvh] -translate-y-22">
@@ -34,7 +34,7 @@ const ProductPage = () => {
 
   if (!product)
     return (
-      <div className="w-full bg-[#F7FAFC] h-screen">
+      <div className="w-full bg-[#F7FAFC] h-[100dvh]">
         <div className="pt-6 max-w-[1404px]  m-auto h-2/3 flex flex-col gap-3 justify-center items-center">
           <p className="mx-5 min-[1000px]:mx-10 text-2xl">Product not found</p>
           {/* Back to shop button */}

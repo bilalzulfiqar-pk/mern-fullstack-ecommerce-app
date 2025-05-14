@@ -137,7 +137,7 @@ const AdminOrdersPage = () => {
   }
 
   return (
-    <div className="bg-[#F7FAFC] min-h-screen">
+    <div className="bg-[#F7FAFC] min-h-[100dvh]">
       <div className="p-6 px-6 min-[1000px]:px-10 max-w-[1404px] mx-auto">
         <div className="">
           <h2 ref={topRef} className="text-3xl font-bold mb-6 text-gray-800">

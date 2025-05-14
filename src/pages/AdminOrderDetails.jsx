@@ -53,7 +53,7 @@ const AdminOrderDetails = () => {
   }
 
   return (
-    <div className="bg-[#F7FAFC] min-h-screen flex items-center justify-center">
+    <div className="bg-[#F7FAFC] min-h-[100dvh] flex items-center justify-center">
       <div className="mx-auto">
         <OrderDetails order={order} />
       </div>

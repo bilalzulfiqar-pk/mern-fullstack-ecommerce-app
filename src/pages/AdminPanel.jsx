@@ -74,7 +74,7 @@ const AdminPanel = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-[#F7FAFC] p-6">
+    <div className="min-h-[100dvh] flex flex-col items-center bg-[#F7FAFC] p-6">
       <h2 className="text-3xl font-bold mb-4">Admin Panel</h2>
       <div className="flex justify-center items-center gap-3 w-full flex-wrap h-fit">
         <Link

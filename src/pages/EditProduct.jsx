@@ -227,7 +227,7 @@ const EditProduct = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="min-h-screen p-5 flex items-center justify-center bg-gray-100">
+    <div className="min-h-[100dvh] p-5 flex items-center justify-center bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold text-center mb-4">Edit Product</h2>
         {error && <p className="text-red-500 text-sm mb-2">{error}</p>}

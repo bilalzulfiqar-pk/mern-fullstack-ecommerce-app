@@ -186,7 +186,7 @@ const Mainpage = () => {
 
   if (loading)
     return (
-      <div className="w-full bg-[#F7FAFC] h-screen">
+      <div className="w-full bg-[#F7FAFC] h-[100dvh]">
         <div className="pt-6 max-w-[1404px]  m-auto h-full">
           <div className="mx-5 min-[1000px]:mx-10">
             <div className="flex justify-center items-center h-[85dvh] -translate-y-22">

@@ -120,7 +120,7 @@ const Menubar = () => {
           <CustomDropDownMenubar
             heading="Language"
             items={languageList}
-            className="max-[870px]:hidden"
+            className="max-[880px]:hidden"
           />
         </div>
       </div>

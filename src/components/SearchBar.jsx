@@ -42,12 +42,12 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="flex items-center border-2 border-blue-500 rounded-lg w-full min-w-[250px] max-w-[50%] max-[840px]:min-w-fit max-[680px]:min-w-full max-[680px]:my-3">
+    <div className="flex items-center border-2 border-blue-500 rounded-lg w-full min-w-[250px] max-w-[50%] max-[880px]:min-w-fit max-[680px]:min-w-full max-[680px]:my-3">
       {/* Search Input */}
       <input
         type="text"
         placeholder="Search..."
-        className="p-2 flex-grow outline-none text-gray-700 placeholder-gray-400"
+        className="p-2 flex-grow outline-none min-w-20 text-gray-700 placeholder-gray-400"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleSearch()} // Enter key to search
@@ -84,7 +84,7 @@ const SearchBar = () => {
 
       {/* Search Button */}
       <button
-        className="bg-blue-500 text-white px-5 py-2 hover:bg-blue-600 min-w-20 max-[840px]:min-w-fit transition duration-200 cursor-pointer max-[680px]:min-w-[87px]"
+        className="bg-blue-500 text-white px-5 py-2 hover:bg-blue-600 min-w-20 max-[880px]:min-w-fit transition duration-200 cursor-pointer max-[680px]:min-w-[87px]"
         onClick={handleSearch}
       >
         Search

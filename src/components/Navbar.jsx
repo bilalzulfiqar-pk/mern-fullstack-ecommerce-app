@@ -51,7 +51,7 @@ const Navbar = () => {
         <div className="relative flex justify-center max-[680px]:w-full max-[680px]:justify-center items-center gap-4">
           <IoMenu
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-4xl translate-y-1 hidden max-[840px]:block cursor-pointer max-[680px]:absolute max-[680px]:left-0"
+            className="text-4xl translate-y-1 hidden max-[880px]:block cursor-pointer max-[680px]:absolute max-[680px]:left-0"
           />
           <Link
             to={"/"}
@@ -79,7 +79,7 @@ const Navbar = () => {
               }`}
             >
               <FaUser className="text-xl" />
-              <p className="max-[840px]:hidden">Profile</p>
+              <p className="max-[880px]:hidden">Profile</p>
             </button>
 
             <AnimatePresence>
@@ -90,7 +90,7 @@ const Navbar = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -5 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute border z-10 w-28 border-[#E0E0E0] rounded-md bg-white p-2 mt-0.5 max-[840px]:right-0 max-[840px]:left-auto left-0 shadow-md"
+                  className="absolute border z-10 w-28 border-[#E0E0E0] rounded-md bg-white p-2 mt-0.5 max-[880px]:right-0 max-[880px]:left-auto left-0 shadow-md"
                 >
                   {user ? (
                     <>
@@ -137,7 +137,7 @@ const Navbar = () => {
             </AnimatePresence>
 
             {/* {isOpen && (
-              <div className="absolute border z-10 w-28 border-[#E0E0E0] rounded-md bg-white p-2 mt-2 max-[840px]:right-0 max-[840px]:left-auto left-0 shadow-md">
+              <div className="absolute border z-10 w-28 border-[#E0E0E0] rounded-md bg-white p-2 mt-2 max-[880px]:right-0 max-[880px]:left-auto left-0 shadow-md">
                 {user ? (
                   <>
                     {user?.isAdmin && (
@@ -182,7 +182,7 @@ const Navbar = () => {
             )} */}
           </div>
 
-          <div className="max-[840px]:hidden">
+          <div className="max-[880px]:hidden">
             <Link
               to="#"
               className="flex justify-center items-center flex-col text-gray-400 hover:text-black transition-all duration-200"
@@ -191,7 +191,7 @@ const Navbar = () => {
               <p>Message</p>
             </Link>
           </div>
-          <div className="max-[840px]:hidden">
+          <div className="max-[880px]:hidden">
             <Link
               to="/favorites"
               className="flex justify-center items-center flex-col text-gray-400 hover:text-black transition-all duration-200"
@@ -206,11 +206,11 @@ const Navbar = () => {
               className="flex justify-center max-[680px]:hidden items-center flex-col text-gray-400 hover:text-black transition-all duration-200"
             >
               <MdShoppingCart className="text-xl" />
-              <p className="max-[840px]:hidden">My Cart</p>
+              <p className="max-[880px]:hidden">My Cart</p>
 
               {/* Notification Badge */}
               {user && cartCount > 0 && (
-                <span className="absolute -top-3 -right-0 max-[840px]:-right-3 max-[840px]:-top-3 bg-red-500 text-white text-xs w-6 h-6 flex justify-center items-center rounded-full">
+                <span className="absolute -top-3 -right-0 max-[880px]:-right-3 max-[880px]:-top-3 bg-red-500 text-white text-xs w-6 h-6 flex justify-center items-center rounded-full">
                   {cartCount}
                 </span>
               )}

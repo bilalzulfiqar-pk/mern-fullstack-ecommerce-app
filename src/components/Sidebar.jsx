@@ -153,7 +153,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       {/* Sidebar */}
       <div
         ref={sidebarRef}
-        className={`fixed top-0 left-0 h-full w-72 bg-white shadow-lg border-r border-gray-300 p-4 transition-transform transform z-50 ${
+        className={`fixed top-0 left-0 h-full overflow-y-auto w-72 bg-white shadow-lg border-r border-gray-300 p-4 transition-transform transform z-50 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -277,12 +277,19 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               onClick={toggleLanguageDropdown}
               className="cursor-pointer"
             />{" "}
-            <span
+            <div
               className="text-black flex gap-1 justify-center items-center relative hover:text-blue-500 cursor-pointer"
               onClick={toggleLanguageDropdown}
             >
-              Language <FaChevronDown size={12} className="translate-y-0.5" />
-            </span>
+              Language{" "}
+              <motion.span
+                animate={{ rotate: isLanguageDropdownOpen ? 180 : 0 }}
+                transition={{ duration: 0.2 }}
+                className="translate-y-0.5 text-gray-700 inline-block"
+              >
+                <FaChevronDown size={12} />
+              </motion.span>
+            </div>
             {/* Language Dropdown */}
             <div ref={languageDropdownRef} className="relative">
               <AnimatePresence>

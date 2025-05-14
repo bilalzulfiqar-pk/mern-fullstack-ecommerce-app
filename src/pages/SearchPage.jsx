@@ -185,8 +185,8 @@ const SearchPage = () => {
   if (loading)
     return (
       <div className="w-full bg-[#F7FAFC] h-screen">
-        <div className="pt-6 max-w-[1324px]  m-auto h-full">
-          <div className="mx-5 min-[1100px]:mx-10">
+        <div className="pt-6 max-w-[1404px]  m-auto h-full">
+          <div className="mx-5 min-[1000px]:mx-10">
             <div className="flex justify-center items-center h-[85vh] -translate-y-22">
               <div
                 className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
@@ -201,7 +201,7 @@ const SearchPage = () => {
   return (
     <div>
       <div className="w-full pb-6 bg-[#F7FAFC] h-full">
-        <div className="max-w-[1324px] px-5 min-[1100px]:px-10 m-auto h-full">
+        <div className="max-w-[1404px] px-5 min-[1000px]:px-10 m-auto h-full">
           {/* Breadcrumb */}
           <nav className="text-[#8B96A5] text-base py-6">
             <ul className="flex space-x-2">

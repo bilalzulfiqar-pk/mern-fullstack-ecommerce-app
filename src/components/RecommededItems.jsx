@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const RecommededItems = ({ products }) => {
   return (
-    <div className="mx-5 min-[1100px]:mx-10">
+    <div className="mx-5 min-[1000px]:mx-10">
       <div className="mb-3">
         <p className="font-semibold text-3xl">Recommeded items</p>
       </div>

@@ -29,7 +29,7 @@ const InquirySection = () => {
   };
 
   return (
-    <section className="mx-5 min-[1100px]:mx-10 py-8">
+    <section className="mx-5 min-[1000px]:mx-10 py-8">
       <div className="container1 w-full">
         <div
           className="relative p-8 rounded-lg overflow-hidden min-h-[400px] flex items-center"

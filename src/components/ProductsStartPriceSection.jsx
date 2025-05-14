@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const ProductsStartPriceSection = ({ products, heading, link, banner }) => {
   return (
     <div>
-      <div className="mt-6 mx-5 min-[1100px]:mx-10 h-72 grid grid-cols-[0.6fr_2fr] max-[870px]:grid-cols-1 overflow-hidden rounded-lg border border-[#E0E0E0] bg-white">
+      <div className="mt-6 mx-5 min-[1000px]:mx-10 h-72 grid grid-cols-[0.6fr_2fr] max-[870px]:grid-cols-1 overflow-hidden rounded-lg border border-[#E0E0E0] bg-white">
         <div className="bg-cover" style={{ backgroundImage: `url(${banner})` }}>
           <header className="pt-6 mx-5 ">
             <h3 className="text-2xl font-bold">{heading}</h3>

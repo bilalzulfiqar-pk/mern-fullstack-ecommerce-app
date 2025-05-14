@@ -31,7 +31,7 @@ const ExtraServicesSection = () => {
 
   return (
     <div>
-      <div className="mx-5 min-[1100px]:mx-10 my-7">
+      <div className="mx-5 min-[1000px]:mx-10 my-7">
         <div className="mb-3">
           <p className="font-semibold text-3xl">Our extra services</p>
         </div>

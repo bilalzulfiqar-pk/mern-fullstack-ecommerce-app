@@ -14,7 +14,7 @@ const Footer = () => {
         {/* {Newsletter Section} */}
         <NewsletterSection />
 
-        <div className="py-10 pb-15 mx-auto px-5 min-[1080px]:px-32 max-w-[1580px]">
+        <div className="py-10 pb-15 mx-auto px-5 min-[1100px]:px-10 max-w-[1324px]">
           <div className="container1">
             <div className="flex gap-5 max-[880px]:flex-col">
               {/* Brand Section */}
@@ -168,7 +168,7 @@ const Footer = () => {
       </div>
       <div className="bg-[#EFF2F4]">
         {/* Bottom Section */}
-        <div className="mx-5 min-[1080px]:mx-32 py-6 flex flex-col md:flex-row text-lg justify-between text-gray-500">
+        <div className="mx-5 min-[1100px]:mx-10 py-6 flex flex-col md:flex-row text-lg justify-between text-gray-500">
           <p>© 2025 Ecommerce.</p>
           <div className="flex items-center space-x-2">
             <span></span>

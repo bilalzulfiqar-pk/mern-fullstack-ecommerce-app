@@ -48,7 +48,7 @@ const FavoritesPage = () => {
 
   if (localFavorites.length === 0) {
     return (
-      <div className="mx-5 min-[1080px]:mx-32 text-xl py-10 text-gray-500 min-h-[75vh]">
+      <div className="mx-5 min-[1100px]:mx-10 text-xl py-10 text-gray-500 min-h-[75vh]">
         You haven’t added anything to favorites yet.
       </div>
     );
@@ -56,7 +56,7 @@ const FavoritesPage = () => {
 
   return (
     <div className="w-full bg-[#F7FAFC]">
-      <div className="px-5 mx-auto max-w-[1580px] min-[1080px]:px-32 bg-[#F7FAFC] p-4 min-h-[100vh]">
+      <div className="px-5 mx-auto max-w-[1324px] min-[1100px]:px-10 bg-[#F7FAFC] p-4 min-h-[100vh]">
         <h1 className="text-2xl font-semibold mb-6">
           Your Favorites ({localFavorites.length})
         </h1>

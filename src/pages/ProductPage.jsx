@@ -14,8 +14,8 @@ const ProductPage = () => {
   if (loading)
     return (
       <div className="w-full bg-[#F7FAFC] h-screen">
-        <div className="pt-6 max-w-[1580px]  m-auto h-full">
-          <div className="mx-5 min-[1080px]:mx-32">
+        <div className="pt-6 max-w-[1324px]  m-auto h-full">
+          <div className="mx-5 min-[1100px]:mx-10">
             <div className="flex justify-center items-center h-[85vh] -translate-y-22">
               <div
                 className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
@@ -35,8 +35,8 @@ const ProductPage = () => {
   if (!product)
     return (
       <div className="w-full bg-[#F7FAFC] h-screen">
-        <div className="pt-6 max-w-[1580px]  m-auto h-2/3 flex flex-col gap-3 justify-center items-center">
-          <p className="mx-5 min-[1080px]:mx-32 text-2xl">Product not found</p>
+        <div className="pt-6 max-w-[1324px]  m-auto h-2/3 flex flex-col gap-3 justify-center items-center">
+          <p className="mx-5 min-[1100px]:mx-10 text-2xl">Product not found</p>
           {/* Back to shop button */}
           <Link to={"/"}>
             <button className="flex justify-center items-center gap-2 px-4 py-2 text-white cursor-pointer transition duration-300 bg-gradient-to-r from-blue-500 to-blue-600 hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-700 rounded-lg">
@@ -64,7 +64,7 @@ const ProductPage = () => {
   return (
     <div>
       <div className="w-full pb-6 bg-[#F7FAFC] flex justify-center items-center h-full">
-        <div className="max-w-[1580px] min-[1080px]:px-20 min-[1170px]:px-32 px-5 max-[380px]:px-0 w-full h-full flex justify-center items-center">
+        <div className="max-w-[1324px] min-[1100px]:px-20 min-[1170px]:px-10 px-5 max-[380px]:px-0 w-full h-full flex justify-center items-center">
           <div className="w-full">
             {/* Breadcrumb */}
             <nav className="text-[#8B96A5] text-base py-6 max-[380px]:px-3">

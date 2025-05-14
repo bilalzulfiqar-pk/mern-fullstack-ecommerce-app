@@ -9,10 +9,9 @@ const InquirySection = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevent page reload
-    
+
     console.log("Form submitted"); // Handle form data submission logic here
   };
-  
 
   const handleFocus = (field) => {
     setPlaceholders((prev) => ({ ...prev, [field]: "" })); // Remove placeholder
@@ -21,12 +20,16 @@ const InquirySection = () => {
   const handleBlur = (field, value) => {
     setPlaceholders((prev) => ({
       ...prev,
-      [field]: value ? prev[field] : field === "name" ? "What item you need?" : "Quantity",
+      [field]: value
+        ? prev[field]
+        : field === "name"
+        ? "What item you need?"
+        : "Quantity",
     }));
   };
 
   return (
-    <section className="mx-5 min-[1080px]:mx-32 py-8">
+    <section className="mx-5 min-[1100px]:mx-10 py-8">
       <div className="container1 w-full">
         <div
           className="relative p-8 rounded-lg overflow-hidden min-h-[400px] flex items-center"

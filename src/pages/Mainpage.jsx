@@ -187,8 +187,8 @@ const Mainpage = () => {
   if (loading)
     return (
       <div className="w-full bg-[#F7FAFC] h-screen">
-        <div className="pt-6 max-w-[1580px]  m-auto h-full">
-          <div className="mx-5 min-[1080px]:mx-32">
+        <div className="pt-6 max-w-[1324px]  m-auto h-full">
+          <div className="mx-5 min-[1100px]:mx-10">
             <div className="flex justify-center items-center h-[85vh] -translate-y-22">
               <div
                 className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
@@ -202,8 +202,8 @@ const Mainpage = () => {
 
   return (
     <div className="w-full bg-[#F7FAFC] h-full">
-      <div className="pt-6 max-w-[1580px] m-auto h-full">
-        <div className="mx-5 min-[1080px]:mx-32 h-[425px] max-[600px]:h-[250px] max-[840px]:p-0 bg-white rounded-lg flex gap-4 overflow-hidden border border-[#E0E0E0] p-3">
+      <div className="pt-6 max-w-[1324px] m-auto h-full">
+        <div className="mx-5 min-[1100px]:mx-10 h-[425px] max-[600px]:h-[250px] max-[840px]:p-0 bg-white rounded-lg flex gap-4 overflow-hidden border border-[#E0E0E0] p-3">
           {/* Category Section */}
           <div className="min-w-[200px] w-[25%] max-[840px]:hidden">
             <ul className="">
@@ -297,7 +297,7 @@ const Mainpage = () => {
           </div>
         </div>
         {/* Deals Section */}
-        <div className="deals mt-6 mx-5 min-[1080px]:mx-32 h-70 max-[1325px]:h-full grid grid-cols-[0.6fr_2fr] max-[1325px]:grid-cols-1 overflow-hidden rounded-lg border border-[#E0E0E0] bg-white">
+        <div className="deals mt-6 mx-5 min-[1100px]:mx-10 h-70 max-[1325px]:h-full grid grid-cols-[0.6fr_2fr] max-[1325px]:grid-cols-1 overflow-hidden rounded-lg border border-[#E0E0E0] bg-white">
           {/* Deals Info Section */}
           <div className="mt-6 xl:ml-5 pb-6 flex flex-col max-[1325px]:justify-center max-[1325px]:w-full max-[1325px]:items-center min-[1325px]:mr-5">
             <header>

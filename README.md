@@ -148,4 +148,4 @@ npm run dev
 ---
 
 ### 💡 Want to Contribute?
-If you'd like to contribute, feel free to fork the repository and submit a pull request. 🚀
+If you'd like to contribute, feel free to fork the repository and submit a pull request. 🚀 

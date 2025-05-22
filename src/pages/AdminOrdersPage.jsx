@@ -119,7 +119,7 @@ const AdminOrdersPage = () => {
 
   if (authLoading || loading) {
     return (
-      <div className="flex w-full justify-center flex-col gap-3 items-center h-[90vh] -translate-y-16">
+      <div className="flex w-full justify-center flex-col gap-3 items-center h-[90vh] h-dvh-90 -translate-y-16">
         <div
           className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
           style={{ animationDuration: "0.5s" }}
@@ -137,7 +137,7 @@ const AdminOrdersPage = () => {
   }
 
   return (
-    <div className="bg-[#F7FAFC] min-h-[100vh] h-dvh-100">
+    <div className="bg-[#F7FAFC] min-h-[100vh] min-h-dvh-100">
       <div className="p-6 px-6 min-[1000px]:px-10 max-w-[1404px] mx-auto">
         <div className="">
           <h2

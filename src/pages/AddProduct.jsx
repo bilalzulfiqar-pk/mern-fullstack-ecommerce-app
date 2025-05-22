@@ -185,7 +185,7 @@ const AddProduct = () => {
 
   if (loading) {
     return (
-      <div className="flex w-full justify-center flex-col gap-3 items-center h-[90vh] -translate-y-22">
+      <div className="flex w-full justify-center flex-col gap-3 items-center h-[90vh] h-dvh-90 -translate-y-22">
         <div
           className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
           style={{ animationDuration: "0.5s" }}
@@ -197,7 +197,7 @@ const AddProduct = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="min-h-[100vh] h-dvh-100 p-5 flex items-center justify-center bg-gray-100">
+    <div className="min-h-[100vh] min-h-dvh-100 p-5 flex items-center justify-center bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold text-center mb-4">Add Product</h2>
         {error && <p className="text-red-500 text-sm mb-2">{error}</p>}

@@ -6,6 +6,41 @@
   }
 }
 
+@supports (min-height: 100dvh) {
+  .min-h-dvh-100 {
+    min-height: 100dvh;
+  }
+}
+
+/* ── 74dvh override ── */
+@supports (height: 74dvh) {
+  .h-dvh-74 {
+    height: 74dvh;
+  }
+}
+
+/* ── 85dvh override ── */
+@supports (height: 85dvh) {
+  .h-dvh-85 {
+    height: 85dvh;
+  }
+}
+
+/* ── 90dvh override ── */
+@supports (height: 90dvh) {
+  .h-dvh-90 {
+    height: 90dvh;
+  }
+}
+
+/* ── 75dvh override ── */
+@supports (min-height: 75dvh) {
+  .min-h-dvh-75 {
+    /* dvh-aware browsers switch to dynamic 75dvh */
+    min-height: 75dvh;
+  }
+}
+
 /* Custom Modern Scrollbar */
 .custom-scrollbar2::-webkit-scrollbar {
   height: 6px;

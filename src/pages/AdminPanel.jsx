@@ -62,7 +62,7 @@ const AdminPanel = () => {
 
   if (authLoading || loading) {
     return (
-      <div className="flex w-full justify-center flex-col gap-3 items-center h-[90vh] -translate-y-22">
+      <div className="flex w-full justify-center flex-col gap-3 items-center h-[90vh] h-dvh-90 -translate-y-22">
         <div
           className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
           style={{ animationDuration: "0.5s" }}
@@ -74,7 +74,7 @@ const AdminPanel = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="min-h-[100vh] h-dvh-100 flex flex-col items-center bg-[#F7FAFC] p-6">
+    <div className="min-h-[100vh] min-h-dvh-100 flex flex-col items-center bg-[#F7FAFC] p-6">
       <h2 className="text-3xl font-bold mb-4">Admin Panel</h2>
       <div className="flex justify-center items-center gap-3 w-full flex-wrap h-fit">
         <Link

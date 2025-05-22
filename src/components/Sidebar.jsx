@@ -153,7 +153,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       {/* Sidebar */}
       <div
         ref={sidebarRef}
-        className={`fixed top-0 left-0 h-[100dvh] overflow-y-auto w-72 bg-white shadow-lg border-r border-gray-300 p-4 transition-transform transform z-50 ${
+        className={`fixed top-0 left-0 h-[100vh] h-dvh-100 overflow-y-auto w-72 bg-white shadow-lg border-r border-gray-300 p-4 transition-transform transform z-50 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -337,7 +337,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       {/* Overlay (Click to Close) */}
       {isOpen && (
         <div
-          className={`fixed w-[100dvw] h-[100dvh] bg-black/50 z-40`}
+          className={`fixed w-[100dvw] h-[100vh] h-dvh-100 bg-black/50 z-40`}
           onClick={() => setIsOpen(false)}
         ></div>
       )}

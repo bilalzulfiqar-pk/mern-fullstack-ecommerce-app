@@ -15,7 +15,7 @@ const FavoritesPage = () => {
 
   if (loading && localFavorites.length === 0) {
     return (
-      <div className="flex w-full justify-center flex-col gap-3 items-center h-[90dvh] -translate-y-22">
+      <div className="flex w-full justify-center flex-col gap-3 items-center h-[90vh] -translate-y-22">
         <div
           className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
           style={{ animationDuration: "0.5s" }}
@@ -48,7 +48,7 @@ const FavoritesPage = () => {
 
   if (localFavorites.length === 0) {
     return (
-      <div className="mx-5 min-[1000px]:mx-10 text-xl py-10 text-gray-500 min-h-[75dvh]">
+      <div className="mx-5 min-[1000px]:mx-10 text-xl py-10 text-gray-500 min-h-[75vh]">
         You haven’t added anything to favorites yet.
       </div>
     );
@@ -56,7 +56,7 @@ const FavoritesPage = () => {
 
   return (
     <div className="w-full bg-[#F7FAFC]">
-      <div className="px-6 mx-auto max-w-[1404px] min-[1000px]:px-10 bg-[#F7FAFC] p-4 min-h-[100dvh]">
+      <div className="px-6 mx-auto max-w-[1404px] min-[1000px]:px-10 bg-[#F7FAFC] p-4 min-h-[100vh] h-dvh-100">
         <div className="">
           <h1 className="text-2xl font-semibold mb-6">
             Your Favorites ({localFavorites.length})

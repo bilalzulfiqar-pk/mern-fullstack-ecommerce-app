@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@supports (height: 100dvh) {
+  .h-dvh-100 {
+    height: 100dvh;
+  }
+}
+
 /* Custom Modern Scrollbar */
 .custom-scrollbar2::-webkit-scrollbar {
   height: 6px;

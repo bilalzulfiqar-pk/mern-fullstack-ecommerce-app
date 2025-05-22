@@ -184,10 +184,10 @@ const SearchPage = () => {
 
   if (loading)
     return (
-      <div className="w-full bg-[#F7FAFC] h-[100dvh]">
+      <div className="w-full bg-[#F7FAFC] h-[100vh] h-dvh-100">
         <div className="pt-6 max-w-[1404px]  m-auto h-full">
           <div className="mx-5 min-[1000px]:mx-10">
-            <div className="flex justify-center items-center h-[85dvh] -translate-y-22">
+            <div className="flex justify-center items-center h-[85vh] -translate-y-22">
               <div
                 className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
                 style={{ animationDuration: "0.5s" }}

@@ -124,7 +124,7 @@ const ShoppingCart = () => {
   if (loading) {
     return (
       <>
-        <div className="flex w-full justify-center flex-col gap-3 items-center h-[74dvh] -translate-y-22">
+        <div className="flex w-full justify-center flex-col gap-3 items-center h-[74vh] -translate-y-22">
           {/* Loading Cart... */}
           <div
             className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"

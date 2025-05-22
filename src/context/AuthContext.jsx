@@ -32,10 +32,10 @@ export const AuthProvider = ({ children }) => {
       });
       setUser(res.data);
     } catch (error) {
-      console.error(
-        "Failed to fetch user",
-        error.response?.data || error.message
-      );
+      // console.error(
+      //   "Failed to fetch user",
+      //   error.response?.data || error.message
+      // );
       logout(); // Clear token if unauthorized
     } finally {
       setLoading(false);
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true); // Set loading to true before fetching user
       await fetchUser(); // Ensure user is fetched before setting loading false
     } catch (error) {
-      console.error("Login failed", error.response?.data || error.message);
+      // console.error("Login failed", error.response?.data || error.message);
       throw error;
     }
   };
@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("token", res.data.token);
       setUser(res.data.user);
     } catch (error) {
-      console.error("Registration failed", error);
+      // console.error("Registration failed", error);
 
       const validationErrors = error.response?.data?.errors;
       const message = error.response?.data?.msg;
@@ -93,6 +93,12 @@ export const AuthProvider = ({ children }) => {
           title: "Validation Error",
           html: errorList,
           icon: "error",
+        });
+      } else if (message === "Email already registered") {
+        await MySwal.fire({
+          title: "Email Already in Use",
+          text: "An account with this email already exists. Try logging in or use a different email.",
+          icon: "warning",
         });
       } else {
         // Generic error message

@@ -1,66 +1,137 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
+// Yup schema that matches backend rules:
+const registerSchema = Yup.object().shape({
+  name: Yup.string()
+    .required("Name is required")
+    .min(3, "Name must be at least 3 characters")
+    .matches(/^[A-Za-z\s]+$/, "Name must contain only letters and spaces"),
+
+  email: Yup.string()
+    .required("Email is required")
+    .email("Please enter a valid email"),
+
+  password: Yup.string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters")
+    .matches(/\d/, "Password must contain at least one number")
+    .matches(/[a-zA-Z]/, "Password must contain at least one letter"),
+});
+
 const Register = () => {
   const { register } = useContext(AuthContext);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    try {
-      await register(name, email, password);
-      navigate("/"); // Redirect to home after registration
-    } catch (err) {
-      setError("Registration failed. Please try again.");
-    }
-  };
-
   return (
-    <div className="flex h-[85vh] h-dvh-85 items-center justify-center bg-gray-100">
+    <div className="flex h-[85vh] items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white p-6 rounded-xl shadow-md mx-4">
         <h2 className="text-2xl font-bold text-center mb-4">Register</h2>
-        {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            placeholder="Full Name"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            autoComplete="name"
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            autoComplete="username"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            autoComplete="current-password"
-          />
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 cursor-pointer rounded-md hover:bg-blue-700 transition duration-200"
-          >
-            Register
-          </button>
-        </form>
+
+        {/* Formik form */}
+        <Formik
+          initialValues={{ name: "", email: "", password: "" }}
+          validationSchema={registerSchema}
+          validateOnBlur={false} // validate on blur //remove these two to want default behavior
+          validateOnChange={true} // validate on change
+          onSubmit={async (values, { setSubmitting, setFieldError }) => {
+            try {
+              // Calling context‐register
+              await register(values.name, values.email, values.password);
+              navigate("/"); // redirect on success
+            } catch (err) {
+              // If server returns a single‐field message like "Email already registered",
+              // map it back to the email field:
+              const serverMsg = err.response?.data?.msg;
+              if (
+                serverMsg === "Email already registered" ||
+                serverMsg.toLowerCase().includes("email")
+              ) {
+                // showing it under the email field:
+                setFieldError("email", serverMsg);
+              } else {
+                // fallback to a generic Formik error on “password” or somewhere else
+                setFieldError("password", serverMsg || "Registration failed");
+              }
+            } finally {
+              setSubmitting(false);
+            }
+          }}
+        >
+          {({ isSubmitting, errors, touched }) => (
+            <Form className="space-y-4">
+              {/* ----- NAME FIELD ----- */}
+              <div>
+                <Field
+                  type="text"
+                  name="name"
+                  placeholder="Full Name"
+                  className={`w-full px-4 py-2 border rounded-md focus:border-blue-300 focus:ring-3 focus:ring-blue-200 focus:ring-opacity-50 focus:outline-none transition duration-300 ${
+                    errors.name && touched.name
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  }`}
+                />
+                <ErrorMessage
+                  name="name"
+                  component="p"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+
+              {/* ----- EMAIL FIELD ----- */}
+              <div>
+                <Field
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  className={`w-full px-4 py-2 border rounded-md focus:border-blue-300 focus:ring-3 focus:ring-blue-200 focus:ring-opacity-50 focus:outline-none transition duration-300 ${
+                    errors.email && touched.email
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  }`}
+                />
+                <ErrorMessage
+                  name="email"
+                  component="p"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+
+              {/* ----- PASSWORD FIELD ----- */}
+              <div>
+                <Field
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  className={`w-full px-4 py-2 border rounded-md focus:border-blue-300 focus:ring-3 focus:ring-blue-200 focus:ring-opacity-50 focus:outline-none transition duration-300 ${
+                    errors.password && touched.password
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  }`}
+                />
+                <ErrorMessage
+                  name="password"
+                  component="p"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200 cursor-pointer disabled:cursor-auto disabled:opacity-50"
+              >
+                {isSubmitting ? "Registering…" : "Register"}
+              </button>
+            </Form>
+          )}
+        </Formik>
+
         <p className="text-center text-sm mt-4">
           Already have an account?{" "}
           <Link to="/login" className="text-blue-600 hover:underline">

@@ -19,6 +19,13 @@
   }
 }
 
+/* ── 80dvh override ── */
+@supports (height: 80dvh) {
+  .h-dvh-80 {
+    height: 80dvh;
+  }
+}
+
 /* ── 85dvh override ── */
 @supports (height: 85dvh) {
   .h-dvh-85 {
@@ -33,7 +40,7 @@
   }
 }
 
-/* ── 75dvh override ── */
+/* ── min-75dvh override ── */
 @supports (min-height: 75dvh) {
   .min-h-dvh-75 {
     /* dvh-aware browsers switch to dynamic 75dvh */

@@ -253,14 +253,14 @@ const Mainpage = () => {
               {user ? (
                 <>
                   <Link to={"/cart"}>
-                    <button className="cursor-pointer mt-2 block text-center bg-blue-500 text-white border border-gray-300 rounded-lg py-2 text-sm w-full">
+                    <button className="cursor-pointer mt-2 block text-center bg-blue-500 hover:bg-blue-600 transition duration-200 text-white border border-gray-300 rounded-lg py-2 text-sm w-full">
                       Go to Cart
                     </button>
                   </Link>
 
                   <button
                     onClick={handleLogout}
-                    className="cursor-pointer mt-2 block text-center bg-white text-blue-500 border border-gray-300 rounded-lg py-2 text-sm w-full"
+                    className="cursor-pointer mt-2 block text-center bg-white text-blue-500 hover:bg-gray-100 transition duration-200 border border-gray-300 rounded-lg py-2 text-sm w-full"
                   >
                     Log Out
                   </button>
@@ -268,12 +268,12 @@ const Mainpage = () => {
               ) : (
                 <>
                   <Link to={"/register"}>
-                    <button className="cursor-pointer mt-2 block text-center bg-blue-500 text-white border border-gray-300 rounded-lg py-2 text-sm w-full">
+                    <button className="cursor-pointer mt-2 block text-center bg-blue-500 hover:bg-blue-600 transition duration-200 text-white border border-gray-300 rounded-lg py-2 text-sm w-full">
                       Join now
                     </button>
                   </Link>
                   <Link to={"/login"}>
-                    <button className="cursor-pointer mt-2 block text-center bg-white text-blue-500 border border-gray-300 rounded-lg py-2 text-sm w-full">
+                    <button className="cursor-pointer mt-2 block text-center bg-white text-blue-500 hover:bg-gray-100 transition duration-200 border border-gray-300 rounded-lg py-2 text-sm w-full">
                       Login
                     </button>
                   </Link>

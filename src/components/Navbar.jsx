@@ -42,7 +42,7 @@ const Navbar = () => {
 
   return (
     <div className="w-full border-b border-[#E0E0E0]">
-      <div className="max-w-[1404px] m-auto h-22 max-[680px]:h-fit border-b border-[#E0E0E0] flex max-[680px]:flex-wrap justify-between px-5 min-[1000px]:px-10 items-center max-[680px]:flex-col">
+      <div className="max-w-[1404px] m-auto h-22 max-[680px]:h-fit flex max-[680px]:flex-wrap justify-between px-5 min-[1000px]:px-10 items-center max-[680px]:flex-col">
         {/* Sidebar */}
 
         <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />

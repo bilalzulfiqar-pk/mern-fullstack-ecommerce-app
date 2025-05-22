@@ -114,9 +114,9 @@ const UserSettings = () => {
   };
 
   return (
-    <div className="w-full h-fit py-10 bg-gray-100">
-      <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-md">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">User Settings</h2>
+    <div className="w-full py-10 bg-gray-100 h-[85vh] h-dvh-85 flex items-center justify-center">
+      <div className="max-w-2xl mx-4 p-6 bg-white w-xl rounded-xl h-fit shadow-md">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Settings</h2>
 
         {/* Update Name */}
         <div className="mb-8">
@@ -132,7 +132,7 @@ const UserSettings = () => {
           />
           <button
             onClick={updateName}
-            className="mt-3 px-4 cursor-pointer py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            className="mt-3 px-4 w-full cursor-pointer py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200"
           >
             Update Name
           </button>
@@ -175,7 +175,7 @@ const UserSettings = () => {
 
           <button
             onClick={updatePassword}
-            className="px-4 py-2 cursor-pointer bg-green-600 text-white rounded-md hover:bg-green-700"
+            className="px-4 py-2 w-full cursor-pointer bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-200"
           >
             Change Password
           </button>

@@ -21,8 +21,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-[100vh] min-h-dvh-100 items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
+    <div className="flex h-[85vh] h-dvh-85 items-center justify-center bg-gray-100">
+      <div className="w-full max-w-md bg-white p-6 rounded-xl shadow-md mx-4">
         <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
         {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -46,7 +46,7 @@ const Login = () => {
           />
           <button
             type="submit"
-            className="w-full cursor-pointer bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+            className="w-full cursor-pointer bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200"
           >
             Login
           </button>

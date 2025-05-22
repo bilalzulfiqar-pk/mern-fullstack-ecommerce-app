@@ -53,7 +53,7 @@ const UserSettings = () => {
   return (
     <div className="w-full py-10 bg-gray-100 h-[85vh] h-dvh-85 flex items-center justify-center">
       <div className="max-w-2xl mx-4 p-6 bg-white w-xl rounded-xl h-fit shadow-md">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">
           Settings
         </h2>
 
@@ -140,7 +140,7 @@ const UserSettings = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-4 px-4 w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200 disabled:opacity-50"
+                className="mt-4 px-4 w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200 cursor-pointer disabled:cursor-auto disabled:opacity-50"
               >
                 {isSubmitting ? "Updating…" : "Update Name"}
               </button>
@@ -298,7 +298,7 @@ const UserSettings = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-4 py-2 w-full cursor-pointer bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-200 disabled:opacity-50"
+                className="px-4 py-2 w-full cursor-pointer bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-200 disabled:cursor-auto disabled:opacity-50"
               >
                 {isSubmitting ? "Changing…" : "Change Password"}
               </button>

@@ -339,7 +339,7 @@ const SearchPage = () => {
                         // Tweak button: more rounded or different padding
                         buttonClassName="w-full bg-white border border-gray-300 rounded-md cursor-pointer flex justify-between items-center pl-3 py-1.5 pr-1.5"
                         // List styling if needed
-                        listClassName="absolute left-0 w-full bg-white border border-gray-300 rounded-lg shadow mt-1 z-10"
+                        listClassName="absolute left-0 w-full bg-white border border-gray-300 rounded-md shadow mt-1 z-10"
                         // Option hover color or typography tweak
                         optionClassName="p-2 hover:bg-[#E6F0FF] cursor-pointer capitalize transition-colors"
                         // Icon styling

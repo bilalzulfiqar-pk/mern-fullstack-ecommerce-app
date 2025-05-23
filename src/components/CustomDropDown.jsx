@@ -43,11 +43,14 @@ export default function CustomDropdown({
   return (
     <div ref={containerRef} className={`relative ${containerClassName}`}>
       {label && (
-        <label className="block text-sm font-semibold mb-1 text-gray-700">{label}</label>
+        <label className="block text-sm font-semibold mb-1 text-gray-700">
+          {label}
+        </label>
       )}
 
       {/* Trigger Button */}
       <motion.button
+        type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         className={buttonClassName}
         whileTap={tapAnimation ? { scale: 0.97 } : null}

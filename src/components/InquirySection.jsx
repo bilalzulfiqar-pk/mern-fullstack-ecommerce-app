@@ -1,14 +1,22 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import { MdKeyboardArrowDown } from "react-icons/md";
 import { ImSpinner2 } from "react-icons/im";
 import CustomDropdown from "./CustomDropDown";
+import ReCAPTCHA from "react-google-recaptcha";
+import axios from "axios";
+import { useRef } from "react";
 
 const InquirySection = () => {
   const [placeholders, setPlaceholders] = useState({
     name: "What item you need?",
     quantity: "Quantity",
   });
+
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const recaptchaRef = useRef();
+  const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
   const formik = useFormik({
     initialValues: {
@@ -29,19 +37,66 @@ const InquirySection = () => {
       }
       return errors;
     },
-    onSubmit: async (values, { setSubmitting, resetForm }) => {
-      // Simulate a short network delay to showcase the submitting animation.
-      // Replace this block with your actual submission logic later.
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Form submitted with values:", values);
-      setSubmitting(false);
+    // onSubmit: async (values, { setSubmitting, resetForm }) => {
+    //   // Simulate a short network delay to showcase the submitting animation.
+    //   // Replace this block with your actual submission logic later.
+    //   await new Promise((resolve) => setTimeout(resolve, 1000));
+    //   console.log("Form submitted with values:", values);
+    //   setSubmitting(false);
 
-      // Optionally reset the form after submission:
-      resetForm();
-      setPlaceholders({
-        name: "What item you need?",
-        quantity: "Quantity",
-      });
+    //   // Optionally reset the form after submission:
+    //   resetForm();
+    //   setPlaceholders({
+    //     name: "What item you need?",
+    //     quantity: "Quantity",
+    //   });
+    // },
+
+    onSubmit: async (values, { setSubmitting, resetForm, setFieldError }) => {
+      // If the user hasn’t checked reCAPTCHA, block submit:
+      if (!recaptchaToken) {
+        // Inform Formik that recaptcha is missing:
+        setFieldError("recaptcha", "Please verify that you are human.");
+        return;
+      }
+
+      // Otherwise, proceed to verify the recaptchaToken on your backend…
+      try {
+        const response = await axios.post(
+          `${API_BASE_URL}/api/verify-recaptcha`,
+          {
+            token: recaptchaToken,
+          }
+        );
+
+        if (!response.data.success) {
+          // The token failed server-side verification
+          setFieldError(
+            "recaptcha",
+            "reCAPTCHA verification failed. Please try again."
+          );
+          setSubmitting(false);
+          return;
+        }
+
+        // If the server says “success,” continue with the form submission:
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        console.log("Form submitted with values:", values);
+
+        // Reset everything:
+        recaptchaRef.current.reset(); // This resets the checkbox
+        setRecaptchaToken(null); // Optional, since it'll be cleared too
+        resetForm();
+        setPlaceholders({ name: "What item you need?", quantity: "Quantity" });
+      } catch (err) {
+        console.error("Error verifying reCAPTCHA:", err);
+        setFieldError(
+          "recaptcha",
+          "Unable to verify reCAPTCHA. Please try again."
+        );
+      } finally {
+        setSubmitting(false);
+      }
     },
 
     validateOnBlur: false,
@@ -67,11 +122,9 @@ const InquirySection = () => {
     <section className="mx-5 min-[1000px]:mx-10 py-8">
       <div className="container1 w-full">
         <div
-          className="relative p-8 rounded-lg min-h-[400px] flex items-center"
+          className="relative p-8 rounded-lg min-h-[400px] flex items-center bg-cover bg-center"
           style={{
             backgroundImage: "url('banners/bg-warehouse.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
           }}
         >
           {/* Overlay */}
@@ -175,10 +228,35 @@ const InquirySection = () => {
                   </div>
                 </div>
 
+                {/* ————— Add reCAPTCHA block ————— */}
+                <div className="mb-3 w-full">
+                  <div className="w-full scale-50 h-[39px] min-[350px]:scale-65 min-[350px]:h-[51px] min-[400px]:scale-80 min-[400px]:h-[62px] min-[460px]:scale-100 min-[460px]:h-[78px] min-[768px]:scale-75 min-[768px]:h-[59px] min-[850px]:scale-100 min-[850px]:h-[78px] origin-top-left ">
+                    <ReCAPTCHA
+                      sitekey={RECAPTCHA_SITE_KEY}
+                      ref={recaptchaRef}
+                      onChange={(token) => {
+                        // Google returns a token string when the user solves the checkbox.
+                        setRecaptchaToken(token);
+                      }}
+                      onExpired={() => {
+                        // If the user takes too long and the token expires, clear it.
+                        setRecaptchaToken(null);
+                      }}
+                    />
+                  </div>
+                  {/** If you want, you can display an error if they try to submit without checking */}
+                  {formik.submitCount > 0 && !recaptchaToken && (
+                    <div className="text-red-500 text-sm mt-1">
+                      Please verify that you are human.
+                    </div>
+                  )}
+                </div>
+                {/* ——————————————— End reCAPTCHA block ——————————————— */}
+
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  disabled={formik.isSubmitting} //  || !formik.isValid
+                  disabled={formik.isSubmitting} //  || !formik.isValid   // you may also disable if !recaptchaToken
                   className={`flex items-center gap-2 w-fit px-4 py-2 bg-blue-500 text-white rounded-md transition disabled:opacity-80 disabled:cursor-auto ${
                     formik.isSubmitting
                       ? "opacity-80 cursor-auto"

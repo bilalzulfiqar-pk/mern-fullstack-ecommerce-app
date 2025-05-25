@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useFormik } from "formik";
 import { ImSpinner2 } from "react-icons/im";
 import CustomDropdown from "./CustomDropDown";
 import ReCAPTCHA from "react-google-recaptcha";
 import axios from "axios";
 import { useRef } from "react";
+import AuthContext from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const InquirySection = () => {
   const [placeholders, setPlaceholders] = useState({
@@ -17,6 +19,9 @@ const InquirySection = () => {
   const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
   const API_BASE_URL =
     import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
+  const { user } = useContext(AuthContext);
+  // console.log(user);
 
   const formik = useFormik({
     initialValues: {
@@ -108,6 +113,8 @@ const InquirySection = () => {
           quantity: values.quantity,
           unit: values.unit,
           token: recaptchaToken,
+          username: user?.name || "Visitor",
+          email: user?.email || "Visitor",
         };
 
         const response = await axios.post(
@@ -127,7 +134,9 @@ const InquirySection = () => {
         }
 
         // If success → clear form + recaptcha
-        console.log("Inquiry sent:", response.data.message);
+        // console.log("Inquiry sent:", response.data.message);
+        toast.success("Your inquiry request has been sent successfully!");
+
         recaptchaRef.current.reset(); // reset the widget
         setRecaptchaToken(null); // clear token in state
         resetForm(); // clear all fields
@@ -138,7 +147,7 @@ const InquirySection = () => {
         });
       } catch (err) {
         // Network or server error
-        console.error("Error sending inquiry:", err);
+        // console.error("Error sending inquiry:", err);
         setFieldError(
           "recaptcha",
           "Server error while sending inquiry. Please try again."

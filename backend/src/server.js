@@ -32,6 +32,8 @@ const paymentRoutes = require("./routes/paymentRoutes");
 
 const recaptchaRoutes = require("./routes/recaptchaRoutes");
 
+const emailRoutes = require("./routes/emailRoutes");
+
 app.use("/api/users", userRoutes);
 
 app.use("/api/products", productRoutes);
@@ -47,6 +49,8 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/favorites", favoriteRoutes);
 
 app.use("/api", recaptchaRoutes);
+
+app.use("/api/email", emailRoutes);
 
 // Start server
 app.listen(PORT, () => {

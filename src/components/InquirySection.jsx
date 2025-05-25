@@ -60,39 +60,88 @@ const InquirySection = () => {
         return;
       }
 
-      // Otherwise, proceed to verify the recaptchaToken on your backend…
+      // // Otherwise, proceed to verify the recaptchaToken on your backend…
+      // try {
+      //   const response = await axios.post(
+      //     `${API_BASE_URL}/api/verify-recaptcha`,
+      //     {
+      //       token: recaptchaToken,
+      //     }
+      //   );
+
+      //   if (!response.data.success) {
+      //     // The token failed server-side verification
+      //     setFieldError(
+      //       "recaptcha",
+      //       "reCAPTCHA verification failed. Please try again."
+      //     );
+      //     setSubmitting(false);
+      //     return;
+      //   }
+
+      //   // If the server says “success,” continue with the form submission:
+      //   // (just a timeout/demo block to show the submitting animation)
+      //   await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      //   console.log("Form submitted with values:", values);
+
+      //   // Reset UI:
+      //   recaptchaRef.current.reset(); // This resets the checkbox
+      //   setRecaptchaToken(null); // Optional, since it'll be cleared too
+      //   resetForm();
+      //   setPlaceholders({ name: "What item you need?", quantity: "Quantity" });
+      // } catch (err) {
+      //   console.error("Error verifying reCAPTCHA:", err);
+      //   setFieldError(
+      //     "recaptcha",
+      //     "Unable to verify reCAPTCHA. Please try again."
+      //   );
+      // } finally {
+      //   setSubmitting(false);
+      // }
+
       try {
+        // Directly calling inquiry endpoint (which does reCAPTCHA + email send)
+        const payload = {
+          name: values.name,
+          details: values.details,
+          quantity: values.quantity,
+          unit: values.unit,
+          token: recaptchaToken,
+        };
+
         const response = await axios.post(
-          `${API_BASE_URL}/api/verify-recaptcha`,
-          {
-            token: recaptchaToken,
-          }
+          `${API_BASE_URL}/api/email/inquiry`,
+          payload
         );
 
+        // Check server’s reply
         if (!response.data.success) {
-          // The token failed server-side verification
+          // e.g. reCAPTCHA failed or email send failed
           setFieldError(
             "recaptcha",
-            "reCAPTCHA verification failed. Please try again."
+            response.data.message || "Unable to send inquiry. Please try again."
           );
           setSubmitting(false);
           return;
         }
 
-        // If the server says “success,” continue with the form submission:
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        console.log("Form submitted with values:", values);
-
-        // Reset everything:
-        recaptchaRef.current.reset(); // This resets the checkbox
-        setRecaptchaToken(null); // Optional, since it'll be cleared too
-        resetForm();
-        setPlaceholders({ name: "What item you need?", quantity: "Quantity" });
+        // If success → clear form + recaptcha
+        console.log("Inquiry sent:", response.data.message);
+        recaptchaRef.current.reset(); // reset the widget
+        setRecaptchaToken(null); // clear token in state
+        resetForm(); // clear all fields
+        setPlaceholders({
+          // restore placeholders
+          name: "What item you need?",
+          quantity: "Quantity",
+        });
       } catch (err) {
-        console.error("Error verifying reCAPTCHA:", err);
+        // Network or server error
+        console.error("Error sending inquiry:", err);
         setFieldError(
           "recaptcha",
-          "Unable to verify reCAPTCHA. Please try again."
+          "Server error while sending inquiry. Please try again."
         );
       } finally {
         setSubmitting(false);

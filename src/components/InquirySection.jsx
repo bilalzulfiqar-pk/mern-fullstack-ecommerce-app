@@ -238,6 +238,7 @@ const InquirySection = () => {
                     name="details"
                     placeholder="Type more details"
                     rows="3"
+                    maxLength={3000}
                     className="w-full px-3 py-2 border border-[#DEE2E7] rounded-md focus:border-blue-300 focus:ring-3 focus:ring-blue-200 focus:ring-opacity-50 focus:outline-none transition duration-300"
                     value={formik.values.details}
                     onChange={formik.handleChange}

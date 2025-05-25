@@ -184,7 +184,7 @@ const Navbar = () => {
 
           <div className="max-[880px]:hidden">
             <Link
-              to="#"
+              to="/contact"
               className="flex justify-center items-center flex-col text-gray-400 hover:text-black transition-all duration-200"
             >
               <MdMessage className="text-xl" />

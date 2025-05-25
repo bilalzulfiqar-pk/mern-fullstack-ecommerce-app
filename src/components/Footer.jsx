@@ -13,7 +13,13 @@ const Footer = () => {
   const location = useLocation();
 
   // Define the paths where newsletter should NOT appear
-  const hideNewsletterOn = ["/login", "/register", "/settings", "/orders"];
+  const hideNewsletterOn = [
+    "/login",
+    "/register",
+    "/settings",
+    "/orders",
+    "/contact",
+  ];
 
   // Define URL paths where the custom div is hidden
   const hideCustomDivOn = ["/login", "/register", "/settings"];
@@ -61,31 +67,31 @@ const Footer = () => {
                   {/* Social Icons */}
                   <div className="flex max-[600px]:flex-wrap space-x-3 max-[600px]:gap-y-3 mt-4">
                     <Link
-                      href="#"
+                      to="#"
                       className="text-white hover:text-blue-500 text-lg rounded-full bg-[#BDC4CD] p-2 transition"
                     >
                       <FaFacebookF />
                     </Link>
                     <Link
-                      href="#"
+                      to="#"
                       className="text-white hover:text-black text-lg rounded-full bg-[#BDC4CD] p-2 transition"
                     >
                       <FaXTwitter />
                     </Link>
                     <Link
-                      href="#"
+                      to="#"
                       className="text-white hover:text-[#016DAB] text-lg rounded-full bg-[#BDC4CD] p-2 transition"
                     >
                       <FaLinkedinIn />
                     </Link>
                     <Link
-                      href="#"
+                      to="#"
                       className="text-white hover:text-[#dd2a7b] text-lg rounded-full bg-[#BDC4CD] p-2 transition"
                     >
                       <AiFillInstagram />
                     </Link>
                     <Link
-                      href="#"
+                      to="#"
                       className="text-white hover:text-red-500 text-lg rounded-full bg-[#BDC4CD] p-2 transition"
                     >
                       <FaYoutube />
@@ -99,16 +105,16 @@ const Footer = () => {
                     <h3 className="font-semibold text-black">About</h3>
                     <ul className="text-gray-500 space-y-2 mt-3">
                       <li>
-                        <Link href="#">About Us</Link>
+                        <Link to="#">About Us</Link>
                       </li>
                       <li>
-                        <Link href="#">Find Store</Link>
+                        <Link to="#">Find Store</Link>
                       </li>
                       <li>
-                        <Link href="#">Categories</Link>
+                        <Link to="/search">Categories</Link>
                       </li>
                       <li>
-                        <Link href="#">Blogs</Link>
+                        <Link to="#">Blogs</Link>
                       </li>
                     </ul>
                   </div>
@@ -118,16 +124,16 @@ const Footer = () => {
                     <h3 className="font-semibold text-black">Partnership</h3>
                     <ul className="text-gray-500 space-y-2 mt-3">
                       <li>
-                        <Link href="#">About Us</Link>
+                        <Link to="#">About Us</Link>
                       </li>
                       <li>
-                        <Link href="#">Find Store</Link>
+                        <Link to="#">Find Store</Link>
                       </li>
                       <li>
-                        <Link href="#">Categories</Link>
+                        <Link to="/search">Categories</Link>
                       </li>
                       <li>
-                        <Link href="#">Blogs</Link>
+                        <Link to="#">Blogs</Link>
                       </li>
                     </ul>
                   </div>
@@ -137,16 +143,16 @@ const Footer = () => {
                     <h3 className="font-semibold text-black">Information</h3>
                     <ul className="text-gray-500 space-y-2 mt-3">
                       <li>
-                        <Link href="#">Help Center</Link>
+                        <Link to="#">Help Center</Link>
                       </li>
                       <li>
-                        <Link href="#">Money Refund</Link>
+                        <Link to="#">Money Refund</Link>
                       </li>
                       <li>
-                        <Link href="#">Shipping</Link>
+                        <Link to="#">Shipping</Link>
                       </li>
                       <li>
-                        <Link href="#">Contact Us</Link>
+                        <Link to="/contact">Contact Us</Link>
                       </li>
                     </ul>
                   </div>
@@ -156,16 +162,16 @@ const Footer = () => {
                     <h3 className="font-semibold text-black">For Users</h3>
                     <ul className="text-gray-500 space-y-2 mt-3">
                       <li>
-                        <Link href="/login">Login</Link>
+                        <Link to="/login">Login</Link>
                       </li>
                       <li>
-                        <Link href="/register">Register</Link>
+                        <Link to="/register">Register</Link>
                       </li>
                       <li>
-                        <Link href="#">Settings</Link>
+                        <Link to="/settings">Settings</Link>
                       </li>
                       <li>
-                        <Link href="#">My Orders</Link>
+                        <Link to="/orders">My Orders</Link>
                       </li>
                     </ul>
                   </div>
@@ -174,14 +180,14 @@ const Footer = () => {
                   <div className="w-fit">
                     <h3 className="font-semibold text-black">Get App</h3>
                     <div className="mt-3">
-                      <Link href="#" className="block mb-2">
+                      <Link to="#" className="block mb-2">
                         <img
                           src="/appstore.png"
                           alt="App Store"
                           className="h-10"
                         />
                       </Link>
-                      <Link href="#">
+                      <Link to="#">
                         <img
                           src="/googleplay.png"
                           alt="Google Play"

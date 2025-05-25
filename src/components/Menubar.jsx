@@ -57,7 +57,7 @@ const categoryList = [
 const helpList = [
   { text: "FAQs", link: "#" },
   { text: "Support", link: "#" },
-  { text: "Contact Us", link: "#" },
+  { text: "Contact Us", link: "/contact" },
   { text: "Returns", link: "#" },
 ];
 

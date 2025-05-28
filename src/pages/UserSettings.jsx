@@ -97,29 +97,134 @@ const UserSettings = () => {
         setCanResend(false);
         setResendTimer(secondsLeft);
 
-        // Show SweetAlert2 prompt for OTP input
+        // Show SweetAlert2 prompt with six OTP boxes
         MySwal.fire({
-          title: "Enter the OTP sent to your email",
-          input: "text",
-          inputPlaceholder: "6-digit code",
+          title: "Enter the 6-digit code sent to your email",
+          html: `
+          <div id="otp-container" style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem;">
+            ${[...Array(6)]
+              .map(
+                (_, i) => `
+              <input 
+                id="otp-${i}" 
+                type="text" 
+                inputmode="numeric" 
+                maxlength="1" 
+                style="
+                  width: 3rem; 
+                  height: 3rem; 
+                  font-size: 1.5rem; 
+                  text-align: center; 
+                  border: 1px solid #ccc; 
+                  border-radius: 0.25rem;
+                  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+                "
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+              />
+            `
+              )
+              .join("")}
+          </div>
+          <style>
+            /* Focus style for each OTP box using Tailwind-like rules */
+            #otp-container input {
+              /* transition duration-300 */
+              transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+            #otp-container input:focus {
+              outline: none;                        /* focus:outline-none */
+              border-color: #93c5fd;                /* focus:border-blue-300 */
+              box-shadow: 0 0 0 4px rgba(191, 219, 254, 0.5); /* focus:ring-4 focus:ring-blue-200 focus:ring-opacity-50 */
+            }
+          </style>
+        `,
           showCancelButton: true,
-          inputAttributes: {
-            maxlength: 6,
-            autocapitalize: "off",
-            autocorrect: "off",
-          },
           confirmButtonText: "Submit OTP",
-          preConfirm: (otpValue) => {
-            if (!otpValue || otpValue.trim().length !== 6) {
-              MySwal.showValidationMessage(
-                "Please enter the 6-digit OTP exactly"
-              );
+          cancelButtonText: "Cancel",
+          showLoaderOnConfirm: true,
+          allowOutsideClick: () => !Swal.isLoading(),
+          didOpen: () => {
+            const inputs = Array.from(
+              document.querySelectorAll("#otp-container input")
+            );
+
+            // Focus the first box on open
+            inputs[0].focus();
+
+            inputs.forEach((input, idx) => {
+              input.addEventListener("keydown", (e) => {
+                const key = e.key;
+                if (key === "Backspace" && input.value === "" && idx > 0) {
+                  inputs[idx - 1].focus();
+                }
+              });
+
+              // input.addEventListener("input", () => {
+              //   const val = input.value;
+              //   // If user pastes more than one character, keep only the first
+              //   if (val.length > 1) {
+              //     input.value = val.charAt(0);
+              //   }
+              //   // Move to next box if current has a digit
+              //   if (val.match(/[0-9]/) && idx < inputs.length - 1) {
+              //     inputs[idx + 1].focus();
+              //   }
+              // });
+
+              // Handle a full‐OTP paste on any box:
+              input.addEventListener("paste", (e) => {
+                e.preventDefault();
+                const pasteData = (e.clipboardData || window.clipboardData)
+                  .getData("text")
+                  .trim();
+                // Extract only digits, up to 6 characters
+                const digits = pasteData
+                  .replace(/\D/g, "")
+                  .split("")
+                  .slice(0, 6);
+
+                // Distribute each digit into the inputs array
+                digits.forEach((ch, i) => {
+                  if (inputs[i]) {
+                    inputs[i].value = ch;
+                  }
+                });
+
+                // Focus the box after the last pasted character (or the last box)
+                const nextIndex = Math.min(digits.length, inputs.length - 1);
+                inputs[nextIndex].focus();
+              });
+
+              // Simplified “single‐digit” input handler:
+              input.addEventListener("input", () => {
+                const val = input.value;
+                // If the user typed a non‐digit, clear it
+                if (!/^[0-9]$/.test(val)) {
+                  input.value = "";
+                  return;
+                }
+                // Otherwise (exactly one digit), move focus to the next box
+                if (idx < inputs.length - 1) {
+                  inputs[idx + 1].focus();
+                }
+              });
+            });
+          },
+          preConfirm: () => {
+            // Gather all six digits
+            const inputs = Array.from(
+              document.querySelectorAll("#otp-container input")
+            );
+            const otpValue = inputs.map((i) => i.value).join("");
+            if (!/^[0-9]{6}$/.test(otpValue)) {
+              Swal.showValidationMessage("Please enter all 6 digits");
+              return;
             }
             return otpValue;
           },
         }).then(async (result) => {
           if (result.isConfirmed) {
-            const otp = result.value.trim();
+            const otp = result.value;
             try {
               // Call backend to verify OTP
               const verifyRes = await axios.post(
@@ -129,34 +234,32 @@ const UserSettings = () => {
               );
 
               if (verifyRes.data.success) {
-                MySwal.fire(
+                Swal.fire(
                   "Verified!",
-                  "Your email has been successfully verified.",
+                  "Your email is now verified.",
                   "success"
                 );
                 // Refresh user context so `user.isEmailVerified` becomes true
                 await fetchUser();
               } else {
-                // Shouldn’t happen (we always send success:true on valid)
-                MySwal.fire(
+                Swal.fire(
                   "Error",
                   "Unexpected verification response.",
                   "error"
                 );
               }
             } catch (err) {
-              // If verify fails, show validation error and keep the prompt open
+              // If verification fails, show error and retry
               const fieldErrors = err.response?.data?.errors;
               if (fieldErrors) {
-                // e.g. { errors: [{ msg: "...", path: "otp" }] }
                 const otpError = fieldErrors.find((e) => e.path === "otp");
                 const msg = otpError ? otpError.msg : "Invalid OTP.";
-                MySwal.fire("Invalid OTP", msg, "error").then(() => {
-                  // Re-open the prompt so they can try again:
+                Swal.fire("Invalid OTP", msg, "error").then(() => {
+                  // Re-open the prompt so they can try again
                   handleEmailVerifySubmit();
                 });
               } else {
-                MySwal.fire(
+                Swal.fire(
                   "Error",
                   err.response?.data?.msg || "Verification failed.",
                   "error"
@@ -166,12 +269,11 @@ const UserSettings = () => {
           }
         });
       } else {
-        // In case reCAPTCHA or something else blocks:
-        MySwal.fire("Error", res.data.message || "Failed to send OTP", "error");
+        // In case something else blocks
+        Swal.fire("Error", res.data.message || "Failed to send OTP", "error");
       }
     } catch (err) {
       setIsSendingOtp(false);
-
       // If backend returned 429 (cooldown not elapsed):
       if (err.response?.status === 429) {
         const { nextAllowedAt } = err.response.data;
@@ -180,7 +282,7 @@ const UserSettings = () => {
           setCanResend(false);
           setResendTimer(Math.ceil(millisLeft / 1000));
         }
-        return MySwal.fire(
+        return Swal.fire(
           "Please wait",
           err.response.data.msg || "Try again later.",
           "warning"
@@ -188,7 +290,7 @@ const UserSettings = () => {
       }
 
       // Other errors
-      MySwal.fire(
+      Swal.fire(
         "Error",
         err.response?.data?.msg || "Could not send OTP.",
         "error"

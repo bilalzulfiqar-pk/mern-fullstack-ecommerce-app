@@ -1,6 +1,7 @@
 import React from "react";
 import CustomDropDownMenubar from "./CustomDropDownMenubar";
 import { Link } from "react-router-dom";
+import EmailVerificationNotice from "./EmailVerificationNotice";
 
 // const categoryList = [
 //   { text: "Mobiles", link: "/mobiles" },
@@ -84,47 +85,54 @@ const countries = [
 
 const Menubar = () => {
   return (
-    <div className="w-full border-b border-[#E0E0E0] max-[840px]:hidden">
-      <div className="max-w-[1404px] m-auto h-14 flex justify-between px-5 min-[1000px]:px-10 items-center">
-        <div className="flex justify-center items-center gap-1">
-          <CustomDropDownMenubar heading="All Category" items={categoryList} />
-          <Link to="/search">
-            <div
-              className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-2.5 flex justify-center items-center rounded-lg transition-all duration-200 ease-in-out`}
-            >
-              All Products
-            </div>
-          </Link>
-          <Link to="/search?sort=discount_high">
-            <div
-              className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-2.5 flex justify-center items-center rounded-lg transition-all duration-200 ease-in-out`}
-            >
-              Highly Discounted Items
-            </div>
-          </Link>
-          <Link to="/search?sort=rating_high">
-            <div
-              className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-2.5 flex justify-center items-center rounded-lg transition-all duration-200 ease-in-out`}
-            >
-              Highly Rated Items
-            </div>
-          </Link>
-          <CustomDropDownMenubar heading="Help" items={helpList} />
-        </div>
-        <div className="flex justify-center items-center gap-1">
-          <CustomDropDownMenubar
-            heading="USD"
-            items={currencyList}
-            className="max-[1200px]:hidden"
-          />
-          <CustomDropDownMenubar
-            heading="Language"
-            items={languageList}
-            className="max-[880px]:hidden"
-          />
+    <>
+      <div className="w-full border-b border-[#E0E0E0] max-[840px]:hidden">
+        <div className="max-w-[1404px] m-auto h-14 flex justify-between px-5 min-[1000px]:px-10 items-center">
+          <div className="flex justify-center items-center gap-1">
+            <CustomDropDownMenubar
+              heading="All Category"
+              items={categoryList}
+            />
+            <Link to="/search">
+              <div
+                className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-2.5 flex justify-center items-center rounded-lg transition-all duration-200 ease-in-out`}
+              >
+                All Products
+              </div>
+            </Link>
+            <Link to="/search?sort=discount_high">
+              <div
+                className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-2.5 flex justify-center items-center rounded-lg transition-all duration-200 ease-in-out`}
+              >
+                Highly Discounted Items
+              </div>
+            </Link>
+            <Link to="/search?sort=rating_high">
+              <div
+                className={`relative w-fit h-8 hover:bg-[#E6F0FF] cursor-pointer py-5 px-2.5 flex justify-center items-center rounded-lg transition-all duration-200 ease-in-out`}
+              >
+                Highly Rated Items
+              </div>
+            </Link>
+            <CustomDropDownMenubar heading="Help" items={helpList} />
+          </div>
+          <div className="flex justify-center items-center gap-1">
+            <CustomDropDownMenubar
+              heading="USD"
+              items={currencyList}
+              className="max-[1200px]:hidden"
+            />
+            <CustomDropDownMenubar
+              heading="Language"
+              items={languageList}
+              className="max-[880px]:hidden"
+            />
+          </div>
         </div>
       </div>
-    </div>
+
+      <EmailVerificationNotice />
+    </>
   );
 };
 

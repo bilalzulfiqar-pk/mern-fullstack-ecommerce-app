@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { FaLock, FaCommentDots, FaTruck } from "react-icons/fa";
 import DiscountBanner from "../components/DiscountBanner";
 import { useCart } from "../context/CartContext";
 import CartCheckout from "../components/CartCheckout";
+import AuthContext from "../context/AuthContext";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const { cartItems } = useCart();
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  // will run twice in strict mode
+  useEffect(() => {
+    // Only run if user is defined (i.e., after context is loaded)
+    if (user && !user.isEmailVerified) {
+      toast.warn("Please verify your email before placing an order.");
+      navigate("/settings");
+    }
+  }, [user, navigate]);
 
   // console.log(cartItems);
   const cartCount = cartItems.reduce((count, item) => count + item.qty, 0);

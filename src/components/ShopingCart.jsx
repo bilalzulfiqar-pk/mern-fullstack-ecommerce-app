@@ -1,17 +1,31 @@
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useCart } from "../context/CartContext";
 import { min } from "date-fns";
 import MiniLoading from "./MiniLoading";
 import { toast } from "react-toastify";
+import AuthContext from "../context/AuthContext";
 
 const ShoppingCart = () => {
   const { cartItems, loading, updateQty, removeItem, clearCart } = useCart();
   const maxQty = 500; // Maximum quantity allowed
   const maxQtyMessage = `You can only add up to ${maxQty} items one time.`;
   const [miniLoading, setminiLoading] = useState(false);
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    if (!user?.isEmailVerified) {
+      toast.warn("Please verify your email before placing an order.");
+      navigate("/settings");
+      return;
+    }
+
+    // Proceed to checkout
+    navigate("/checkout");
+  };
 
   const handleRemoveItem = (productId) => {
     console.log(cartItems);
@@ -404,14 +418,14 @@ const ShoppingCart = () => {
           </div>
 
           {/* Checkout Button */}
-          <Link to={"/checkout"}>
-            <button
-              disabled={cartItems.length < 1}
-              className="w-full bg-[#00B517] text-white py-4 text-lg mt-4 rounded-lg hover:bg-[#009814] duration-300 cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Checkout
-            </button>
-          </Link>
+
+          <button
+            disabled={cartItems.length < 1}
+            onClick={handleCheckout}
+            className="w-full bg-[#00B517] text-white py-4 text-lg mt-4 rounded-lg hover:bg-[#009814] duration-300 cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Checkout
+          </button>
 
           {/* Payment Methods */}
           {/* <div className="flex justify-center space-x-2 mt-4">

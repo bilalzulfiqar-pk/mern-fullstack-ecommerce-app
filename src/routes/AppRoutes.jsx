@@ -22,6 +22,7 @@ import MyOrdersPage from "../pages/MyOrdersPage";
 import UserOrderDetails from "../pages/UserOrderDetails";
 import UserSettings from "../pages/UserSettings";
 import ContactUs from "../pages/ContactUs";
+import PublicRoute from "../components/PublicRoute";
 
 const ProtectedRoute = ({ element, adminOnly }) => {
   const { user, loading } = useContext(AuthContext);
@@ -82,8 +83,24 @@ const AppRoutes = () => {
         />
 
         <Route path="/contact" element={<ContactUs />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          }
+        />
+
         {/* Admin Routes */}
         <Route
           path="/admin"

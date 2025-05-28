@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import AuthContext from "../context/AuthContext";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -13,6 +13,9 @@ const MySwal = withReactContent(Swal);
 
 const UserSettings = () => {
   const { user, fetchUser } = useContext(AuthContext);
+  const [canResend, setCanResend] = useState(true);
+  const [resendTimer, setResendTimer] = useState(0);
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
   const token = localStorage.getItem("token");
   const API_BASE_URL =
     import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
@@ -23,6 +26,171 @@ const UserSettings = () => {
       // Formik’s initialValues will pick this up via enableReinitialize
     }
   }, [user]);
+
+  // ─── On mount: ask backend “when can I next request an OTP?” ───────────────
+  useEffect(() => {
+    async function fetchOtpCooldown() {
+      try {
+        const res = await axios.get(`${API_BASE_URL}/api/email/otp-status`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const { nextAllowedAt } = res.data;
+        if (nextAllowedAt) {
+          const millisLeft = nextAllowedAt - Date.now();
+          if (millisLeft > 0) {
+            setCanResend(false);
+            setResendTimer(Math.ceil(millisLeft / 1000));
+          }
+        }
+      } catch (err) {
+        // If no record or error, leave canResend = true
+        console.error("Could not fetch OTP cooldown:", err);
+      }
+    }
+    fetchOtpCooldown();
+  }, [API_BASE_URL, token]);
+
+  // Start a countdown whenever canResend becomes false
+  // ─── Countdown logic: tick resendTimer down to 0 ──────────────────────────
+  useEffect(() => {
+    let timerId;
+    if (!canResend && resendTimer > 0) {
+      timerId = setTimeout(() => {
+        setResendTimer(resendTimer - 1);
+      }, 1000);
+    } else if (!canResend && resendTimer === 0) {
+      // Re-enable the resend button
+      setCanResend(true);
+    }
+    return () => clearTimeout(timerId);
+  }, [canResend, resendTimer]);
+
+  /**
+   * handleEmailVerifySubmit:
+   *  1) Calls /api/email/send-verification-otp
+   *  2) Disables “Resend” for 60s (setCanResend(false))
+   *  3) Shows SweetAlert2 input box for OTP entry
+   *     – if user submits, call /api/email/verify-otp
+   */
+  const handleEmailVerifySubmit = async () => {
+    try {
+      setIsSendingOtp(true);
+
+      // Call backend to send OTP
+      const res = await axios.post(
+        `${API_BASE_URL}/api/email/send-verification-otp`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setIsSendingOtp(false);
+
+      // Backend returned 200 with { success: true, nextAllowedAt }
+      if (res.data.success) {
+        const { nextAllowedAt } = res.data;
+        const millisLeft = nextAllowedAt - Date.now();
+        const secondsLeft = Math.ceil(millisLeft / 1000);
+
+        setCanResend(false);
+        setResendTimer(secondsLeft);
+
+        // Show SweetAlert2 prompt for OTP input
+        MySwal.fire({
+          title: "Enter the OTP sent to your email",
+          input: "text",
+          inputPlaceholder: "6-digit code",
+          showCancelButton: true,
+          inputAttributes: {
+            maxlength: 6,
+            autocapitalize: "off",
+            autocorrect: "off",
+          },
+          confirmButtonText: "Submit OTP",
+          preConfirm: (otpValue) => {
+            if (!otpValue || otpValue.trim().length !== 6) {
+              MySwal.showValidationMessage(
+                "Please enter the 6-digit OTP exactly"
+              );
+            }
+            return otpValue;
+          },
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            const otp = result.value.trim();
+            try {
+              // Call backend to verify OTP
+              const verifyRes = await axios.post(
+                `${API_BASE_URL}/api/email/verify-otp`,
+                { otp },
+                { headers: { Authorization: `Bearer ${token}` } }
+              );
+
+              if (verifyRes.data.success) {
+                MySwal.fire(
+                  "Verified!",
+                  "Your email has been successfully verified.",
+                  "success"
+                );
+                // Refresh user context so `user.isEmailVerified` becomes true
+                await fetchUser();
+              } else {
+                // Shouldn’t happen (we always send success:true on valid)
+                MySwal.fire(
+                  "Error",
+                  "Unexpected verification response.",
+                  "error"
+                );
+              }
+            } catch (err) {
+              // If verify fails, show validation error and keep the prompt open
+              const fieldErrors = err.response?.data?.errors;
+              if (fieldErrors) {
+                // e.g. { errors: [{ msg: "...", path: "otp" }] }
+                const otpError = fieldErrors.find((e) => e.path === "otp");
+                const msg = otpError ? otpError.msg : "Invalid OTP.";
+                MySwal.fire("Invalid OTP", msg, "error").then(() => {
+                  // Re-open the prompt so they can try again:
+                  handleEmailVerifySubmit();
+                });
+              } else {
+                MySwal.fire(
+                  "Error",
+                  err.response?.data?.msg || "Verification failed.",
+                  "error"
+                );
+              }
+            }
+          }
+        });
+      } else {
+        // In case reCAPTCHA or something else blocks:
+        MySwal.fire("Error", res.data.message || "Failed to send OTP", "error");
+      }
+    } catch (err) {
+      setIsSendingOtp(false);
+
+      // If backend returned 429 (cooldown not elapsed):
+      if (err.response?.status === 429) {
+        const { nextAllowedAt } = err.response.data;
+        const millisLeft = nextAllowedAt - Date.now();
+        if (millisLeft > 0) {
+          setCanResend(false);
+          setResendTimer(Math.ceil(millisLeft / 1000));
+        }
+        return MySwal.fire(
+          "Please wait",
+          err.response.data.msg || "Try again later.",
+          "warning"
+        );
+      }
+
+      // Other errors
+      MySwal.fire(
+        "Error",
+        err.response?.data?.msg || "Could not send OTP.",
+        "error"
+      );
+    }
+  };
 
   //
   // ─── Formik + Yup SCHEMAS ────────────────────────────────────────────────────
@@ -60,7 +228,7 @@ const UserSettings = () => {
   // ─── RENDER ─────────────────────────────────────────────────────────────────
   //
   return (
-    <div className="w-full py-10 bg-gray-100 h-[85vh] h-dvh-85 flex items-center justify-center">
+    <div className="w-full py-10 bg-gray-100 min-h-[85vh] min-h-dvh-85 flex items-center justify-center">
       <div className="max-w-2xl mx-4 p-6 bg-white w-xl rounded-xl h-fit shadow-md">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Settings</h2>
 
@@ -157,6 +325,49 @@ const UserSettings = () => {
             </Form>
           )}
         </Formik>
+
+        {/* ─── EMAIL DISPLAY + VERIFY BUTTON ────────────────────────────────────────── */}
+        <div className="mb-8">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Email
+          </label>
+          <div className="w-full px-4 py-2 border border-gray-300 bg-gray-100 text-gray-700 rounded-md select-none">
+            {user?.email || ""}
+          </div>
+          <button
+            type="button"
+            disabled={
+              user?.isEmailVerified === true || !canResend || isSendingOtp
+            }
+            onClick={handleEmailVerifySubmit}
+            className={`
+              mt-4 px-4 w-full py-2 rounded-md flex items-center justify-center gap-2
+              ${
+                user?.isEmailVerified
+                  ? "bg-green-600 cursor-auto opacity-80 text-white"
+                  : isSendingOtp
+                  ? "bg-yellow-500 cursor-not-allowed text-white"
+                  : canResend
+                  ? "bg-green-600 hover:bg-green-700 text-white cursor-pointer"
+                  : "bg-gray-400 cursor-not-allowed text-white"
+              }
+              transition duration-200
+            `}
+          >
+            {isSendingOtp ? (
+              <>
+                <ImSpinner2 className="animate-spin text-xl" />
+                <span className="ml-2">Sending OTP…</span>
+              </>
+            ) : user?.isEmailVerified ? (
+              "Verified"
+            ) : canResend ? (
+              "Verify Email"
+            ) : (
+              `Resend in ${resendTimer}s`
+            )}
+          </button>
+        </div>
 
         {/* ─── UPDATE PASSWORD FORM ─────────────────────────────────────────────── */}
         <Formik
@@ -308,12 +519,12 @@ const UserSettings = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-4 py-2 w-full flex items-center justify-center gap-2 cursor-pointer bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-200 disabled:cursor-auto disabled:opacity-70 disabled:hover:bg-green-600"
+                className="px-4 py-2 w-full flex items-center justify-center gap-2 cursor-pointer bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200 disabled:cursor-auto disabled:opacity-70 disabled:hover:bg-blue-600"
               >
                 {isSubmitting && (
                   <ImSpinner2 className="animate-spin text-xl" />
                 )}
-                <span>{isSubmitting ? "Changing…" : "Change Password"}</span>
+                <span>{isSubmitting ? "Changing…" : "Update Password"}</span>
               </button>
             </Form>
           )}

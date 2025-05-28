@@ -8,6 +8,10 @@ const nodemailer = require("nodemailer");
 // const dotenv = require("dotenv");
 const { verifyRecaptchaToken } = require("./recaptchaController");
 
+const User = require("../models/User");
+const EmailOtp = require("../models/EmailOtp");
+const crypto = require("crypto");
+
 // dotenv.config(); // loads BREVO_SMTP_USER, BREVO_SMTP_PASS, RECAPTCHA_SECRET_KEY
 
 // Initialize a single Nodemailer transporter using Brevo SMTP:
@@ -436,7 +440,183 @@ const sendContactEmail = async (req, res) => {
   }
 };
 
+/**
+ * sendEmailVerificationOtp:
+ *   - Generates a 6‐digit OTP
+ *   - Saves it in EmailOtp collection with a 5‐minute expiry
+ *   - Sends OTP to user.email via Gmail
+ */
+const sendEmailVerificationOtp = async (req, res) => {
+  try {
+    // Look up the latest OTP record for this user (sorted by sentAt descending)
+    const existing = await EmailOtp.findOne({ userId: req.user.id }).sort({
+      sentAt: -1,
+    });
+
+    // If an existing record exists and its sentAt + 60 seconds is still in the future → reject
+    if (existing) {
+      const nextAllowedAt = existing.sentAt.getTime() + 60 * 1000;
+      if (Date.now() < nextAllowedAt) {
+        return res.status(429).json({
+          success: false,
+          msg: "Please wait before requesting another code.",
+          nextAllowedAt, // timestamp in ms when user may request again
+        });
+      }
+    }
+
+    // Get logged‐in user
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ msg: "User not found" });
+
+    // If already verified, short‐circuit
+    if (user.isEmailVerified) {
+      return res.status(200).json({ msg: "Email is already verified." });
+    }
+
+    // Optionally verify reCAPTCHA if you want extra spam protection:
+    // const { token } = req.body;
+    // const isValidRecap = await verifyRecaptchaToken(token);
+    // if (!isValidRecap) {
+    //   return res
+    //     .status(400)
+    //     .json({ success: false, message: "reCAPTCHA validation failed." });
+    // }
+
+    // Generate a 6‐digit numeric OTP string
+    const otp = Math.floor(100000 + Math.random() * 900000).toString(); // e.g. "523901"
+
+    // Compute expiry 5 minutes from now
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+
+    const now = new Date();
+
+    // Store OTP in DB (if an older one exists, delete it first)
+    await EmailOtp.deleteMany({ userId: user._id });
+    await EmailOtp.create({ userId: user._id, otp, sentAt: now, expiresAt });
+
+    // Send mail via nodemailer
+    const mailOptions = {
+      from: `"Your App Name" <${process.env.GMAIL_USER}>`,
+      to: user.email,
+      subject: "Your email verification code",
+      text: `Your verification code is: ${otp}\n\nThis code expires in 5 minutes.`,
+      html: `
+        <p>Hi ${user.name},</p>
+        <p>Your OTP to verify your email is:</p>
+        <h2 style="font-family: monospace;">${otp}</h2>
+        <p>This code will expire in 5 minutes.</p>
+        <p>If you did not request verification, ignore this email.</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    // Respond with success + nextAllowedAt = now + 60 seconds
+    return res.status(200).json({
+      success: true,
+      msg: "Verification OTP sent to your email.",
+      nextAllowedAt: now.getTime() + 60 * 1000,
+    });
+  } catch (err) {
+    console.error("Error in sendEmailVerificationOtp:", err);
+    return res.status(500).json({ success: false, msg: "Failed to send OTP." });
+  }
+};
+
+/**
+ * verifyEmailOtp:
+ *   - Reads { otp } from req.body
+ *   - Checks the latest OTP record for this user, ensures not expired, and matches
+ *   - If valid, sets user.isEmailVerified = true, deletes the OTP record.
+ */
+const verifyEmailOtp = async (req, res) => {
+  try {
+    const { otp } = req.body;
+    if (!otp || otp.trim() === "") {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "OTP is required", path: "otp" }] });
+    }
+
+    // 1) Get user
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    if (user.isEmailVerified) {
+      return res.status(200).json({ msg: "Email already verified." });
+    }
+
+    // 2) Look up the OTP record
+    const record = await EmailOtp.findOne({ userId: user._id });
+    if (!record) {
+      return res.status(400).json({
+        errors: [{ msg: "No OTP found. Request a new code.", path: "otp" }],
+      });
+    }
+
+    // 3) Check expiry
+    if (record.expiresAt < new Date()) {
+      // OTP expired
+      await EmailOtp.deleteMany({ userId: user._id });
+      return res.status(400).json({
+        errors: [
+          { msg: "OTP has expired. Please request a new one.", path: "otp" },
+        ],
+      });
+    }
+
+    // 4) Compare the codes
+    if (record.otp !== otp) {
+      return res.status(400).json({
+        errors: [{ msg: "Invalid OTP. Please try again.", path: "otp" }],
+      });
+    }
+
+    // 5) Success → mark user verified
+    user.isEmailVerified = true;
+    await user.save();
+
+    // 6) Delete the OTP record
+    await EmailOtp.deleteMany({ userId: user._id });
+
+    return res
+      .status(200)
+      .json({ success: true, msg: "Email verified successfully." });
+  } catch (err) {
+    console.error("Error in verifyEmailOtp:", err);
+    return res.status(500).json({ success: false, msg: "Server error." });
+  }
+};
+
+const getEmailOtpStatus = async (req, res) => {
+  try {
+    // Find the latest OTP for this user
+    const record = await EmailOtp
+      .findOne({ userId: req.user.id })
+      .sort({ sentAt: -1 });
+
+    // If record exists AND sentAt + 60 seconds is in the future, return nextAllowedAt
+    if (record) {
+      const nextAllowedAt = record.sentAt.getTime() + 60 * 1000;
+      if (Date.now() < nextAllowedAt) {
+        return res.status(200).json({ nextAllowedAt });
+      }
+    }
+
+    // Otherwise, no active cooldown
+    return res.status(200).json({ nextAllowedAt: null });
+  } catch (err) {
+    console.error("Error in getEmailOtpStatus:", err);
+    return res.status(500).json({ msg: "Server error" });
+  }
+};
+
 module.exports = {
   sendInquiryEmail,
   sendContactEmail,
+  sendEmailVerificationOtp,
+  verifyEmailOtp,
+  getEmailOtpStatus,
 };

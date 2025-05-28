@@ -6,8 +6,11 @@ const UserSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
+    isEmailVerified: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("User", UserSchema);
+// Only create the model if it doesn’t already exist
+module.exports =
+  mongoose.models.User || mongoose.model("User", UserSchema);

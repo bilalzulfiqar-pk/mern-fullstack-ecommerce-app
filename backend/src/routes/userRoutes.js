@@ -38,6 +38,10 @@ router.put(
       const user = await User.findById(req.user.id);
       if (!user) return res.status(404).json({ msg: "User not found" });
 
+      if (user.name === name) {
+        return res.status(400).json({ msg: "New name must be different" });
+      }
+
       user.name = name;
       await user.save();
 
@@ -97,7 +101,7 @@ router.put(
           errors: [
             {
               msg: "Incorrect current password",
-              path: "currentPassword", 
+              path: "currentPassword",
               location: "body",
             },
           ],

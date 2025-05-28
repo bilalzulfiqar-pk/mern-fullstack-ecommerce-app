@@ -502,11 +502,116 @@ const sendEmailVerificationOtp = async (req, res) => {
       subject: "Your email verification code",
       text: `Your verification code is: ${otp}\n\nThis code expires in 5 minutes.`,
       html: `
-        <p>Hi ${user.name},</p>
-        <p>Your OTP to verify your email is:</p>
-        <h2 style="font-family: monospace;">${otp}</h2>
-        <p>This code will expire in 5 minutes.</p>
-        <p>If you did not request verification, ignore this email.</p>
+        <!-- Container Table (ensures consistent width across email clients) -->
+        <table
+          width="100%"
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px 0;"
+        >
+          <tr>
+            <td align="center">
+              <!-- Inner Content Table -->
+              <table
+                width="600"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);"
+              >
+                <!-- Header with Logo/Branding -->
+                <tr>
+                  <td
+                    align="center"
+                    style="background-color: #0056b3; padding: 20px;"
+                  >
+                    <!-- Replace this with your logo if you have one, otherwise keep text -->
+                    <h1 style="color: #ffffff; font-size: 24px; margin: 0;">
+                      E-Commerce Store
+                    </h1>
+                  </td>
+                </tr>
+
+                <!-- Greeting / Intro -->
+                <tr>
+                  <td style="padding: 30px 40px;">
+                    <p style="font-size: 16px; color: #333333; margin: 0 0 16px;">
+                      Hi <strong>${user.name}</strong>,
+                    </p>
+                    <p style="font-size: 16px; color: #333333; margin: 0 0 24px;">
+                      Thanks for shopping with us! Use the One-Time Password (OTP) below to verify your email address:
+                    </p>
+
+                    <!-- OTP Code Section -->
+                    <table
+                      align="center"
+                      cellpadding="0"
+                      cellspacing="0"
+                      border="0"
+                      style="margin: 0 auto 24px auto; width: 100%; max-width: 320px;"
+                    >
+                      <tr>
+                        <td
+                          align="center"
+                          style="
+                            background-color: #f1f1f1;
+                            border: 2px dashed #0056b3;
+                            border-radius: 6px;
+                            padding: 20px;
+                          "
+                        >
+                          <span
+                            style="
+                              font-family: 'Courier New', Courier, monospace;
+                              font-size: 32px;
+                              color: #0056b3;
+                              letter-spacing: 4px;
+                            "
+                          >
+                            ${otp}
+                          </span>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- Expiry Notice -->
+                    <p style="font-size: 14px; color: #777777; margin: 0 0 24px;">
+                      <em>This OTP code will expire in 5 minutes.</em>
+                    </p>
+
+                    <!-- Ignore Notice -->
+                    <p style="font-size: 14px; color: #777777; margin: 0 0 32px;">
+                      If you did not request this verification, no further action is required.
+                    </p>
+
+                    <!-- Support Email Only (no address or phone) -->
+                    <p style="font-size: 14px; color: #333333; margin: 0 0 8px;">
+                      Need help? Contact us at
+                      <a href="mailto:bilalzulfiqar34@gmail.com" style="color: #0056b3;">
+                        bilalzulfiqar34@gmail.com
+                      </a>.
+                    </p>
+                  </td>
+                </tr>
+
+                <!-- Footer (minimal, no address or policy links) -->
+                <tr>
+                  <td
+                    align="center"
+                    style="background-color: #f9f9f9; padding: 20px 40px; font-size: 12px; color: #777777;"
+                  >
+                    <p style="margin: 0;">
+                      &copy; ${new Date().getFullYear()} E-Commerce Store. All rights reserved.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+              <!-- End Inner Content Table -->
+            </td>
+          </tr>
+        </table>
+        <!-- End Container Table -->
       `,
     };
 

@@ -16,6 +16,8 @@ const UserSettings = () => {
   const [canResend, setCanResend] = useState(true);
   const [resendTimer, setResendTimer] = useState(0);
   const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [isCheckingStatus, setIsCheckingStatus] = useState(true);
+
   const token = localStorage.getItem("token");
   const API_BASE_URL =
     import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
@@ -45,6 +47,8 @@ const UserSettings = () => {
       } catch (err) {
         // If no record or error, leave canResend = true
         console.error("Could not fetch OTP cooldown:", err);
+      } finally {
+        setIsCheckingStatus(false);
       }
     }
     fetchOtpCooldown();
@@ -337,7 +341,10 @@ const UserSettings = () => {
           <button
             type="button"
             disabled={
-              user?.isEmailVerified === true || !canResend || isSendingOtp
+              user?.isEmailVerified === true ||
+              !canResend ||
+              isSendingOtp ||
+              isCheckingStatus
             }
             onClick={handleEmailVerifySubmit}
             className={`
@@ -348,19 +355,21 @@ const UserSettings = () => {
                   : isSendingOtp
                   ? "bg-yellow-500 cursor-not-allowed text-white"
                   : canResend
-                  ? "bg-green-600 hover:bg-green-700 text-white cursor-pointer"
+                  ? "bg-green-600 hover:bg-green-700 text-white cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
                   : "bg-gray-400 cursor-not-allowed text-white"
               }
               transition duration-200
             `}
           >
-            {isSendingOtp ? (
+            {user?.isEmailVerified ? (
+              "Verified"
+            ) : isCheckingStatus ? (
+              "Checking…"
+            ) : isSendingOtp ? (
               <>
                 <ImSpinner2 className="animate-spin text-xl" />
-                <span className="ml-2">Sending OTP…</span>
+                <span>Sending OTP…</span>
               </>
-            ) : user?.isEmailVerified ? (
-              "Verified"
             ) : canResend ? (
               "Verify Email"
             ) : (

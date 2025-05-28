@@ -8,8 +8,8 @@ const nodemailer = require("nodemailer");
 // const dotenv = require("dotenv");
 const { verifyRecaptchaToken } = require("./recaptchaController");
 
-const User = require("../models/User");
-const EmailOtp = require("../models/EmailOtp");
+const User = require("../models/user");
+const EmailOtp = require("../models/emailOtp");
 const crypto = require("crypto");
 
 // dotenv.config(); // loads BREVO_SMTP_USER, BREVO_SMTP_PASS, RECAPTCHA_SECRET_KEY

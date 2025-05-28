@@ -7,6 +7,8 @@ import withReactContent from "sweetalert2-react-content";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
+import { ImSpinner2 } from "react-icons/im";
+
 const MySwal = withReactContent(Swal);
 
 const UserSettings = () => {
@@ -41,7 +43,14 @@ const UserSettings = () => {
       .required("New password is required")
       .min(6, "Password must be at least 6 characters")
       .matches(/\d/, "Password must contain at least one number")
-      .matches(/[a-zA-Z]/, "Password must contain at least one letter"),
+      .matches(/[a-zA-Z]/, "Password must contain at least one letter")
+      .test(
+        "not-same-as-current",
+        "New password cannot be the same as current password",
+        function (value) {
+          return value !== this.parent.currentPassword;
+        }
+      ),
     confirmPassword: Yup.string()
       .required("Please confirm your new password")
       .oneOf([Yup.ref("newPassword")], "Passwords must match"),
@@ -53,9 +62,7 @@ const UserSettings = () => {
   return (
     <div className="w-full py-10 bg-gray-100 h-[85vh] h-dvh-85 flex items-center justify-center">
       <div className="max-w-2xl mx-4 p-6 bg-white w-xl rounded-xl h-fit shadow-md">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          Settings
-        </h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Settings</h2>
 
         {/* ─── UPDATE NAME FORM ───────────────────────────────────────────────── */}
         <Formik
@@ -96,8 +103,8 @@ const UserSettings = () => {
             } catch (error) {
               // Backend might return validation errors as an array
               if (error.response?.data?.errors) {
-                error.response.data.errors.forEach(({ msg, param }) => {
-                  setFieldError(param, msg);
+                error.response.data.errors.forEach(({ msg, path }) => {
+                  setFieldError(path, msg);
                 });
               } else {
                 // Generic error
@@ -140,9 +147,12 @@ const UserSettings = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-4 px-4 w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200 cursor-pointer disabled:cursor-auto disabled:opacity-50"
+                className="mt-4 px-4 w-full py-2 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200 cursor-pointer disabled:cursor-auto disabled:opacity-70 disabled:hover:bg-blue-600"
               >
-                {isSubmitting ? "Updating…" : "Update Name"}
+                {isSubmitting && (
+                  <ImSpinner2 className="animate-spin text-xl" />
+                )}
+                <span>{isSubmitting ? "Updating…" : "Update Name"}</span>
               </button>
             </Form>
           )}
@@ -196,8 +206,8 @@ const UserSettings = () => {
             } catch (error) {
               if (error.response?.data?.errors) {
                 // Map each backend validation error (param will be one of our fields)
-                error.response.data.errors.forEach(({ msg, param }) => {
-                  setFieldError(param, msg);
+                error.response.data.errors.forEach(({ msg, path }) => {
+                  setFieldError(path, msg);
                 });
               } else {
                 // Generic or “Invalid credentials” style error
@@ -298,9 +308,12 @@ const UserSettings = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-4 py-2 w-full cursor-pointer bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-200 disabled:cursor-auto disabled:opacity-50"
+                className="px-4 py-2 w-full flex items-center justify-center gap-2 cursor-pointer bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-200 disabled:cursor-auto disabled:opacity-70 disabled:hover:bg-green-600"
               >
-                {isSubmitting ? "Changing…" : "Change Password"}
+                {isSubmitting && (
+                  <ImSpinner2 className="animate-spin text-xl" />
+                )}
+                <span>{isSubmitting ? "Changing…" : "Change Password"}</span>
               </button>
             </Form>
           )}

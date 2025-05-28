@@ -5,6 +5,8 @@ import AuthContext from "../context/AuthContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
+import { ImSpinner2 } from "react-icons/im";
+
 // Yup schema exactly matching backend rules:
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -38,9 +40,9 @@ const Login = () => {
 
               // If validationResult on backend failed, data.errors is an array
               if (Array.isArray(data?.errors)) {
-                data.errors.forEach(({ msg, param }) => {
+                data.errors.forEach(({ msg, path }) => {
                   // Map each Express-Validator param to its Formik field
-                  setFieldError(param, msg);
+                  setFieldError(path, msg);
                 });
               }
               // Otherwise, if backend sent a single msg ("Invalid credentials" or "Server error")
@@ -104,9 +106,12 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-blue-600 text-white py-2 rounded-md cursor-pointer disabled:cursor-auto hover:bg-blue-700 transition duration-200 disabled:opacity-50"
+                className="w-full bg-blue-600 flex items-center justify-center gap-2 text-white py-2 rounded-md cursor-pointer disabled:cursor-auto hover:bg-blue-700 transition duration-200 disabled:opacity-70 disabled:hover:bg-blue-600"
               >
-                {isSubmitting ? "Logging in…" : "Login"}
+                {isSubmitting && (
+                  <ImSpinner2 className="animate-spin text-xl" />
+                )}
+                <span>{isSubmitting ? "Logging in…" : "Login"}</span>
               </button>
             </Form>
           )}

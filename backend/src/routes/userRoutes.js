@@ -66,7 +66,9 @@ router.put(
     ).isLength({
       min: 6,
     }),
-    body("newPassword", "Password must contain at least one number").matches(/\d/),
+    body("newPassword", "Password must contain at least one number").matches(
+      /\d/
+    ),
     body("newPassword", "Password must contain at least one letter").matches(
       /[a-zA-Z]/
     ),
@@ -91,7 +93,15 @@ router.put(
       // Compare the current password with the stored password
       const isMatch = await bcrypt.compare(currentPassword, user.password);
       if (!isMatch)
-        return res.status(400).json({ msg: "Incorrect current password" });
+        return res.status(400).json({
+          errors: [
+            {
+              msg: "Incorrect current password",
+              path: "currentPassword", 
+              location: "body",
+            },
+          ],
+        });
 
       // Hash the new password and update the user's password
       const salt = await bcrypt.genSalt(10);

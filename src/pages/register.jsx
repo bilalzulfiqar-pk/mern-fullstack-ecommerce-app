@@ -5,6 +5,8 @@ import AuthContext from "../context/AuthContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
+import { ImSpinner2 } from "react-icons/im";
+
 // Yup schema that matches backend rules:
 const registerSchema = Yup.object().shape({
   name: Yup.string()
@@ -124,9 +126,12 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200 cursor-pointer disabled:cursor-auto disabled:opacity-50"
+                className="w-full bg-blue-600 flex justify-center items-center gap-2 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200 cursor-pointer disabled:cursor-auto disabled:opacity-70 disabled:hover:bg-blue-600"
               >
-                {isSubmitting ? "Registering…" : "Register"}
+                {isSubmitting && (
+                  <ImSpinner2 className="animate-spin text-xl" />
+                )}
+                <span>{isSubmitting ? "Registering…" : "Register"}</span>
               </button>
             </Form>
           )}

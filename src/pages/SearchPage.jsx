@@ -10,6 +10,7 @@ import ProductCard from "../components/ProductCard";
 import { ProductContext } from "../context/ProductContext";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import CustomDropdown from "../components/CustomDropDown";
+import { useFavorites } from "../context/FavoritesContext";
 
 const SearchPage = () => {
   const [gridView, setGridView] = useState(true);
@@ -24,6 +25,8 @@ const SearchPage = () => {
   const { products, loading } = useContext(ProductContext);
   const [sidebarFilteredProducts, setSidebarFilteredProducts] = useState([]); // Holds products after sidebar filters
   const [finalProducts, setFinalProducts] = useState([]); // Holds sorted & filtered products
+
+  const { initialLoading: favoritesLoading } = useFavorites();
 
   const location = useLocation();
 
@@ -182,7 +185,7 @@ const SearchPage = () => {
 
   // console.log(searchCategory);
 
-  if (loading)
+  if (loading || favoritesLoading)
     return (
       <div className="w-full bg-[#F7FAFC] h-[100vh] h-dvh-100">
         <div className="pt-6 max-w-[1404px]  m-auto h-full">

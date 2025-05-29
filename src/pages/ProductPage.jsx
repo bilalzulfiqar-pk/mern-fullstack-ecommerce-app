@@ -5,13 +5,16 @@ import DiscountBanner from "../components/DiscountBanner";
 import { ProductContext } from "../context/ProductContext";
 import RelatedProducts from "../components/RelatedProducts";
 import ReviewsSection from "../components/ReviewsSection";
+import { useFavorites } from "../context/FavoritesContext";
 
 const ProductPage = () => {
   const { products, loading } = useContext(ProductContext);
+  const { initialLoading: favoritesLoading } = useFavorites();
+
   const { id } = useParams();
   // console.log("test main");
 
-  if (loading)
+  if (loading || favoritesLoading)
     return (
       <div className="w-full bg-[#F7FAFC] h-[100vh] h-dvh-100">
         <div className="pt-6 max-w-[1404px]  m-auto h-full">

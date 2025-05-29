@@ -11,6 +11,7 @@ export const FavoritesProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const API_BASE_URL =
     import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
@@ -25,6 +26,7 @@ export const FavoritesProvider = ({ children }) => {
       console.error("Error fetching favorites:", error);
     } finally {
       setLoading(false);
+      setInitialLoading(false);
     }
   };
 
@@ -92,6 +94,7 @@ export const FavoritesProvider = ({ children }) => {
         removeFavorite,
         toggleFavorite,
         isFavorite,
+        initialLoading,
       }}
     >
       {children}

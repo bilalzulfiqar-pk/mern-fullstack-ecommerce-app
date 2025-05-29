@@ -209,11 +209,25 @@ const Navbar = () => {
               <p className="max-[880px]:hidden">My Cart</p>
 
               {/* Notification Badge */}
-              {user && cartCount > 0 && (
-                <span className="absolute -top-3 -right-0 max-[880px]:-right-3 max-[880px]:-top-3 bg-red-500 text-white text-xs w-6 h-6 flex justify-center items-center rounded-full">
-                  {cartCount}
-                </span>
-              )}
+              <div className="absolute -top-3 -right-0 max-[880px]:-right-3 max-[880px]:-top-3 w-6 h-6">
+                <AnimatePresence>
+                  {user && cartCount > 0 && (
+                    <motion.span
+                      className="absolute inset-0 bg-red-500 text-white text-xs flex justify-center items-center rounded-full"
+                      initial={{ scale: 0.5, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.5, opacity: 0 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 260,
+                        damping: 20,
+                      }}
+                    >
+                      {cartCount}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </div>
             </Link>
           </div>
         </div>

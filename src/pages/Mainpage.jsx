@@ -12,7 +12,7 @@ import ResponsiveText from "../components/ResponsiveText";
 import Timer from "../components/Timer";
 const Mainpage = () => {
   const { products, loading } = useContext(ProductContext);
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, authLoading } = useContext(AuthContext);
   const [deals, setDeals] = useState([]);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
 
@@ -184,7 +184,7 @@ const Mainpage = () => {
 
   // console.log(homeAndOutdoor);
 
-  if (loading)
+  if (loading && authLoading)
     return (
       <div className="w-full bg-[#F7FAFC] h-[100vh] h-dvh-100">
         <div className="pt-6 max-w-[1404px]  m-auto h-full">

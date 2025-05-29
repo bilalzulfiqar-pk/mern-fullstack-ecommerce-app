@@ -26,8 +26,9 @@ import PublicRoute from "../components/PublicRoute";
 
 const ProtectedRoute = ({ element, adminOnly }) => {
   const { user, loading } = useContext(AuthContext);
+  const location = useLocation();
 
-  if (loading)
+  if (loading) {
     return (
       <div
         className={`text-xl ${
@@ -37,11 +38,19 @@ const ProtectedRoute = ({ element, adminOnly }) => {
         <div className="-translate-y-17">Verifying User...</div>
       </div>
     );
+  }
 
-  if (!user) return <Navigate to="/login" />;
+  // If no user, redirect to /login, but save where they were trying to go in `state.from`
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
 
-  if (adminOnly && !user.isAdmin) return <Navigate to="/" />;
+  // If it's an admin-only page but the user isn't admin, bounce to "/"
+  if (adminOnly && !user.isAdmin) {
+    return <Navigate to="/" replace />;
+  }
 
+  // Otherwise, they’re authenticated (and authorized), so rendering the element
   return element;
 };
 
@@ -84,22 +93,8 @@ const AppRoutes = () => {
 
         <Route path="/contact" element={<ContactUs />} />
 
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <PublicRoute>
-              <Register />
-            </PublicRoute>
-          }
-        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         {/* Admin Routes */}
         <Route

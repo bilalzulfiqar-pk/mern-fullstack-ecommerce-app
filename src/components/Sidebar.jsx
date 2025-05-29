@@ -16,7 +16,7 @@ import {
   FiPackage,
 } from "react-icons/fi";
 import { FaChevronDown } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { AnimatePresence, motion } from "framer-motion";
@@ -26,6 +26,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   const { user, logout } = useContext(AuthContext);
   const { cartItems } = useCart();
   const cartCount = cartItems.reduce((count, item) => count + item.qty, 0);
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
@@ -197,6 +198,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             <span className="text-gray-800 font-medium">
               <Link
                 to={"/login"}
+                state={{ from: location }}
                 onClick={() => setIsOpen(false)}
                 className="hover:underline"
               >

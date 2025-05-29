@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {
     () => localStorage.getItem("token") || null
   );
 
+  const [redirectWait, setRedirectWait] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const fetchUser = async () => {
@@ -39,6 +40,7 @@ export const AuthProvider = ({ children }) => {
       logout(); // Clear token if unauthorized
     } finally {
       setLoading(false);
+      setRedirectWait(false);
     }
   };
 
@@ -50,6 +52,7 @@ export const AuthProvider = ({ children }) => {
   // Login function
   const login = async (email, password) => {
     try {
+      setRedirectWait(true);
       const res = await axios.post(`${API_BASE_URL}/api/auth/login`, {
         email,
         password,
@@ -60,9 +63,10 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("token", newToken);
       // fetchUser(); // Fetch user after login
       setLoading(true); // Set loading to true before fetching user
-      await fetchUser(); // Ensure user is fetched before setting loading false
+      // await fetchUser(); // Ensure user is fetched before setting loading false
     } catch (error) {
       // console.error("Login failed", error.response?.data || error.message);
+      setRedirectWait(false);
       throw error;
     }
   };
@@ -70,6 +74,7 @@ export const AuthProvider = ({ children }) => {
   // Register function
   const register = async (name, email, password) => {
     try {
+      setRedirectWait(true);
       const res = await axios.post(`${API_BASE_URL}/api/auth/register`, {
         name,
         email,
@@ -77,7 +82,7 @@ export const AuthProvider = ({ children }) => {
       });
       setToken(res.data.token);
       localStorage.setItem("token", res.data.token);
-      setUser(res.data.user);
+      // setUser(res.data.user);
     } catch (error) {
       // console.error("Registration failed", error);
 
@@ -109,6 +114,7 @@ export const AuthProvider = ({ children }) => {
         });
       }
 
+      setRedirectWait(false);
       throw error;
     }
   };
@@ -132,6 +138,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         authLoading: loading,
         fetchUser,
+        redirectWait,
       }}
     >
       {children}

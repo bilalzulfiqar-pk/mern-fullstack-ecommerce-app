@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -16,8 +16,25 @@ const loginSchema = Yup.object().shape({
 });
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login, user, redirectWait } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // const from = location.state?.from?.pathname || "/";
+
+  const fromLocation = location.state?.from;
+  const path = fromLocation
+    ? `${fromLocation.pathname}${fromLocation.search}`
+    : "/";
+
+  // when user is logged in, redirect to the page they were trying to access
+  // or to home if no specific page was requested
+  useEffect(() => {
+    if (user) {
+      navigate(path, { replace: true });
+      // console.log("Redirecting to:", from);
+    }
+  }, [user]);
 
   return (
     <div className="flex h-[85vh] items-center justify-center bg-gray-100">
@@ -34,7 +51,7 @@ const Login = () => {
             try {
               // Calling AuthContext.login(email, password)
               await login(values.email, values.password);
-              navigate("/"); // redirect on success
+              // navigate("/"); // redirect on success
             } catch (err) {
               const data = err.response?.data;
 
@@ -105,13 +122,15 @@ const Login = () => {
 
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || redirectWait}
                 className="w-full bg-blue-600 flex items-center justify-center gap-2 text-white py-2 rounded-md cursor-pointer disabled:cursor-auto hover:bg-blue-700 transition duration-200 disabled:opacity-70 disabled:hover:bg-blue-600"
               >
-                {isSubmitting && (
+                {(isSubmitting || redirectWait) && (
                   <ImSpinner2 className="animate-spin text-xl" />
                 )}
-                <span>{isSubmitting ? "Logging in…" : "Login"}</span>
+                <span>
+                  {isSubmitting || redirectWait ? "Logging in…" : "Login"}
+                </span>
               </button>
             </Form>
           )}
@@ -119,7 +138,11 @@ const Login = () => {
 
         <p className="text-center text-sm mt-4">
           Don't have an account?{" "}
-          <Link to="/register" className="text-blue-600 hover:underline">
+          <Link
+            to="/register"
+            state={{ from: fromLocation }}
+            className="text-blue-600 hover:underline"
+          >
             Register
           </Link>
         </p>

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoMdCheckmark } from "react-icons/io";
 import { FaRegComment, FaShoppingBasket } from "react-icons/fa";
 import { MdOutlineVerifiedUser } from "react-icons/md";
@@ -29,6 +29,7 @@ const ProductPageCard = ({ product }) => {
   // console.log("userid:",userId);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     setSelectedImage(product.image);
@@ -61,7 +62,10 @@ const ProductPageCard = ({ product }) => {
         draggable: true,
         theme: "light",
       });
-      navigate("/login");
+      navigate("/login", {
+        state: { from: location },
+        replace: true,
+      });
       return;
     }
 
@@ -81,10 +85,13 @@ const ProductPageCard = ({ product }) => {
 
     // Check if current quantity has reached stock
     if (currentQty >= product.stock) {
-      toast.error(`Cannot add more. Only ${product.stock} item(s) available in stock.`, {
-        position: "top-right",
-        autoClose: 3000,
-      });
+      toast.error(
+        `Cannot add more. Only ${product.stock} item(s) available in stock.`,
+        {
+          position: "top-right",
+          autoClose: 3000,
+        }
+      );
       setIsAdding(false);
       return;
     }

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import SearchBar from "./SearchBar";
 import { FaUser, FaHeart } from "react-icons/fa";
 import { MdMessage, MdShoppingCart } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoMenu } from "react-icons/io5";
 import Sidebar from "./Sidebar";
 import { useCart } from "../context/CartContext";
@@ -17,6 +17,7 @@ const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   // console.log("🚀 ~ Navbar ~ user:", user?.isAdmin);
 
@@ -37,7 +38,16 @@ const Navbar = () => {
   // Function to handle navigation and close the dropdown
   const handleNavigation = (path) => {
     setIsOpen(false); // Close dropdown before navigation
-    navigate(path);
+    if (path === "/login") {
+      // Pass the current location into state.from
+      navigate("/login", {
+        state: { from: location },
+        replace: true,
+      });
+    } else {
+      // Any other path just navigate normally
+      navigate(path);
+    }
   };
 
   return (

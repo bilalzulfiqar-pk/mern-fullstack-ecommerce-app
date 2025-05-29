@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -26,8 +26,27 @@ const registerSchema = Yup.object().shape({
 });
 
 const Register = () => {
-  const { register } = useContext(AuthContext);
+  const { register, user, redirectWait } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // const from = location.state?.from?.pathname || "/";
+
+  const fromLocation = location.state?.from;
+  const path = fromLocation
+    ? `${fromLocation.pathname}${fromLocation.search}`
+    : "/";
+
+  // console.log("Register page path:", path);
+
+  // when user is logged in, redirect to the page they were trying to access
+  // or to home if no specific page was requested
+  useEffect(() => {
+    if (user) {
+      navigate(path, { replace: true });
+      // console.log("Redirecting to:", path);
+    }
+  }, [user]);
 
   return (
     <div className="flex h-[85vh] items-center justify-center bg-gray-100">
@@ -44,7 +63,7 @@ const Register = () => {
             try {
               // Calling context‐register
               await register(values.name, values.email, values.password);
-              navigate("/"); // redirect on success
+              // navigate("/"); // redirect on success
             } catch (err) {
               // If server returns a single‐field message like "Email already registered",
               // map it back to the email field:
@@ -125,13 +144,15 @@ const Register = () => {
 
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || redirectWait}
                 className="w-full bg-blue-600 flex justify-center items-center gap-2 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200 cursor-pointer disabled:cursor-auto disabled:opacity-70 disabled:hover:bg-blue-600"
               >
-                {isSubmitting && (
+                {(isSubmitting || redirectWait) && (
                   <ImSpinner2 className="animate-spin text-xl" />
                 )}
-                <span>{isSubmitting ? "Registering…" : "Register"}</span>
+                <span>
+                  {isSubmitting || redirectWait ? "Registering…" : "Register"}
+                </span>
               </button>
             </Form>
           )}

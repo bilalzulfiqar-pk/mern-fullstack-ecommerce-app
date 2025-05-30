@@ -4,15 +4,18 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-  origin: function (origin, callback) {
+  origin: (origin, callback) => {
     // Allow requests like Postman, curl, mobile apps with no origin
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
+    if (!origin) {
+      return callback(null, true);
     }
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    // Single-line log for blocked origins
+    console.log(`CORS: Blocking request from origin ${origin}`);
+    return callback(null, false);
+    // return  callback(new Error("Not allowed by CORS"));
   },
   credentials: true, // Important if using cookies or sessions
 };

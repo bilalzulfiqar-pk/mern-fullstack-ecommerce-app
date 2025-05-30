@@ -35,6 +35,7 @@ export const FavoritesProvider = ({ children }) => {
       fetchFavorites();
     } else {
       setFavorites([]);
+      setInitialLoading(false);
     }
   }, [user]);
 

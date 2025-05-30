@@ -8,7 +8,7 @@ const FavoritesContext = createContext();
 export const useFavorites = () => useContext(FavoritesContext);
 
 export const FavoritesProvider = ({ children }) => {
-  const { user } = useContext(AuthContext);
+  const { user, authLoading } = useContext(AuthContext);
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -31,6 +31,7 @@ export const FavoritesProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    if (authLoading) return; // wait until AuthContext finishes
     if (user) {
       fetchFavorites();
     } else {

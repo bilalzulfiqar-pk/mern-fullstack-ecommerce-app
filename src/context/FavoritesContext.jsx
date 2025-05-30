@@ -38,7 +38,7 @@ export const FavoritesProvider = ({ children }) => {
       setFavorites([]);
       setInitialLoading(false);
     }
-  }, [user]);
+  }, [user, authLoading]);
 
   const addFavorite = async (productId) => {
     try {

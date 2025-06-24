@@ -16,6 +16,7 @@ Built for **performance**, **scalability**, and **real-world eCommerce** scenari
 - Displays **featured products** and **trending categories**.
 - **Promotional banners**.
 - **Live search**.
+- **Product inquiry form**: Users can send product requests (with quantity and unit) directly to suppliers via a simple form.
 
 ### 📦 Product Listing
 - **Advanced filters**: Category, price range, ratings, and more.
@@ -35,6 +36,7 @@ Built for **performance**, **scalability**, and **real-world eCommerce** scenari
 - **JWT-based secure auth**.
 - **Role-based access** (User/Admin).
 - **Protected routes**: Cart, checkout, order history.
+- **Email confirmation via OTP**: Users must verify their email with a One-Time Password (OTP), sent from the platform’s company email, before placing orders.
 
 ### 🛒 Cart & Checkout
 - Add/remove/update cart items.
@@ -114,24 +116,38 @@ cd backend
 npm install
 ```
 
-### 3️⃣ Set Up Environment Variables  
+### 3️⃣ Set Up Environment Variables
+
 You need to create two `.env` files: one for the **frontend** and one for the **backend**.
 
-1. **Frontend (`main` directory):**  
+1. **Frontend (`main` directory):**
    Create a `.env` file in the `main` directory and add the following environment variables:
+
    ```bash
-   VITE_API_BASE_URL=http://localhost:5000
-   VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_key
+   VITE_API_BASE_URL=http://localhost:5000                # Backend API base URL
+   VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_key            # Stripe publishable key
+   VITE_RECAPTCHA_SITE_KEY=your_recaptcha_site_key        # Google reCAPTCHA site key
    ```
+
    *If `VITE_API_BASE_URL` is not set, it defaults to `http://localhost:5000`.*
 
-2. **Backend (`backend` directory):**  
+2. **Backend (`backend` directory):**
    Create a `.env` file in the `backend` directory and add the following environment variables:
+
    ```bash
-   MONGO_URI=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret
-   STRIPE_SECRET_KEY=your_stripe_secret
+   MONGO_URI=your_mongodb_connection_string               # MongoDB connection string
+   JWT_SECRET=your_jwt_secret                             # Secret key for JWT signing
+   STRIPE_SECRET_KEY=your_stripe_secret                   # Stripe secret key
+
+   RECAPTCHA_SECRET_KEY=your_recaptcha_secret_key         # Google reCAPTCHA secret key for backend validation
+   COMPANY_EMAIL=your_company_email                       # Sender email for outgoing platform emails
+
+   GMAIL_USER=your_company_email_address                  # Gmail address used to send OTPs
+   GMAIL_PASS=your_google_app_password                    # App password generated from Google account
    ```
+
+   > 💡 *To generate a Google App Password for `GMAIL_PASS`, enable 2-Step Verification on your Google account and follow [this guide](https://support.google.com/accounts/answer/185833?hl=en) to create an app-specific password.*
+
 
 ### 4️⃣ Run the Project  
 **Start Backend:**

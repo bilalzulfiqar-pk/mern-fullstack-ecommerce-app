@@ -1,13 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const connectDB = require("./config/db"); // Import DB connection
+const { connectDB, ensureDBConnected } = require("./config/db"); // Import DB connection & middleware
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB
-connectDB();
+connectDB().catch((err) => console.error("Initial DB connection failed:", err));
 
 // CORS to allow frontend requests
 // app.use(cors({ origin: "http://localhost:5173", credentials: true }));
@@ -19,6 +19,9 @@ const corsOptions = require("./config/corsOptions");
 app.use(cors(corsOptions));
 
 app.use(express.json()); // Middleware to parse JSON
+
+// Ensure MongoDB is connected and reset idle timer on incoming requests
+app.use(ensureDBConnected);
 
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/auth");

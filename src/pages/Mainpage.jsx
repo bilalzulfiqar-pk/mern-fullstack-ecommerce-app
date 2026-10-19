@@ -10,6 +10,7 @@ import { ProductContext } from "../context/ProductContext";
 import AuthContext from "../context/AuthContext";
 import ResponsiveText from "../components/ResponsiveText";
 import Timer from "../components/Timer";
+import PageLoader from "../components/PageLoader";
 const Mainpage = () => {
   const { products, loading } = useContext(ProductContext);
   const { user, logout } = useContext(AuthContext);
@@ -184,21 +185,7 @@ const Mainpage = () => {
 
   // console.log(homeAndOutdoor);
 
-  if (loading)
-    return (
-      <div className="w-full bg-[#F7FAFC] h-[100vh] h-dvh-100">
-        <div className="pt-6 max-w-[1404px]  m-auto h-full">
-          <div className="mx-5 min-[1000px]:mx-10">
-            <div className="flex justify-center items-center h-[85vh] h-dvh-85 -translate-y-22">
-              <div
-                className="w-16 h-16 border-4 border-blue-500 border-y-transparent rounded-full animate-spin"
-                style={{ animationDuration: "0.5s" }}
-              ></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  if (loading) return <PageLoader />;
 
   return (
     <div className="w-full bg-[#F7FAFC] h-full">

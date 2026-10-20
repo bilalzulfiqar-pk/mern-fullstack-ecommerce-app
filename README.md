@@ -1,167 +1,362 @@
-# 🛒 E-Commerce Web Application
+# MERN E-Commerce & B2B Wholesale Platform
 
-## 🚀 Overview
-A full-featured **MERN stack** e-commerce platform offering an intuitive shopping experience, secure user authentication, advanced filtering, dynamic admin management, and a fully responsive design.  
+<div align="center">
 
-Built for **performance**, **scalability**, and **real-world eCommerce** scenarios.
+<img src="public/banner.jpg" alt="MegaMart Platform Banner" width="100%" />
 
-## 🌐 Live Demo  
-🔗 [Check it Out](https://ecommerce-fullstack-website.vercel.app/)
+<p align="center">
+  <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 19" /></a>
+  <a href="https://vite.dev/"><img src="https://img.shields.io/badge/Vite-6.2-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" /></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-v4.1-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" /></a>
+  <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" /></a>
+  <a href="https://expressjs.com/"><img src="https://img.shields.io/badge/Express-4.21-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express" /></a>
+  <a href="https://www.mongodb.com/atlas"><img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB Atlas" /></a>
+  <a href="https://stripe.com/"><img src="https://img.shields.io/badge/Stripe-Payments-635BFF?style=for-the-badge&logo=stripe&logoColor=white" alt="Stripe" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-10B981?style=for-the-badge" alt="MIT License" /></a>
+</p>
 
----
+<p align="center">
+  <strong>A full-stack e-commerce and B2B wholesale platform built with React 19, Express, MongoDB, and Stripe.</strong>
+  <br />
+  Featuring multi-tiered bulk pricing, ACID-compliant transactional order fulfillment, automated email OTP verification, and an administrative console.
+</p>
 
-## ✨ Features
+[System Architecture](#system-architecture) • [Key Features](#key-features) • [Tech Stack](#tech-stack) • [Getting Started](#getting-started) • [API Reference](#api-endpoints-summary)
 
-### 🏠 Home Page
-- Displays **featured products** and **trending categories**.
-- **Promotional banners**.
-- **Live search**.
-- **Product inquiry form**: Users can send product requests (with quantity and unit) directly to suppliers via a simple form.
-
-### 📦 Product Listing
-- **Advanced filters**: Category, price range, ratings, and more.
-- **Sorting options**: Price, discount, and popularity.
-- **Pagination & Grid/List toggle**.
-- **Verified sellers** badge display.
-
-### 🛍️ Product Details
-- **Cloudinary-hosted images**.
-- **Bulk pricing** for wholesale buyers.
-- **Supplier & shipping details**.
-- **Customer reviews & ratings**.
-- **Live stock status**.
-
-### 👤 User Authentication
-- **Register / Login** with form validation.
-- **JWT-based secure auth**.
-- **Role-based access** (User/Admin).
-- **Protected routes**: Cart, checkout, order history.
-- **Email confirmation via OTP**: Users must verify their email with a One-Time Password (OTP), sent from the platform’s company email, before placing orders.
-
-### 🛒 Cart & Checkout
-- Add/remove/update cart items.
-- Auto-price updates by quantity.
-- Save cart data for logged-in users.
-- **Shipping details form**.
-- **Stripe payment integration (Test mode)**.
-
-### 🧾 Orders System
-- Place orders with Stripe payment.
-- View **order history**, status, and details.
-- Admin can **view, update, approve, or cancel** orders.
-
-### ⭐ Review System
-- Users can leave **star ratings and comments** on products they've received.
-- **Average rating** auto-calculated and updated.
-
-### ❤️ Favorites
-- Users can **add or remove products to favorites**.
-- Favorites persist for logged-in users.
-
-### 🌍 Multi-Language Support
-- Built-in **translation system** using the **Google Translate widget**.
-- Supports multiple languages including **English**, **Urdu**, **French**, **Spanish**, etc.
-- **Language switcher** available in both the **navbar dropdown** and **drawer (off-canvas sidebar)**.
-
-### ⚙️ Profile Settings
-- Users can update their **name**, and **password**.
-
-### 🛠️ Admin Panel
-- Add/edit/delete products.
-- View/manage orders.
-- Protected with **admin-only routes**.
+</div>
 
 ---
 
-## 📱 Responsive Design
-- Optimized for **mobile, tablet, and desktop**.
-- Built with **Tailwind CSS** for flexibility and responsiveness.
+## Overview
+
+This repository contains a full-stack e-commerce and B2B wholesale marketplace application built with the MERN stack (MongoDB, Express, React, Node.js).
+
+The platform supports both retail shopping for individual consumers and wholesale purchasing for commercial buyers. Key features include volume-based tiered bulk pricing, multi-document ACID transactions for checkout consistency, Stripe payment processing, automated email OTP identity verification with MongoDB TTL indexes, verified customer reviews, and a dedicated role-based administration dashboard.
+
+> **Live Demo:** [ecommerce-fullstack-website.vercel.app](https://ecommerce-fullstack-website.vercel.app/)
 
 ---
 
-## 🧰 Tech Stack
+## System Architecture
 
-| Frontend       | Backend         | Other         |
-|----------------|------------------|----------------|
-| React + Vite   | Node.js + Express | MongoDB (Mongoose) |
-| Tailwind CSS   | JWT Auth          | Cloudinary (Images) |
-| React Router   | Stripe API (Test) | SweetAlert2 (UI Alerts) |
+The application uses a decoupled client-server architecture. The React single-page frontend communicates with an Express REST API backend over HTTPS.
 
----
+```mermaid
+flowchart TD
+    subgraph Client["Frontend Client (React 19 + Vite)"]
+        UI["Customer & Admin Views (Tailwind CSS v4)"]
+        State["Context Stores (Auth, Product, Cart, Favorites)"]
+        StripeElem["Stripe Elements Integration"]
+    end
 
-## 🔧 Development Status
-The application is actively being developed. Future updates may include **contact support with chat** and **suppliers profile**.
+    subgraph Server["Backend API (Node.js + Express)"]
+        AuthMid["Auth & Role Middlewares (JWT)"]
+        OrderCtrl["Order Controller (ACID Transactions)"]
+        PaymentCtrl["Payment Controller"]
+        EmailCtrl["Email Controller (OTP & Inquiries)"]
+        CatalogCtrl["Product & Review Controllers"]
+    end
 
----
+    subgraph Services["External & Cloud Services"]
+        StripeAPI["Stripe API (PaymentIntents)"]
+        Mongo["MongoDB Atlas (Replica Set)"]
+        SMTP["Gmail SMTP (Nodemailer)"]
+        Recaptcha["Google reCAPTCHA v2"]
+    end
 
-## 🛠 How to Run the Project
+    UI --> State
+    State --> AuthMid
+    StripeElem --> StripeAPI
 
-Follow these steps to set up and run the project locally:
+    AuthMid --> OrderCtrl
+    AuthMid --> PaymentCtrl
+    AuthMid --> EmailCtrl
+    AuthMid --> CatalogCtrl
 
-### 1️⃣ Clone the Repository
-```
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+    OrderCtrl -->|"Atomic session commits"| Mongo
+    PaymentCtrl -->|"Creates payment intent"| StripeAPI
+    EmailCtrl -->|"Dispatches OTPs & RFQs"| SMTP
+    EmailCtrl -->|"Validates tokens"| Recaptcha
+    CatalogCtrl -->|"Queries & updates rating"| Mongo
 ```
 
-### 2️⃣ Install Dependencies  
-**For Frontend:**
+---
+
+## Key Features
+
+### 1. Dual Retail & B2B Wholesale Pricing
+
+- Multi-tiered wholesale pricing bands configured per product (`bulkPricing: [{ minQuantity, maxQuantity, price }]`).
+- Cart calculations evaluate unit price brackets automatically as buyers scale quantities.
+- Supports Requests for Quote (RFQ) inquiries with quantity and packaging unit selection.
+
+### 2. Transactional Order Fulfillment (ACID Compliance)
+
+- Order placement and stock decrements are encapsulated within native MongoDB multi-document transactions using `mongoose.startSession()`.
+- Guarantees atomic verification of available stock thresholds before confirming purchases.
+- Automatically rolls back writes if inventory is depleted or validation fails, preventing overselling and race conditions.
+
+### 3. Stripe Payment Integration
+
+- Tokenized credit card checkout utilizing `@stripe/react-stripe-js` CardElement.
+- Backend PaymentIntent generation with amount normalization in integer cents to eliminate floating-point calculation errors.
+
+### 4. Automated Email OTP Verification
+
+- Six-digit numeric OTP generation sent through Nodemailer using Gmail SMTP.
+- Stored in a dedicated MongoDB collection with a 5-minute TTL index (`expires: 0`) for automated document cleanup.
+- Enforces a 60-second cooldown rate limit between consecutive code requests.
+- Required identity gate before an authenticated user can place orders.
+
+### 5. Multi-Criteria Faceted Search & Catalog Filtering
+
+- Client-side search and filtering across categories, price range sliders, minimum star ratings, and verified supplier flags.
+- Dual layout support allowing buyers to toggle between a 3-column grid view and an itemized list view.
+- Pagination controls with customizable page sizes.
+
+### 6. Verified-Purchase Review System
+
+- Enforces reviews exclusively for users who purchased the item in an order marked as `delivered`.
+- Protected by a partial unique compound index (`{ product: 1, user: 1, order: 1 }`) to block duplicate feedback.
+- Automatically recalculates the product's running average star rating and review count on every submission.
+
+### 7. Role-Based Administration Console
+
+- Admin-exclusive route protection requiring valid JWT payload and `isAdmin: true` credentials.
+- Product inventory management including creation, modification, image link binding, and deletion.
+- Order fulfillment pipeline using MongoDB aggregation queries (`$lookup`, `$match`, `$sort`, `$facet`) with status progression across `pending`, `approved`, `shipped`, `delivered`, and `cancelled`.
+
+### 8. Multi-Language Support (i18n Bridge)
+
+- Headless integration with the Google Translate engine.
+- Custom select components trigger synthetic change events against DOM elements without breaking React hydration.
+- Covers English, Arabic, Urdu, Hindi, Bengali, French, and Spanish.
+
+### 9. Resource-Efficient Backend Lifecycle
+
+- Automatic database disconnect after 2 minutes of idle traffic to eliminate persistent MongoDB background heartbeats.
+- Allows container environments (such as Railway Serverless) to scale to zero when idle, preserving hosting compute credits.
+- Express middleware reconnects to MongoDB on demand when incoming HTTP requests arrive.
+
+---
+
+## Tech Stack
+
+| Layer    | Technology       | Version       | Purpose                                             |
+| :------- | :--------------- | :------------ | :-------------------------------------------------- |
+| Frontend | React            | 19.0.0        | User interface and component state                  |
+| Frontend | Vite             | 6.2.0         | Development server and build tooling                |
+| Frontend | Tailwind CSS     | 4.1.4         | Responsive utility-based styling                    |
+| Frontend | React Router DOM | 7.3.0         | Client-side routing and protected routes            |
+| Frontend | Stripe Elements  | 3.6.0         | Embedded credit card payment inputs                 |
+| Frontend | Formik & Yup     | 2.4.6 / 1.6.1 | Form validation schema enforcement                  |
+| Frontend | Framer Motion    | 12.7.4        | Layout animations and transition effects            |
+| Backend  | Node.js          | 20+           | Server JavaScript runtime                           |
+| Backend  | Express          | 4.21.2        | RESTful API framework and routing                   |
+| Backend  | Mongoose         | 8.12.1        | MongoDB object data modeling and transactions       |
+| Backend  | JSON Web Token   | 9.0.2         | Stateless bearer authentication                     |
+| Backend  | BcryptJS         | 3.0.2         | Password hashing with salt                          |
+| Backend  | Stripe SDK       | 18.0.0        | Server-side PaymentIntent handling                  |
+| Backend  | Nodemailer       | 7.0.3         | Transactional email and OTP dispatch                |
+| Database | MongoDB Atlas    | 8.0+          | Cloud database with replica set transaction support |
+
+---
+
+## Repository Structure
+
+```text
+ecommerce-fullstack-design/
+├── backend/
+│   ├── src/
+│   │   ├── config/
+│   │   │   ├── corsOptions.js          # CORS domain allowlist
+│   │   │   └── db.js                   # Mongoose connection & idle timeout manager
+│   │   ├── controllers/
+│   │   │   ├── cartController.js       # Shopping cart operations
+│   │   │   ├── emailController.js      # OTP verification & supplier inquiries
+│   │   │   ├── favoriteController.js   # User wishlist management
+│   │   │   ├── orderController.js      # Transactional order placement & fulfillment
+│   │   │   ├── paymentController.js    # Stripe PaymentIntent creation
+│   │   │   ├── recaptchaController.js  # Google reCAPTCHA validation
+│   │   │   └── reviewController.js     # Verified review submissions & rating updates
+│   │   ├── middleware/
+│   │   │   ├── adminMiddleware.js      # Admin authorization guard
+│   │   │   └── authMiddleware.js       # JWT extraction and validation
+│   │   ├── models/
+│   │   │   ├── cart.js
+│   │   │   ├── emailOtp.js             # OTP schema with TTL index
+│   │   │   ├── favorite.js
+│   │   │   ├── order.js
+│   │   │   ├── product.js              # Product schema with bulk pricing
+│   │   │   ├── review.js               # Review schema with partial index
+│   │   │   └── user.js
+│   │   ├── routes/                     # Modular Express route declarations
+│   │   ├── utils/                      # Arithmetic rating recalculation helper
+│   │   └── server.js                   # Express application entry point
+│   ├── insertProducts.js               # Catalog seeding script
+│   └── package.json
+├── src/
+│   ├── assets/                         # Static image assets and icons
+│   ├── components/                     # Reusable UI components
+│   │   ├── PageLoader.jsx              # Centered wake-up state loader
+│   │   ├── StripeCheckoutForm.jsx      # CardElement submission form
+│   │   ├── SidebarFilter.jsx           # Catalog faceted filter controls
+│   │   └── ...
+│   ├── context/                        # React Context domain state providers
+│   │   ├── AuthContext.jsx
+│   │   ├── CartContext.jsx
+│   │   ├── FavoritesContext.jsx
+│   │   └── ProductContext.jsx
+│   ├── pages/                          # Customer and admin route views
+│   │   ├── Mainpage.jsx
+│   │   ├── ProductPage.jsx
+│   │   ├── SearchPage.jsx
+│   │   ├── CartCheckout.jsx
+│   │   ├── AdminOrdersPage.jsx
+│   │   └── ...
+│   ├── routes/                         # Route definition & route guards
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+├── index.html
+├── package.json
+└── vite.config.js
 ```
+
+---
+
+## Environment Configuration
+
+The application requires environment configurations for both the frontend client and the backend server.
+
+### 1. Frontend Environment (`.env` in root directory)
+
+```bash
+# Backend REST API Base URL
+VITE_API_BASE_URL=http://localhost:5000
+
+# Stripe Publishable Key (pk_test_...)
+VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+
+# Google reCAPTCHA v2 Site Key
+VITE_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
+```
+
+### 2. Backend Environment (`backend/.env`)
+
+```bash
+# Server Port
+PORT=5000
+
+# MongoDB Atlas Connection URI (Must support replica set for ACID transactions)
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/ecommerce?retryWrites=true&w=majority
+
+# JWT Signing Secret
+JWT_SECRET=your_jwt_secret_key
+
+# Stripe Secret Key (sk_test_...)
+STRIPE_SECRET_KEY=your_stripe_secret_key
+
+# Google reCAPTCHA v2 Secret Key
+RECAPTCHA_SECRET_KEY=your_recaptcha_secret_key
+
+# Gmail SMTP Credentials for OTP & Inquiries
+GMAIL_USER=your_email@gmail.com
+GMAIL_PASS=your_google_app_password
+COMPANY_EMAIL=your_email@gmail.com
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js version 20.0.0 or higher
+- npm version 9.0.0 or higher
+- A MongoDB Atlas cluster (replica set required for transactional checkouts)
+- A Stripe developer account for test keys
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/bilalzulfiqar-pk/mern-fullstack-ecommerce-app.git
+cd mern-fullstack-ecommerce-app
+```
+
+### 2. Install Dependencies
+
+Install root (frontend) dependencies:
+
+```bash
 npm install
 ```
 
-**For Backend:**
-```
+Install backend dependencies:
+
+```bash
 cd backend
 npm install
+cd ..
 ```
 
-### 3️⃣ Set Up Environment Variables
+### 3. Seed Initial Products (Optional)
 
-You need to create two `.env` files: one for the **frontend** and one for the **backend**.
+To populate the database with starter catalog items:
 
-1. **Frontend (`main` directory):**
-   Create a `.env` file in the `main` directory and add the following environment variables:
-
-   ```bash
-   VITE_API_BASE_URL=http://localhost:5000                # Backend API base URL
-   VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_key            # Stripe publishable key
-   VITE_RECAPTCHA_SITE_KEY=your_recaptcha_site_key        # Google reCAPTCHA site key
-   ```
-
-   *If `VITE_API_BASE_URL` is not set, it defaults to `http://localhost:5000`.*
-
-2. **Backend (`backend` directory):**
-   Create a `.env` file in the `backend` directory and add the following environment variables:
-
-   ```bash
-   MONGO_URI=your_mongodb_connection_string               # MongoDB connection string
-   JWT_SECRET=your_jwt_secret                             # Secret key for JWT signing
-   STRIPE_SECRET_KEY=your_stripe_secret                   # Stripe secret key
-
-   RECAPTCHA_SECRET_KEY=your_recaptcha_secret_key         # Google reCAPTCHA secret key for backend validation
-   COMPANY_EMAIL=your_company_email                       # Sender email for outgoing platform emails
-
-   GMAIL_USER=your_company_email_address                  # Gmail address used to send OTPs
-   GMAIL_PASS=your_google_app_password                    # App password generated from Google account
-   ```
-
-   > 💡 *To generate a Google App Password for `GMAIL_PASS`, enable 2-Step Verification on your Google account and follow [this guide](https://support.google.com/accounts/answer/185833?hl=en) to create an app-specific password.*
-
-
-### 4️⃣ Run the Project  
-**Start Backend:**
+```bash
+cd backend
+npm run insert
+cd ..
 ```
+
+### 4. Start Development Servers
+
+Start the backend API server:
+
+```bash
 cd backend
 npm run dev
 ```
 
-**Start Frontend:**
-```
+The backend initializes on `http://localhost:5000`.
+
+In a separate terminal window, start the frontend Vite server:
+
+```bash
 npm run dev
 ```
 
+The frontend application will be accessible at `http://localhost:5173`.
+
 ---
 
-### 💡 Want to Contribute?
-If you'd like to contribute, feel free to fork the repository and submit a pull request. 🚀 
+## API Endpoints Summary
+
+| Method   | Endpoint                              | Protection | Description                               |
+| :------- | :------------------------------------ | :--------- | :---------------------------------------- |
+| `POST`   | `/api/auth/register`                  | Public     | Register new customer account             |
+| `POST`   | `/api/auth/login`                     | Public     | Authenticate user and return JWT          |
+| `GET`    | `/api/auth/user`                      | User JWT   | Retrieve authenticated user profile       |
+| `GET`    | `/api/products`                       | Public     | Fetch all catalog products                |
+| `POST`   | `/api/products`                       | Admin JWT  | Create new product with bulk pricing      |
+| `PUT`    | `/api/products/:id`                   | Admin JWT  | Update product specifications and stock   |
+| `DELETE` | `/api/products/:id`                   | Admin JWT  | Remove product from catalog               |
+| `GET`    | `/api/cart`                           | User JWT   | Fetch user shopping cart                  |
+| `PATCH`  | `/api/cart/add`                       | User JWT   | Add product to cart or increment quantity |
+| `DELETE` | `/api/cart/:productId`                | User JWT   | Remove product from cart                  |
+| `POST`   | `/api/payments/create-payment-intent` | User JWT   | Initialize Stripe PaymentIntent           |
+| `POST`   | `/api/orders/place-order`             | User JWT   | Execute transactional order placement     |
+| `GET`    | `/api/orders/my-orders`               | User JWT   | Fetch order history for logged-in user    |
+| `GET`    | `/api/orders`                         | Admin JWT  | Fetch paginated orders across all users   |
+| `PATCH`  | `/api/orders/:orderId/status`         | Admin JWT  | Update order lifecycle status             |
+| `POST`   | `/api/reviews`                        | User JWT   | Submit verified product review            |
+| `POST`   | `/api/email/send-verification-otp`    | User JWT   | Send 6-digit email verification OTP       |
+| `POST`   | `/api/email/verify-otp`               | User JWT   | Validate OTP and mark email verified      |
+| `POST`   | `/api/email/inquiry`                  | Public     | Submit B2B quotation inquiry              |
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for complete details.
